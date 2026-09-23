@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
-import { createLead } from '../data/api.js'
+import { createLead, sendCapiEvent } from '../data/api.js'
 import { landing, countries } from '../content/equipo.js'
 import { steps, bottleneckOptions } from '../content/quiz.js'
 import { getUtmParams } from '../lib/utm.js'
 import { saveLead } from '../lib/leadSession.js'
 import { url } from '../lib/routes.js'
+import { browserIds, newEventId, track } from '../lib/pixel.js'
 import CtaButton from './CtaButton.jsx'
+
+// Los eventos de Meta se disparan solo para quien factura $5k o más.
+const REVENUE_PARA_PIXEL = ['$5k a 10k', '$10k a 30k', '$30k a 50k', '+$50k']
 
 const EMPTY_CONTACT = { nombre: '', email: '', country: '+54', telefono: '', instagram: '' }
 const EMPTY_QUIZ = {
@@ -79,6 +83,31 @@ function OptInModal({ open, onClose }) {
     }))
   }
 
+  async function reportarAMeta(created) {
+    const { fbp, fbc } = browserIds()
+    const source_url = window.location.href
+
+    // El mismo evento va por el navegador y por el servidor con el mismo id.
+    await Promise.all(
+      ['Lead', 'CompleteRegistration'].map(async (eventName) => {
+        const eventId = newEventId(eventName, created.id)
+        track(eventName, { content_name: 'webinar_equipo' }, eventId)
+        try {
+          await sendCapiEvent(created.id, {
+            event_name: eventName,
+            event_id: eventId,
+            source_url,
+            fbp,
+            fbc,
+          })
+        } catch {
+          // Si el server no pudo avisarle a Meta, el registro ya está hecho:
+          // no se le corta el paso al lead por esto.
+        }
+      }),
+    )
+  }
+
   async function onContinue() {
     if (!canContinue) return
 
@@ -103,6 +132,10 @@ function OptInModal({ open, onClose }) {
         bottleneck_marketing: quiz.bottleneck_marketing,
         ...getUtmParams(),
       })
+      if (REVENUE_PARA_PIXEL.includes(quiz.revenue)) {
+        await reportarAMeta(created)
+      }
+
       // La confirmación vive en su propia URL, no en el modal.
       saveLead(created)
       window.location.assign(url('/gracias'))
@@ -249,7 +282,8 @@ function OptInModal({ open, onClose }) {
           <CtaButton
             className="cta-block"
             onClick={onContinue}
-            disabled={!canContinue || status === 'loading'}
+            disabled={!canContinue}
+            loading={status === 'loading'}
           >
             {status === 'loading' ? copy.submitting : isLast ? copy.submit : 'Continuar →'}
           </CtaButton>

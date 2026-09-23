@@ -15,7 +15,7 @@ export const landing = {
   modal: {
     title: '¿Listo para que tu equipo rinda como A-player?',
     body: 'Completá el formulario y desbloqueá el entrenamiento. Vas a ver cómo se capacita un equipo con los mejores de la industria hasta que se vuelve inevitable que también lo sean.',
-    submit: 'Desbloquear el entrenamiento',
+    submit: 'Desbloquear recurso',
     submitting: 'Desbloqueando…',
   },
   gracias: {

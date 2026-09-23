@@ -229,8 +229,15 @@ h1 strong {
   transform: scale(0.97);
 }
 
+/* Deshabilitado = todavía falta completar, no = estoy procesando. */
 .cta:disabled {
-  opacity: 0.7;
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.cta.is-loading {
+  opacity: 0.8;
   cursor: wait;
 }
 

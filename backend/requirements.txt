@@ -5,3 +5,4 @@ pydantic[email]==2.11.3
 python-decouple==3.8
 python-multipart==0.0.20
 psycopg2-binary==2.9.9
+httpx==0.28.1

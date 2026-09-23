@@ -83,6 +83,13 @@ export async function getWebinar() {
   return request('/webinar/')
 }
 
+export async function sendCapiEvent(leadId, payload) {
+  return request(`/leads/${leadId}/capi`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+}
+
 export async function getAuthMode() {
   return request('/auth/mode')
 }

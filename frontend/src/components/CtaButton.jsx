@@ -1,10 +1,10 @@
-function CtaButton({ children, onClick, type = 'button', disabled, className = '' }) {
+function CtaButton({ children, onClick, type = 'button', disabled, loading, className = '' }) {
   return (
     <button
       type={type}
-      className={`cta ${className}`.trim()}
+      className={`cta ${loading ? 'is-loading' : ''} ${className}`.trim()}
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || loading}
     >
       {children}
     </button>
