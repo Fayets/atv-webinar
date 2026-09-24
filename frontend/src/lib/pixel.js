@@ -6,9 +6,14 @@ export function newEventId(name, leadId) {
   return `${name}_${leadId}_${Date.now()}`
 }
 
+// Los eventos estándar van por `track`; cualquier otro necesita `trackCustom`
+// o Meta lo descarta sin avisar.
+const ESTANDAR = new Set(['PageView', 'Lead', 'CompleteRegistration', 'Contact', 'Schedule'])
+
 export function track(eventName, params = {}, eventId) {
   if (typeof window.fbq !== 'function') return
-  window.fbq('track', eventName, params, eventId ? { eventID: eventId } : undefined)
+  const metodo = ESTANDAR.has(eventName) ? 'track' : 'trackCustom'
+  window.fbq(metodo, eventName, params, eventId ? { eventID: eventId } : undefined)
 }
 
 /** Cookies que Meta deja en el navegador; mejoran el match del envío server-side. */

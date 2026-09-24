@@ -104,7 +104,7 @@ function OptInModal({ open, onClose }) {
 
     // El mismo evento va por el navegador y por el servidor con el mismo id.
     await Promise.all(
-      ['Lead', 'CompleteRegistration'].map(async (eventName) => {
+      ['Lead', 'registroCompletado'].map(async (eventName) => {
         const eventId = newEventId(eventName, created.id)
         track(eventName, { content_name: 'webinar_equipo' }, eventId)
         try {
