@@ -52,6 +52,11 @@ class WebinarServices:
         return starts_at.strftime(fmt), ends_at.strftime(fmt)
 
     def google_url(self) -> str:
+        # Si hay un evento real de Google Calendar, manda a ese: ahí el lead
+        # confirma asistencia y recibe la invitación con el link de la reunión.
+        if (evento := str(config("WEBINAR_CALENDAR_URL", default="")).strip()):
+            return evento
+
         start, end = self._utc_stamps()
         settings = self.get_config()
         params = {

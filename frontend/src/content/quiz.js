@@ -4,20 +4,9 @@
 export const avatarOptions = [
   'Coaching / Mentoria / Consultoria',
   'Creador con infoproducto',
-  'Creador de contenido sin infoproducto',
   'Experto en infoproductos / Growth Operator',
-  'Dueño de negocio con infoproducto',
-  'Dueño de negocio con tienda fisica',
   'Dueño de agencia',
-  'CCO (director)',
-  'Tienda de ecommerce',
-  'Infoproducto de ecommerce',
-  'Tienda fisica',
-  'Agente inmobiliarios / Real State con infoproducto',
-  'Agente inmobiliarios / Real State sin infoproducto',
-  'Profesional independiente',
   'Habilidades de alto valor (setter, closer, editor de videos, etc)',
-  'No tengo negocio',
   'Otro',
 ]
 
@@ -62,7 +51,7 @@ export const steps = [
   {
     id: 'avatar',
     title: 'SITUACIÓN ACTUAL',
-    question: '¿Cuál es tu perfil hoy?',
+    question: '¿Cuál es tu situación hoy?',
     type: 'options',
     options: avatarOptions,
   },

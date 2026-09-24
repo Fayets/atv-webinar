@@ -10,12 +10,7 @@ QUALIFIED_AVATARS = frozenset(
         "Coaching / Mentoria / Consultoria",
         "Creador con infoproducto",
         "Experto en infoproductos / Growth Operator",
-        "Dueño de negocio con infoproducto",
         "Dueño de agencia",
-        "Profesional independiente",
-        "CCO (director)",
-        "Infoproducto de ecommerce",
-        "Agente inmobiliarios / Real State con infoproducto",
     }
 )
 
