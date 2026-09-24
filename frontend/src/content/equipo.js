@@ -2,7 +2,7 @@ export const landing = {
   avatar: 'equipo',
   title: 'Sistema de equipo A-players',
   headline: {
-    light: 'Sistema +100k/mes',
+    light: 'Sistema +200k/mes',
     strong: 'sin ads, sin webinars ni lanzamientos.',
   },
   subheadline:
