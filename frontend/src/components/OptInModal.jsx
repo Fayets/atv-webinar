@@ -8,9 +8,6 @@ import { url } from '../lib/routes.js'
 import { browserIds, newEventId, track } from '../lib/pixel.js'
 import CtaButton from './CtaButton.jsx'
 
-// Los eventos de Meta se disparan solo para quien factura $5k o más.
-const REVENUE_PARA_PIXEL = ['$5k a 10k', '$10k a 30k', '$30k a 50k', '+$50k']
-
 const EMPTY_CONTACT = { nombre: '', email: '', country: '+54', telefono: '', instagram: '' }
 const EMPTY_QUIZ = {
   avatar: '',
@@ -148,7 +145,8 @@ function OptInModal({ open, onClose }) {
         bottleneck_ventas: quiz.bottleneck_ventas,
         ...getUtmParams(),
       })
-      if (REVENUE_PARA_PIXEL.includes(quiz.revenue)) {
+      // `calificado` lo resuelve el backend: avatar objetivo Y facturación.
+      if (created.calificado) {
         await reportarAMeta(created)
       }
 

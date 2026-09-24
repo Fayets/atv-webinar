@@ -17,8 +17,14 @@ export const landing = {
   },
   gracias: {
     badge: 'REGISTRO CONFIRMADO',
-    title: 'Ya estás dentro,',
-    subtitle: 'Te quedan dos pasos. Los dos toman menos de un minuto.',
+    title: 'Ya estás dentro. El lunes 28 te muestro lo que reemplaza todo lo que vendía.',
+    // El "en X días" se calcula solo contra la fecha del webinar para no quedar viejo.
+    subtitleAntes: 'En',
+    subtitleDespues:
+      'voy a revelar el sistema que llevó a mis clientes de $20k a $220k, de $10k a $70k y de $100k a $450k. Y por qué dejo de vender lo que vendía hace 2 años.',
+    aviso:
+      'Para recibir el recurso tenés que hacer los dos pasos: entrar al grupo de WhatsApp y agendar el evento.',
+    countdownSufijo: 'para el evento',
     whatsappStep: 'Paso 1',
     whatsappTitle: 'Entrá al grupo de WhatsApp',
     whatsappCta: 'Entrar al grupo',

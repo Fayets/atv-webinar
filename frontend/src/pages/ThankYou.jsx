@@ -79,9 +79,47 @@ function CalendarIcon({ size = 19, withPlus = false }) {
   )
 }
 
+/** Días, horas y minutos que faltan. null si ya pasó o no hay fecha. */
+function faltan(startsAt, ahora) {
+  if (!startsAt) return null
+  const inicio = new Date(startsAt)
+  if (Number.isNaN(inicio.getTime())) return null
+  const ms = inicio.getTime() - ahora
+  if (ms <= 0) return null
+  const minutos = Math.floor(ms / 60000)
+  return {
+    dias: Math.floor(minutos / 1440),
+    horas: Math.floor((minutos % 1440) / 60),
+    minutos: minutos % 60,
+  }
+}
+
+function Countdown({ restante, cuando, sufijo }) {
+  return (
+    <div className="countdown">
+      <p className="countdown-line">
+        {restante ? (
+          <>
+            Faltan <strong>{restante.dias}</strong> días <strong>{restante.horas}</strong> horas{' '}
+            <strong>{restante.minutos}</strong> minutos {sufijo}
+          </>
+        ) : (
+          <strong>El evento ya empezó</strong>
+        )}
+      </p>
+      {cuando ? (
+        <p className="countdown-when">
+          {cuando.day} · {cuando.time}
+        </p>
+      ) : null}
+    </div>
+  )
+}
+
 function ThankYou() {
   const [lead] = useState(readLead)
   const [webinar, setWebinar] = useState(null)
+  const [ahora, setAhora] = useState(() => Date.now())
   const copy = landing.gracias
 
   useEffect(() => {
@@ -94,10 +132,15 @@ function ThankYou() {
       .catch(() => setWebinar(null))
   }, [])
 
+  useEffect(() => {
+    const reloj = setInterval(() => setAhora(Date.now()), 1000)
+    return () => clearInterval(reloj)
+  }, [])
+
   if (!lead) return null
 
   const when = webinar ? formatWhen(webinar.starts_at, webinar.ends_at) : null
-  const firstName = lead.nombre.trim().split(/\s+/)[0]
+  const restante = faltan(webinar?.starts_at, ahora)
 
   return (
     <div className="shell">
@@ -108,10 +151,35 @@ function ThankYou() {
         <img className="logo" src={atvLogo} alt="Aumenta Tu Valor" />
 
         <span className="thanks-badge">{copy.badge}</span>
-        <h1 className="thanks-title">
-          {copy.title} {firstName}
-        </h1>
-        <p className="thanks-sub">{copy.subtitle}</p>
+        <h1 className="thanks-title">{copy.title}</h1>
+        <p className="thanks-sub">
+          {restante
+            ? `${restante.dias >= 1 ? `${copy.subtitleAntes} ${restante.dias} días` : 'Hoy'} `
+            : ''}
+          {copy.subtitleDespues}
+        </p>
+
+        {webinar ? (
+          <Countdown restante={restante} cuando={when} sufijo={copy.countdownSufijo} />
+        ) : null}
+
+        <p className="thanks-aviso">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 8h.01M11 12h1v4h1" />
+          </svg>
+          {copy.aviso}
+        </p>
 
         <ol className="steps">
           <li className="step-row">
@@ -123,7 +191,12 @@ function ThankYou() {
               <h2 className="step-title">{copy.whatsappTitle}</h2>
             </div>
             <div className="step-action">
-              <a className="step-btn step-btn-wa" href={whatsappUrl(lead.id)}>
+              <a
+                className="step-btn step-btn-wa"
+                href={whatsappUrl(lead.id)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <WhatsappIcon />
                 {copy.whatsappCta}
               </a>
@@ -149,7 +222,12 @@ function ThankYou() {
               )}
             </div>
             <div className="step-action">
-              <a className="step-btn step-btn-cal" href={calendarUrl(lead.id, 'google')}>
+              <a
+                className="step-btn step-btn-cal"
+                href={calendarUrl(lead.id, 'google')}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <CalendarIcon withPlus />
                 {copy.calendarCta}
               </a>
@@ -157,9 +235,6 @@ function ThankYou() {
           </li>
         </ol>
 
-        <a className="thanks-back" href={url('/')}>
-          ← Volver a la landing
-        </a>
       </main>
 
       <footer className="site-footer">

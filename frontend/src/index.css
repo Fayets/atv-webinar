@@ -617,12 +617,66 @@ h1 strong {
   line-height: 1.6;
 }
 
+.countdown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 26px;
+  padding: 16px 24px;
+  border: 1px solid var(--glass-line);
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.03);
+}
+
+.countdown-line {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: clamp(14px, 1.5vw, 16px);
+  font-weight: 400;
+}
+
+.countdown-line strong {
+  color: #fff;
+  font-size: 1.15em;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-when {
+  margin: 0;
+  color: var(--ink-faint);
+  font-size: 13px;
+}
+
+.thanks-aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 560px;
+  margin: 18px 0 0;
+  padding: 12px 15px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgb(255 255 255 / 0.03);
+  color: var(--sub);
+  font-size: 13.5px;
+  line-height: 1.55;
+  text-align: left;
+}
+
+.thanks-aviso svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+  color: var(--accent-bright);
+}
+
 .steps {
   display: flex;
   flex-direction: column;
   gap: 14px;
   width: 100%;
-  margin: 40px 0 0;
+  margin: 28px 0 0;
   padding: 0;
   list-style: none;
   text-align: left;
