@@ -154,11 +154,6 @@ function ThankYou() {
                 <CalendarIcon withPlus />
                 {copy.calendarCta}
               </a>
-              <div className="calendar-alt">
-                <a href={calendarUrl(lead.id, 'outlook')}>Outlook</a>
-                <span aria-hidden="true">·</span>
-                <a href={calendarUrl(lead.id, 'ics')}>Apple / .ics</a>
-              </div>
             </div>
           </li>
         </ol>

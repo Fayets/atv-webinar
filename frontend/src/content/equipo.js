@@ -13,8 +13,8 @@ export const landing = {
     title: '¿Listo para que tu equipo rinda como A-player?',
     emailHint: 'A este mail te mandamos el recurso luego del evento en vivo.',
     emailHintStrong: 'Si no asistís, no te van a llegar los recursos.',
-    submit: 'Desbloquear recurso',
-    submitting: 'Desbloqueando…',
+    submit: 'Reservá tu lugar',
+    submitting: 'Reservando…',
   },
   gracias: {
     badge: 'REGISTRO CONFIRMADO',

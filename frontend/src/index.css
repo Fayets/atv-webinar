@@ -751,25 +751,6 @@ h1 strong {
   color: #fff;
 }
 
-.calendar-alt {
-  display: flex;
-  justify-content: center;
-  gap: 9px;
-  font-size: 12.5px;
-  color: #8f8f8f;
-}
-
-.calendar-alt a {
-  border-bottom: 1px solid #333;
-  color: #8f8f8f;
-  text-decoration: none;
-}
-
-.calendar-alt a:hover {
-  border-color: #666;
-  color: #fff;
-}
-
 .thanks-back {
   margin-top: 36px;
   color: var(--muted);
