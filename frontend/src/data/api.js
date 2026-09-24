@@ -127,3 +127,7 @@ export async function getMetrics() {
 export async function recordVisit() {
   return request('/visits/', { method: 'POST' })
 }
+
+export async function clearVisits() {
+  return request('/visits/', withSession({ method: 'DELETE' }))
+}

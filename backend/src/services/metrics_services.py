@@ -38,7 +38,10 @@ class MetricsServices:
             result = Lead.select()[:]
             leads = [result[i] for i in range(len(result))]
 
-            visitas = PageView.select().count()
+            result_views = PageView.select()[:]
+            views = [result_views[i] for i in range(len(result_views))]
+            visitas = len(views)
+            visitas_por_dia = Counter(_local_date(view.created_at) for view in views)
             total = len(leads)
             completos = sum(1 for lead in leads if lead.avatar)
             calificados = sum(1 for lead in leads if lead.calificado is True)
@@ -88,6 +91,7 @@ class MetricsServices:
 
         return MetricsResponse(
             visitas=visitas,
+            visitas_por_dia=_breakdown(visitas_por_dia),
             total=total,
             completos=completos,
             solo_datos=total - completos,

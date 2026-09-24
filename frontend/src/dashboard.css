@@ -170,6 +170,22 @@
   font-size: 0.75rem;
 }
 
+.metric-clear {
+  margin-top: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--atv-muted);
+  font: 500 0.72rem/1 var(--sans-ui);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.metric-clear:hover {
+  color: #fff;
+}
+
 .disclaimer {
   margin: 0;
   padding: 12px 16px;
@@ -369,6 +385,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  width: 100%;
 }
 
 .filters input,
@@ -387,8 +404,10 @@
   flex: 1 1 260px;
 }
 
-.table-count {
-  margin: 16px 0 10px;
+.dash .table-count {
+  display: block;
+  width: 100%;
+  margin: 14px 0 10px;
   color: var(--atv-muted);
   font-size: 0.78rem;
 }

@@ -75,6 +75,7 @@ class DailyItem(BaseModel):
 
 class MetricsResponse(BaseModel):
     visitas: int = 0
+    visitas_por_dia: list[BreakdownItem] = Field(default_factory=list)
     total: int
     completos: int
     solo_datos: int

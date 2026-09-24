@@ -9,6 +9,7 @@ import {
   getSession,
   listLeads,
   updateLead,
+  clearVisits,
 } from '../data/api.js'
 import { bottleneckAreas, areaField, avatarOptions, revenueOptions } from '../content/quiz.js'
 import PinGate from './PinGate.jsx'
@@ -54,7 +55,7 @@ function obstaclesOf(lead) {
   return bottleneckAreas.flatMap((area) => lead[areaField[area]] ?? [])
 }
 
-function Stat({ label, value, hint, accent }) {
+function Stat({ label, value, hint, accent, extra }) {
   return (
     <div className="metric-card">
       <div className="metric-head">
@@ -62,6 +63,7 @@ function Stat({ label, value, hint, accent }) {
       </div>
       <div className={`metric-num ${accent ? `metric-${accent}` : ''}`}>{value}</div>
       {hint ? <div className="metric-sub">{hint}</div> : null}
+      {extra}
     </div>
   )
 }
@@ -214,6 +216,17 @@ function Dashboard() {
     [leads, selectedId],
   )
 
+  const visitasEnRango = useMemo(() => {
+    if (!metrics) return 0
+    const days = metrics.visitas_por_dia ?? []
+    if (!fromFilter && !toFilter) return metrics.visitas ?? 0
+    return days.reduce((acc, item) => {
+      if (fromFilter && item.label < fromFilter) return acc
+      if (toFilter && item.label > toFilter) return acc
+      return acc + item.value
+    }, 0)
+  }, [metrics, fromFilter, toFilter])
+
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase()
     return leads.filter((lead) => {
@@ -258,6 +271,16 @@ function Dashboard() {
       }
     })
   }, [leads, search, statusFilter, areaFilter, avatarFilter, revenueFilter, fromFilter, toFilter])
+
+  async function wipeVisits() {
+    if (!window.confirm('¿Borrar todos los ingresos a la web? No se puede deshacer.')) return
+    try {
+      await clearVisits()
+      setMetrics(await getMetrics())
+    } catch (err) {
+      setError(err.message)
+    }
+  }
 
   function openLead(lead) {
     setSelectedId(lead.id)
@@ -384,8 +407,17 @@ function Dashboard() {
         <div className="metrics-grid">
           <Stat
             label="Ingresos a la web"
-            value={metrics.visitas ?? 0}
-            hint="Una visita por sesión"
+            value={visitasEnRango}
+            hint={
+              fromFilter || toFilter
+                ? `${fromFilter || '…'} → ${toFilter || '…'}`
+                : 'Una visita por sesión'
+            }
+            extra={
+              <button type="button" className="metric-clear" onClick={wipeVisits}>
+                Borrar ingresos
+              </button>
+            }
           />
           <Stat label="Total registrados" value={metrics.total} />
           <Stat
