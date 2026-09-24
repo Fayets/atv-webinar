@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { createLead, sendCapiEvent } from '../data/api.js'
 import { landing, countries } from '../content/equipo.js'
-import { steps, bottleneckOptions } from '../content/quiz.js'
+import { steps, bottleneckAreas, bottleneckOptions, areaField } from '../content/quiz.js'
 import { getUtmParams } from '../lib/utm.js'
 import { saveLead } from '../lib/leadSession.js'
 import { url } from '../lib/routes.js'
@@ -14,7 +14,9 @@ const REVENUE_PARA_PIXEL = ['$5k a 10k', '$10k a 30k', '$30k a 50k', '+$50k']
 const EMPTY_CONTACT = { nombre: '', email: '', country: '+54', telefono: '', instagram: '' }
 const EMPTY_QUIZ = {
   avatar: '',
+  areas: [],
   bottleneck_marketing: [],
+  bottleneck_ventas: [],
   revenue: '',
 }
 
@@ -51,7 +53,10 @@ function OptInModal({ open, onClose }) {
   const isLast = stepIndex === steps.length - 1
   const progress = ((stepIndex + 1) / steps.length) * 100
 
-  const bottleneckReady = quiz.bottleneck_marketing.length > 0
+  const selectedAreas = bottleneckAreas.filter((area) => quiz.areas.includes(area))
+  // Hay que elegir al menos un área, y cada área elegida necesita un obstáculo.
+  const bottleneckReady =
+    quiz.areas.length > 0 && quiz.areas.every((area) => quiz[areaField[area]].length > 0)
 
   let canContinue = false
   if (step.type === 'form') {
@@ -76,11 +81,21 @@ function OptInModal({ open, onClose }) {
     setQuiz((current) => ({ ...current, [step.id]: value }))
   }
 
-  function toggleObstacle(option) {
-    setQuiz((current) => ({
-      ...current,
-      bottleneck_marketing: toggle(current.bottleneck_marketing, option),
-    }))
+  function toggleArea(area) {
+    setQuiz((current) => {
+      const estaba = current.areas.includes(area)
+      return {
+        ...current,
+        areas: toggle(current.areas, area),
+        // Al desmarcar un área se descartan sus obstáculos para no mandar basura.
+        [areaField[area]]: estaba ? [] : current[areaField[area]],
+      }
+    })
+  }
+
+  function toggleObstacle(area, option) {
+    const field = areaField[area]
+    setQuiz((current) => ({ ...current, [field]: toggle(current[field], option) }))
   }
 
   async function reportarAMeta(created) {
@@ -128,8 +143,9 @@ function OptInModal({ open, onClose }) {
         instagram: contact.instagram.trim(),
         avatar: quiz.avatar,
         revenue: quiz.revenue,
-        bottleneck_areas: quiz.bottleneck_marketing.length > 0 ? ['Marketing'] : [],
+        bottleneck_areas: quiz.areas,
         bottleneck_marketing: quiz.bottleneck_marketing,
+        bottleneck_ventas: quiz.bottleneck_ventas,
         ...getUtmParams(),
       })
       if (REVENUE_PARA_PIXEL.includes(quiz.revenue)) {
@@ -248,23 +264,38 @@ function OptInModal({ open, onClose }) {
 
           {step.type === 'bottleneck' ? (
             <div className="bottleneck">
-              <div className="sub-block">
-                <h3 className="sub-block-title">Marketing</h3>
-                <div className="check-group">
-                  {bottleneckOptions.Marketing.map((option) => (
-                    <button
-                      type="button"
-                      key={option}
-                      className={`check-opt ${
-                        quiz.bottleneck_marketing.includes(option) ? 'check-selected' : ''
-                      }`}
-                      onClick={() => toggleObstacle(option)}
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
+              <div className="check-group">
+                {bottleneckAreas.map((area) => (
+                  <button
+                    type="button"
+                    key={area}
+                    className={`opt ${quiz.areas.includes(area) ? 'opt-selected' : ''}`}
+                    onClick={() => toggleArea(area)}
+                  >
+                    {area}
+                  </button>
+                ))}
               </div>
+
+              {selectedAreas.map((area) => (
+                <div className="sub-block" key={area}>
+                  <h3 className="sub-block-title">{area}</h3>
+                  <div className="check-group">
+                    {bottleneckOptions[area].map((option) => (
+                      <button
+                        type="button"
+                        key={option}
+                        className={`check-opt ${
+                          quiz[areaField[area]].includes(option) ? 'check-selected' : ''
+                        }`}
+                        onClick={() => toggleObstacle(area, option)}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           ) : null}
         </div>

@@ -33,7 +33,7 @@ export const revenueOptions = [
   '+$50k',
 ]
 
-export const bottleneckAreas = ['Marketing']
+export const bottleneckAreas = ['Marketing', 'Ventas']
 
 export const bottleneckOptions = {
   Marketing: [
@@ -43,10 +43,18 @@ export const bottleneckOptions = {
     'No genero suficientes leads',
     'No tengo métricas claras de mi negocio',
   ],
+  Ventas: [
+    'Tengo un close rate bajo',
+    'Mi tasa de show up rate es baja',
+    'No tengo un proceso de ventas claro',
+    'Tengo una tasa de agenda baja',
+    'No tengo métricas claras de mi negocio',
+  ],
 }
 
 export const areaField = {
   Marketing: 'bottleneck_marketing',
+  Ventas: 'bottleneck_ventas',
 }
 
 export const steps = [
