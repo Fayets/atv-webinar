@@ -6,7 +6,7 @@ export const landing = {
     strong: 'sin ads, sin webinars ni lanzamientos.',
   },
   subheadline:
-    'Descubrí el sistema de contenido que nos hace $200k/mes con 4 reels y 1 video de YouTube por mes, y cómo instalarlo en tu negocio sin subir contenido todos los días.',
+    'Este 28/08 te voy a dar mis sistemas con los que hice +$200k con 4 reels y 1 video de youtube por mes. Te voy a mostrar cómo instalarlo en tu negocio.',
   cta: 'Reservá tu lugar',
   modal: {
     title: '¿Listo para que tu equipo rinda como A-player?',
