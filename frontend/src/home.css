@@ -568,29 +568,100 @@
 }
 
 .home .wide:has(.cases) {
-  max-width: 720px;
+  max-width: 1080px;
 }
 
 .home .cases {
-  margin-top: 36px;
+  margin-top: 28px;
   text-align: center;
 }
 
-.home .case-frame {
-  border-radius: 12px;
-  overflow: hidden;
+.home .case-arc {
+  position: relative;
+  height: 280px;
+  perspective: 1400px;
 }
 
-.home .case-frame img {
+.home .case-card {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  width: 520px;
+  height: 124px;
+  padding: 0;
+  border: 1px solid rgb(255 210 214 / 0.16);
+  background: #111;
+  cursor: pointer;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow:
+    0 0 16px 1px rgb(227 60 70 / 0.1),
+    0 0 36px 6px rgb(180 40 55 / 0.07),
+    0 14px 28px rgb(0 0 0 / 0.4);
+  transform: translate(-50%, -50%) translateX(calc(var(--offset) * 470px))
+    translateY(calc(abs(var(--offset)) * -22px)) rotateY(calc(var(--offset) * -38deg))
+    scale(calc(1 - abs(var(--offset)) * 0.18));
+  z-index: calc(8 - abs(var(--offset)));
+  opacity: calc(1 - max(0, abs(var(--offset)) - 1) * 0.72);
+  filter: blur(calc(abs(var(--offset)) * 3.5px));
+  transition:
+    transform 0.75s ease,
+    opacity 0.75s ease,
+    border-color 0.75s ease,
+    box-shadow 0.75s ease,
+    filter 0.75s ease;
+}
+
+.home .case-card.on {
+  border-color: rgb(255 196 200 / 0.28);
+  box-shadow:
+    0 0 18px 2px rgb(227 50 62 / 0.16),
+    0 0 46px 10px rgb(190 36 52 / 0.1),
+    0 18px 36px rgb(0 0 0 / 0.48);
+}
+
+.home .case-card img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  pointer-events: none;
+}
+
+.home .case-copy {
+  animation: case-in 0.6s ease;
 }
 
 .home .case-name {
   margin: 14px 0 0;
   font-size: 20px;
   font-weight: 700;
+}
+
+.home .case-role,
+.home .case-result {
+  margin: 6px auto 0;
+  max-width: 460px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.home .case-result {
+  color: var(--text);
+  font-weight: 600;
+}
+
+@keyframes case-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .home .case-dots {
@@ -631,10 +702,17 @@
   letter-spacing: -0.02em;
 }
 
-.home .cases .avatar-copy p {
-  margin: 0 auto;
-  max-width: 520px;
-  color: var(--muted);
+.home .cases .avatar-copy ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.home .cases .avatar-copy li {
+  color: var(--text);
+  font-size: 18px;
 }
 
 .home .helped {
@@ -835,13 +913,19 @@
 }
 
 .home .avatar {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 3 / 4;
   border-radius: 12px;
-  background: linear-gradient(160deg, #2a0507, #0d0d0d);
+  overflow: hidden;
+  background: #0d0d0d;
   border: 1px solid rgb(227 20 27 / 0.35);
-  display: grid;
-  place-items: center;
-  color: var(--red);
+}
+
+.home .avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
 }
 
 .home .host h3 {
@@ -973,6 +1057,10 @@
   margin: 0 auto;
 }
 
+.home .close p + p {
+  margin-top: 16px;
+}
+
 .home .close .part-label {
   justify-content: center;
 }
@@ -1031,6 +1119,24 @@
 
   .home h2 {
     font-size: 26px;
+  }
+
+  .home {
+    overflow-x: clip;
+  }
+
+  .home .case-arc {
+    height: 132px;
+    overflow: hidden;
+    perspective: none;
+  }
+
+  .home .case-card {
+    width: calc(100% - 8px);
+    height: 86px;
+    transform: translate(-50%, -50%) translateX(calc(var(--offset) * 88%))
+      translateY(0) rotateY(0)
+      scale(calc(1 - abs(var(--offset)) * 0.06));
   }
 
   .home .win {

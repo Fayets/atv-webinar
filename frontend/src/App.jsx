@@ -3,10 +3,12 @@ import { recordVisit } from './data/api.js'
 import { visitaNueva } from './lib/visita.js'
 import OptInModal from './components/OptInModal.jsx'
 import atvMark from './assets/atv-mark.jpg'
-import igSeba from './assets/ig-seba.jpg'
+import igSeba from './assets/ig-seba.png'
 import igJuano from './assets/ig-juano.jpg'
-import igFacu from './assets/ig-facu.jpg'
+import igFacu from './assets/ig-facu.png'
+import igVirola from './assets/ig-virola.png'
 import efectoCompuesto from './assets/efecto-compuesto.jpg'
+import founder from './assets/founder.jpg'
 import './home.css'
 
 const CUENTA_HASTA = new Date('2026-09-28T18:00:00-03:00').getTime()
@@ -27,10 +29,42 @@ function formatCountdown(now) {
 }
 
 const CASOS = [
-  { src: igSeba, name: 'Seba Nájera', alt: 'Instagram de Seba Nájera' },
-  { src: igJuano, name: 'Juano', alt: 'Instagram de Juano' },
-  { src: igFacu, name: 'Facu Martínez', alt: 'Instagram de Facu Martínez' },
+  {
+    src: igFacu,
+    name: 'Facundo Martínez',
+    alt: 'Instagram de Facundo Martínez',
+    role: 'Experto en infoproductos',
+    result: 'Ingreso haciendo 1k/mes y en 30 días escaló a 30k/mes',
+  },
+  {
+    src: igJuano,
+    name: 'Juano Baquero',
+    alt: 'Instagram de Juano Baquero',
+    role: 'Infoproductor · Nicho Automatizaciones de YouTube',
+    result: 'Ingreso haciendo 30k/mes y en 60 días escaló a 230k/mes',
+  },
+  {
+    src: igSeba,
+    name: 'Sebas Nájera',
+    alt: 'Instagram de Sebas Nájera',
+    role: 'Infoproductor · Nicho Automatizaciones de YouTube',
+    result: 'Ingreso haciendo 20k/mes y en 60 días escaló a 70k/mes',
+  },
+  {
+    src: igVirola,
+    name: 'Juan Antonio Virola',
+    alt: 'Instagram de Juan Antonio Virola',
+    role: 'Dueño de agencia',
+    result: 'Ingreso haciendo 10k/mes y logró escalar a 100k/mes',
+  },
 ]
+
+function desplazamiento(index, activo, total) {
+  let diff = index - activo
+  if (diff > total / 2) diff -= total
+  if (diff < -total / 2) diff += total
+  return diff
+}
 
 function App() {
   const [countdown, setCountdown] = useState(() => formatCountdown(Date.now()))
@@ -243,10 +277,28 @@ function App() {
             ¿A quiénes <span className="serif">ayudamos?</span>
           </h2>
           <div className="cases">
-            <div className="case-frame">
-              <img src={CASOS[caso].src} alt={CASOS[caso].alt} />
+            <div className="case-arc">
+              {CASOS.map((item, index) => {
+                const offset = desplazamiento(index, caso, CASOS.length)
+                return (
+                  <button
+                    key={item.name}
+                    type="button"
+                    className={offset === 0 ? 'case-card on' : 'case-card'}
+                    style={{ '--offset': offset }}
+                    aria-label={item.name}
+                    onClick={() => setCaso(index)}
+                  >
+                    <img src={item.src} alt="" />
+                  </button>
+                )
+              })}
             </div>
-            <p className="case-name">{CASOS[caso].name}</p>
+            <div key={caso} className="case-copy">
+              <p className="case-name">{CASOS[caso].name}</p>
+              {CASOS[caso].role && <p className="case-role">{CASOS[caso].role}</p>}
+              {CASOS[caso].result && <p className="case-result">{CASOS[caso].result}</p>}
+            </div>
             <div className="case-dots">
               {CASOS.map((item, index) => (
                 <button
@@ -258,11 +310,6 @@ function App() {
                 />
               ))}
             </div>
-            <div className="avatar-copy">
-              <span className="mono">El avatar</span>
-              <h3>A quién le hablamos</h3>
-              <p>Acá va la descripción del avatar.</p>
-            </div>
           </div>
         </div>
       </section>
@@ -271,7 +318,7 @@ function App() {
         <div className="wide">
           <div className="host">
             <div className="avatar">
-              <span className="mono">Foto</span>
+              <img src={founder} alt="" />
             </div>
             <div>
               <h3>Nombre del host</h3>
@@ -311,12 +358,16 @@ function App() {
         <div className="wide">
           <div className="part-label mono">El cierre</div>
           <h2>
-            Los que se mueven primero no solo ganan.{' '}
-            <span className="serif">Se vuelven la referencia.</span>
+            Tu negocio no necesita más de vos.{' '}
+            <span className="serif">Necesita más apalancamiento.</span>
           </h2>
           <p>
-            La ventana es corta. Estos 90 minutos son la forma más clara de ver cómo se ve tu
-            negocio después del cambio.
+            Ya sabés lo que pasa cuando marketing, ventas, producto y sistemas funcionan por
+            separado.
+          </p>
+          <p>
+            Ahora descubrí cómo construir una infraestructura donde cada área alimente a las demás
+            y pocas acciones generen muchos más resultados.
           </p>
           <button type="button" className="cta" onClick={irAlOptin}>
             Reservar mi lugar <span>→</span>
