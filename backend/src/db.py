@@ -14,6 +14,7 @@ DB_SCHEMA = config("DB_SCHEMA", default="webinar")
 # En Postgres la tabla va calificada por esquema, como en el resto del ecosistema.
 # En SQLite se deja el nombre que Pony ya venía usando para no perder la base local.
 LEAD_TABLE = (DB_SCHEMA, "leads") if PROVIDER == "postgres" else "Lead"
+PAGE_VIEW_TABLE = (DB_SCHEMA, "page_views") if PROVIDER == "postgres" else "PageView"
 
 # Columnas agregadas después del primer release. Pony crea tablas nuevas pero no
 # altera las existentes, así que las sumamos a mano antes de mapear.

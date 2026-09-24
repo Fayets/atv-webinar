@@ -4,7 +4,7 @@ from zoneinfo import ZoneInfo
 
 from pony.orm import db_session
 
-from src.models import Lead
+from src.models import Lead, PageView
 from src.schemas import BreakdownItem, DailyItem, MetricsResponse
 from src.services.leads_services import _load
 
@@ -38,6 +38,7 @@ class MetricsServices:
             result = Lead.select()[:]
             leads = [result[i] for i in range(len(result))]
 
+            visitas = PageView.select().count()
             total = len(leads)
             completos = sum(1 for lead in leads if lead.avatar)
             calificados = sum(1 for lead in leads if lead.calificado is True)
@@ -86,6 +87,7 @@ class MetricsServices:
             )
 
         return MetricsResponse(
+            visitas=visitas,
             total=total,
             completos=completos,
             solo_datos=total - completos,

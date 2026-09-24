@@ -382,6 +382,11 @@ function Dashboard() {
 
       {metrics ? (
         <div className="metrics-grid">
+          <Stat
+            label="Ingresos a la web"
+            value={metrics.visitas ?? 0}
+            hint="Una visita por sesión"
+          />
           <Stat label="Total registrados" value={metrics.total} />
           <Stat
             label="Completaron el quiz"

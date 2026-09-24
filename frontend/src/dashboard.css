@@ -463,12 +463,15 @@
   padding: 3px 9px;
   border: 1px solid transparent;
   border-radius: 999px;
+  background: transparent;
   font: 600 11px/1.5 var(--sans-ui);
   cursor: default;
 }
 
 button.pill {
   cursor: pointer;
+  font: inherit;
+  appearance: none;
 }
 
 .pill-ok {
@@ -497,6 +500,7 @@ button.pill {
 
 .pill-idle {
   border-color: rgb(255 255 255 / 0.1);
+  background: rgb(255 255 255 / 0.04);
   color: var(--atv-muted);
 }
 

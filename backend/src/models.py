@@ -2,7 +2,7 @@ from datetime import datetime
 
 from pony.orm import Optional, PrimaryKey, Required
 
-from src.db import LEAD_TABLE, db
+from src.db import LEAD_TABLE, PAGE_VIEW_TABLE, db
 
 
 class Lead(db.Entity):
@@ -41,4 +41,13 @@ class Lead(db.Entity):
     utm_source = Optional(str, nullable=True)
     utm_medium = Optional(str, nullable=True)
     utm_campaign = Optional(str, nullable=True)
+    created_at = Required(datetime, default=datetime.utcnow)
+
+
+class PageView(db.Entity):
+    """Un ingreso a la landing. Se cuenta una vez por sesión del navegador."""
+
+    _table_ = PAGE_VIEW_TABLE
+
+    id = PrimaryKey(int, auto=True)
     created_at = Required(datetime, default=datetime.utcnow)

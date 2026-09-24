@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import atvLogo from './assets/atv-logo.png'
-import { getVsl, getWebinar } from './data/api.js'
+import { getVsl, getWebinar, recordVisit } from './data/api.js'
 import { landing } from './content/equipo.js'
 import CtaButton from './components/CtaButton.jsx'
 import OptInModal from './components/OptInModal.jsx'
@@ -72,6 +72,17 @@ function App() {
   const [vsl, setVsl] = useState(FALLBACK_VSL)
   const [webinarDate, setWebinarDate] = useState(null)
   const [modalOpen, setModalOpen] = useState(false)
+
+  useEffect(() => {
+    const key = 'atv_visit_counted'
+    try {
+      if (sessionStorage.getItem(key)) return
+      sessionStorage.setItem(key, '1')
+    } catch {
+      /* sin storage igual intentamos contar */
+    }
+    recordVisit().catch(() => {})
+  }, [])
 
   useEffect(() => {
     getVsl()

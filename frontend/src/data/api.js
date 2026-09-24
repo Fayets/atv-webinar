@@ -123,3 +123,7 @@ export async function deleteLead(leadId) {
 export async function getMetrics() {
   return request('/metrics/', withSession())
 }
+
+export async function recordVisit() {
+  return request('/visits/', { method: 'POST' })
+}
