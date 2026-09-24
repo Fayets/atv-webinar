@@ -13,8 +13,9 @@ import igCris from './assets/ig-cris.jpg'
 import igSanti from './assets/ig-santi.jpg'
 import igNico from './assets/ig-nico.jpg'
 import igPatric from './assets/ig-patric.png'
-import efectoCompuesto from './assets/efecto-compuesto.jpg'
+import igSebastian from './assets/ig-sebastian.jpg'
 import founder from './assets/founder.jpg'
+import CompoundDiagram from './components/CompoundDiagram.jsx'
 import './home.css'
 
 const CUENTA_HASTA = new Date('2026-09-28T18:00:00-03:00').getTime()
@@ -118,6 +119,13 @@ const CASOS = [
     alt: 'Instagram de Patric Hlosta',
     role: 'Experto en infoproductos',
     result: 'Logró escalar su cliente a +500k/mes',
+  },
+  {
+    src: igSebastian,
+    name: 'Sebastián Betancourt',
+    alt: 'Instagram de Sebastián Betancourt',
+    role: 'Dueño de negocio',
+    result: 'En los últimos 60 días logró escalar su negocio a +$450K/mes USD.',
   },
 ]
 
@@ -385,9 +393,9 @@ function App() {
             </div>
             <div>
               <span className="mono role">Founder · Aumenta tu valor</span>
-              <h3>Juan Cruz Carrizo</h3>
+              <h3>Juan Carrizo</h3>
               <p>
-                Escaló su propio negocio de infoproductos a +$190K/mes con un equipo de solo 5
+                Escaló su propio negocio de infoproductos a +$200K/mes con un equipo de solo 5
                 personas, sin depender de lanzamientos ni contenido diario.
               </p>
               <p>
@@ -411,11 +419,7 @@ function App() {
             Cuando las áreas de tu negocio se conectan,{' '}
             <span className="serif">cada acción genera más resultados.</span>
           </h2>
-          <img
-            className="compound"
-            src={efectoCompuesto}
-            alt="Marketing, ventas, producto y sistemas conectados"
-          />
+          <CompoundDiagram />
           <p>
             Marketing atrae oportunidades. Ventas convierte y devuelve información. Producto entrega
             resultados que fortalecen tu marketing. Y Sistemas mide todo para que cada área pueda

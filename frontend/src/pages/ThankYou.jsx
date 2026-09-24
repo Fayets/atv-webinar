@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import atvLogo from '../assets/atv-logo.png'
 import { calendarUrl, getWebinar, whatsappUrl } from '../data/api.js'
 import { readLead } from '../lib/leadSession.js'
 import { landing } from '../content/equipo.js'
@@ -38,46 +37,9 @@ function formatWhen(startsAt, endsAt) {
 
   return {
     day: day.charAt(0).toUpperCase() + day.slice(1),
+    hora: time,
     time: endTime ? `${time} a ${endTime} hs (Argentina)` : `${time} hs (Argentina)`,
   }
-}
-
-function WhatsappIcon() {
-  return (
-    <svg
-      width="19"
-      height="19"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.9-.9L3 20.5l1.6-4.9A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z" />
-    </svg>
-  )
-}
-
-function CalendarIcon({ size = 19, withPlus = false }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <rect x="3" y="5" width="18" height="16" rx="3" />
-      <path d="M8 3v4M16 3v4M3 11h18" />
-      {withPlus ? <path d="M12 15v4M10 17h4" /> : null}
-    </svg>
-  )
 }
 
 /** Días, horas y minutos que faltan. null si ya pasó o no hay fecha. */
@@ -95,31 +57,10 @@ function faltan(startsAt, ahora) {
   }
 }
 
-function Countdown({ restante, cuando, sufijo }) {
-  return (
-    <div className="countdown">
-      <p className="countdown-line">
-        {restante ? (
-          <>
-            Faltan <strong>{restante.dias}</strong> días <strong>{restante.horas}</strong> horas{' '}
-            <strong>{restante.minutos}</strong> minutos {sufijo}
-          </>
-        ) : (
-          <strong>El evento ya empezó</strong>
-        )}
-      </p>
-      {cuando ? (
-        <p className="countdown-when">
-          {cuando.day} · {cuando.time}
-        </p>
-      ) : null}
-    </div>
-  )
-}
-
 function ThankYou() {
   const [lead] = useState(readLead)
   const [webinar, setWebinar] = useState(null)
+  const [hechos, setHechos] = useState({ grupo: false, agenda: false })
   const [ahora, setAhora] = useState(() => Date.now())
   const copy = landing.gracias
 
@@ -150,101 +91,121 @@ function ThankYou() {
 
   const when = webinar ? formatWhen(webinar.starts_at, webinar.ends_at) : null
   const restante = faltan(webinar?.starts_at, ahora)
+  const [headline, ...restoTitulo] = copy.title.split('. ')
+  const bajadaTitulo = restoTitulo.join('. ')
+
+  const cuandoFalta =
+    hechos.grupo && !hechos.agenda
+      ? 'Te falta agendar el webinar'
+      : !hechos.grupo && hechos.agenda
+        ? 'Te falta entrar al grupo de WhatsApp'
+        : null
 
   return (
-    <div className="shell">
-      <div className="atmosphere" aria-hidden="true" />
-      <div className="grain" aria-hidden="true" />
-
-      <main className="thanks">
-        <img className="logo" src={atvLogo} alt="Aumenta Tu Valor" />
-
-        <span className="thanks-badge">{copy.badge}</span>
-        <h1 className="thanks-title">{copy.title}</h1>
-        <p className="thanks-sub">
+    <div className="shell ty-page">
+      <header className={cuandoFalta ? 'ty-bar pending' : 'ty-bar'}>
+        <span>
+          <i className="ty-dot" aria-hidden="true" />
+          {cuandoFalta || copy.badge}
+        </span>
+        <span>
           {restante
-            ? `${restante.dias >= 1 ? `${copy.subtitleAntes} ${restante.dias} días` : 'Hoy'} `
-            : ''}
-          {copy.subtitleDespues}
-        </p>
+            ? `Faltan ${restante.dias}d ${String(restante.horas).padStart(2, '0')}h ${String(restante.minutos).padStart(2, '0')}m`
+            : when?.day || 'Lunes 28 de septiembre'}
+        </span>
+      </header>
 
-        {webinar ? (
-          <Countdown restante={restante} cuando={when} sufijo={copy.countdownSufijo} />
-        ) : null}
+      <main className="ty">
+        <div className="ty-hero">
+          <div className="ty-check" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+          </div>
+          <h1>{headline}.</h1>
+          {bajadaTitulo ? <p className="ty-lead">{bajadaTitulo}</p> : null}
+          <p className="ty-sub">
+            {restante
+              ? `${restante.dias >= 1 ? `${copy.subtitleAntes} ${restante.dias} días` : 'Hoy'} `
+              : ''}
+            {copy.subtitleDespues}
+          </p>
+        </div>
 
-        <p className="thanks-aviso">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <circle cx="12" cy="12" r="9" />
-            <path d="M12 8h.01M11 12h1v4h1" />
-          </svg>
-          {copy.aviso}
-        </p>
+        <dl className="ty-facts">
+          <div>
+            <dt>Fecha</dt>
+            <dd>{when?.day || 'Lunes 28 de septiembre'}</dd>
+          </div>
+          <div>
+            <dt>Hora</dt>
+            <dd>{when ? `${when.hora} ARG` : '18h ARG'}</dd>
+          </div>
+          <div>
+            <dt>Formato</dt>
+            <dd>En vivo por Zoom</dd>
+          </div>
+          <div>
+            <dt>Duración</dt>
+            <dd>90 minutos</dd>
+          </div>
+        </dl>
 
-        <ol className="steps">
-          <li className="step-row">
-            <span className="step-num step-num-wa" aria-hidden="true">
-              1
-            </span>
-            <div className="step-main">
-              <span className="step-eyebrow">{copy.whatsappStep}</span>
-              <h2 className="step-title">{copy.whatsappTitle}</h2>
-            </div>
-            <div className="step-action">
-              <a
-                className="step-btn step-btn-wa"
-                href={whatsappUrl(lead.id)}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackOps('whatsapp')}
-              >
-                <WhatsappIcon />
-                {copy.whatsappCta}
-              </a>
-            </div>
-          </li>
+        <section className="ty-next">
+          <p className="ty-kicker">Dos pasos. Un minuto</p>
+          <h2>
+            Hacé esto <em>antes de cerrar</em> la pestaña.
+          </h2>
+          <p className="ty-next-sub">{copy.aviso}</p>
 
-          <li className="step-row">
-            <span className="step-num step-num-cal" aria-hidden="true">
-              2
-            </span>
-            <div className="step-main">
-              <span className="step-eyebrow">{copy.calendarStep}</span>
-              <h2 className="step-title">{copy.calendarTitle}</h2>
-              {when ? (
-                <p className="step-when">
-                  <CalendarIcon size={16} />
-                  <strong>{when.day}</strong>
-                  <span className="step-dot" aria-hidden="true" />
-                  <span>{when.time}</span>
-                </p>
-              ) : (
-                <p className="step-desc">{copy.calendarFallback}</p>
-              )}
-            </div>
-            <div className="step-action">
-              <a
-                className="step-btn step-btn-cal"
-                href={calendarUrl(lead.id, 'google')}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <CalendarIcon withPlus />
-                {copy.calendarCta}
-              </a>
-            </div>
-          </li>
-        </ol>
+          <ol className="ty-cards">
+            <li className={hechos.grupo ? 'ty-card done' : 'ty-card'}>
+              <div className="ty-card-row">
+                <span className="ty-num">01</span>
+                <div>
+                  <h3>{copy.whatsappTitle}</h3>
+                </div>
+                <a
+                  className="ty-btn"
+                  href={whatsappUrl(lead.id)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => {
+                    setHechos((actual) => ({ ...actual, grupo: true }))
+                    trackOps('whatsapp')
+                  }}
+                >
+                  {copy.whatsappCta}
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </li>
 
+            <li className={hechos.agenda ? 'ty-card done' : 'ty-card'}>
+              <div className="ty-card-row">
+                <span className="ty-num">02</span>
+                <div>
+                  <h3>{copy.calendarTitle}</h3>
+                  <p>
+                    {when
+                      ? `${when.day} · ${when.time}`
+                      : copy.calendarFallback}
+                  </p>
+                </div>
+                <a
+                  className="ty-btn ty-btn-ghost"
+                  href={calendarUrl(lead.id, 'google')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setHechos((actual) => ({ ...actual, agenda: true }))}
+                >
+                  {copy.calendarCta}
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </li>
+          </ol>
+        </section>
       </main>
 
       <footer className="site-footer">
