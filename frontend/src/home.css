@@ -526,7 +526,7 @@
   grid-template-columns: 56px 1fr;
   gap: 18px;
   background: var(--card);
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: 14px;
   padding: 26px;
 }
@@ -901,23 +901,38 @@
   line-height: 1.6;
 }
 
+.home .host-label {
+  margin-bottom: 28px;
+}
+
+.home .host-label::before {
+  content: '';
+  height: 1px;
+  width: 36px;
+  background: var(--red);
+}
+
+.home .host-label::after {
+  display: none;
+}
+
 .home .host {
   display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 36px;
+  grid-template-columns: 220px 1fr;
+  gap: 40px;
   align-items: start;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 36px;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
 }
 
 .home .avatar {
-  aspect-ratio: 3 / 4;
-  border-radius: 12px;
+  aspect-ratio: 4 / 5;
+  border-radius: 16px;
   overflow: hidden;
   background: #0d0d0d;
-  border: 1px solid rgb(227 20 27 / 0.35);
+  border: 0;
 }
 
 .home .avatar img {
@@ -929,20 +944,27 @@
 }
 
 .home .host h3 {
-  font-size: 26px;
-  letter-spacing: -0.02em;
+  margin: 8px 0 16px;
+  font-size: clamp(32px, 4vw, 44px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
 }
 
 .home .host .role {
   color: var(--red);
-  margin: 6px 0 18px;
   display: block;
+  margin: 4px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.16em;
 }
 
 .home .host p {
-  color: #cfcfcf;
-  font-size: 16px;
-  margin-bottom: 14px;
+  color: var(--muted);
+  max-width: 680px;
+  font-size: 17px;
+  line-height: 1.65;
+  margin: 0 0 14px;
 }
 
 .home .metrics {
@@ -1179,11 +1201,11 @@
 
   .home .host {
     grid-template-columns: 1fr;
-    padding: 24px;
+    gap: 20px;
   }
 
   .home .avatar {
-    max-width: 200px;
+    max-width: 220px;
   }
 
   .home .metrics {

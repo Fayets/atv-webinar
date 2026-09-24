@@ -7,6 +7,12 @@ import igSeba from './assets/ig-seba.png'
 import igJuano from './assets/ig-juano.jpg'
 import igFacu from './assets/ig-facu.png'
 import igVirola from './assets/ig-virola.png'
+import igJorge from './assets/ig-jorge.png'
+import igValentino from './assets/ig-valentino.jpg'
+import igCris from './assets/ig-cris.jpg'
+import igSanti from './assets/ig-santi.jpg'
+import igNico from './assets/ig-nico.jpg'
+import igPatric from './assets/ig-patric.png'
 import efectoCompuesto from './assets/efecto-compuesto.jpg'
 import founder from './assets/founder.jpg'
 import './home.css'
@@ -30,11 +36,18 @@ function formatCountdown(now) {
 
 const CASOS = [
   {
-    src: igFacu,
-    name: 'Facundo Martínez',
-    alt: 'Instagram de Facundo Martínez',
-    role: 'Experto en infoproductos',
-    result: 'Ingreso haciendo 1k/mes y en 30 días escaló a 30k/mes',
+    src: igSeba,
+    name: 'Sebas Nájera',
+    alt: 'Instagram de Sebas Nájera',
+    role: 'Infoproductor · Nicho Automatizaciones de YouTube',
+    result: 'Ingreso haciendo 20k/mes y en 60 días escaló a 70k/mes',
+  },
+  {
+    src: igCris,
+    name: 'Cris Gonzalez',
+    alt: 'Instagram de Cris Gonzalez',
+    role: 'Experto en infoproducto de Sebas Nájera (@soysebasnajera)',
+    result: 'De 20k/mes a 70k/mes en 60 días',
   },
   {
     src: igJuano,
@@ -44,11 +57,26 @@ const CASOS = [
     result: 'Ingreso haciendo 30k/mes y en 60 días escaló a 230k/mes',
   },
   {
-    src: igSeba,
-    name: 'Sebas Nájera',
-    alt: 'Instagram de Sebas Nájera',
-    role: 'Infoproductor · Nicho Automatizaciones de YouTube',
-    result: 'Ingreso haciendo 20k/mes y en 60 días escaló a 70k/mes',
+    src: igJorge,
+    name: 'Jorge Quesada',
+    alt: 'Instagram de Jorge Quesada',
+    role: 'Experto en infoproducto de Juano Baquero (@juano.yt)',
+    result: 'De 20k/mes a 70k/mes en 60 días',
+  },
+  {
+    src: igSanti,
+    name: 'Santiago Molina',
+    alt: 'Instagram de Santiago Molina',
+    role: 'Experto en infoproducto de Juano Baquero (@juano.yt)',
+    result:
+      'Escaló el negocio a +$200K/mes y hoy se lleva +$17K USD netos mensuales para su bolsillo.',
+  },
+  {
+    src: igFacu,
+    name: 'Facundo Martínez',
+    alt: 'Instagram de Facundo Martínez',
+    role: 'Experto en infoproductos',
+    result: 'Ingreso haciendo 1k/mes y en 30 días escaló a 30k/mes',
   },
   {
     src: igVirola,
@@ -56,6 +84,27 @@ const CASOS = [
     alt: 'Instagram de Juan Antonio Virola',
     role: 'Dueño de agencia',
     result: 'Ingreso haciendo 10k/mes y logró escalar a 100k/mes',
+  },
+  {
+    src: igValentino,
+    name: 'Valentino Babino',
+    alt: 'Instagram de Valentino Babino',
+    role: 'Experto en infoproductos',
+    result: 'Pasó de estar estancado en 5k/mes a 30k/mes',
+  },
+  {
+    src: igNico,
+    name: 'Nicolas Martin',
+    alt: 'Instagram de Nicolas Martin',
+    role: 'Experto en infoproductos',
+    result: 'Pasó de estar en 18k/mes a 31k/mes en 60 días',
+  },
+  {
+    src: igPatric,
+    name: 'Patric Hlosta',
+    alt: 'Instagram de Patric Hlosta',
+    role: 'Experto en infoproductos',
+    result: 'Logró escalar su cliente a +500k/mes',
   },
 ]
 
@@ -274,7 +323,7 @@ function App() {
         <div className="wide body">
           <div className="part-label mono">Parte IV · A quiénes ayudamos</div>
           <h2>
-            ¿A quiénes <span className="serif">ayudamos?</span>
+            Casos de éxito <span className="serif">(últimos 30 días)</span>
           </h2>
           <div className="cases">
             <div className="case-arc">
@@ -316,13 +365,14 @@ function App() {
 
       <section className="part">
         <div className="wide">
+          <div className="part-label mono host-label">Tu anfitrión</div>
           <div className="host">
             <div className="avatar">
               <img src={founder} alt="" />
             </div>
             <div>
-              <h3>Nombre del host</h3>
               <span className="mono role">Fundador · Tu marca</span>
+              <h3>Nombre del host</h3>
               <p>Bio breve: experiencia, el techo que encontró, cómo lo resolvió y el resultado.</p>
               <p>
                 Prueba social: cantidad de clientes, rubros en los que se aplicó y resultados
