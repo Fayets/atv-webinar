@@ -121,7 +121,6 @@ function ThankYou() {
             <div className="step-main">
               <span className="step-eyebrow">{copy.whatsappStep}</span>
               <h2 className="step-title">{copy.whatsappTitle}</h2>
-              <p className="step-desc">{copy.whatsappBody}</p>
             </div>
             <div className="step-action">
               <a className="step-btn step-btn-wa" href={whatsappUrl(lead.id)}>

@@ -22,8 +22,6 @@ export const landing = {
     subtitle: 'Te quedan dos pasos. Los dos toman menos de un minuto.',
     whatsappStep: 'Paso 1',
     whatsappTitle: 'Entrá al grupo de WhatsApp',
-    whatsappBody:
-      'Ahí se comparte el acceso al entrenamiento y los avisos antes de cada sesión en vivo.',
     whatsappCta: 'Entrar al grupo',
     calendarStep: 'Paso 2',
     calendarTitle: 'Agendá el webinar',
