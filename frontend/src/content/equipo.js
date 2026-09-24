@@ -2,11 +2,11 @@ export const landing = {
   avatar: 'equipo',
   title: 'Sistema de equipo A-players',
   headline: {
-    light: 'Instalá el sistema de equipo',
-    strong: 'A-players detrás de $200k/mes',
+    light: 'Instalá el sistema que lleva a tu negocio',
+    strong: 'de $5k a +$100k/mes con 4 reels y 1 por mes.',
   },
   subheadline:
-    'Descubrí cómo un equipo A-player factura $170k–$200k/mes con 4 reels. Sin volumen, sin webinars y sin lanzamientos.',
+    'Descubrí cómo instalamos el sistema de equipo A-players que factura $170k-$200k/mes sin volumen de contenido, sin webinars, sin ads y sin lanzamientos. Y cómo el mismo sistema llevó a Juano de $20k a $220k en 60 días, a Cris de $10k a $70k en 30 días, y a Seba de $100k a $450k en 90 días.',
   cta: 'Quiero acceso ahora',
   modal: {
     title: '¿Listo para que tu equipo rinda como A-player?',

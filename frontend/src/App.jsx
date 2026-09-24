@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react'
 import atvLogo from './assets/atv-logo.png'
-import { getVsl, getWebinar, recordVisit } from './data/api.js'
+import sistema from './assets/sistema.jpg'
+import { getWebinar, recordVisit } from './data/api.js'
 import { landing } from './content/equipo.js'
 import CtaButton from './components/CtaButton.jsx'
 import OptInModal from './components/OptInModal.jsx'
 
 const AR = 'America/Argentina/Buenos_Aires'
-
-const FALLBACK_VSL = {
-  vimeo_id: '1210850489',
-  embed_src: 'https://player.vimeo.com/video/1210850489?title=0&byline=0&portrait=0',
-}
 
 function formatWebinarDate(startsAt) {
   if (!startsAt) return null
@@ -69,7 +65,6 @@ function ArrowIcon() {
 }
 
 function App() {
-  const [vsl, setVsl] = useState(FALLBACK_VSL)
   const [webinarDate, setWebinarDate] = useState(null)
   const [modalOpen, setModalOpen] = useState(false)
 
@@ -82,17 +77,6 @@ function App() {
       /* sin storage igual intentamos contar */
     }
     recordVisit().catch(() => {})
-  }, [])
-
-  useEffect(() => {
-    getVsl()
-      .then((config) => {
-        const src = config.embed_src.includes('?')
-          ? `${config.embed_src}&title=0&byline=0&portrait=0`
-          : `${config.embed_src}?title=0&byline=0&portrait=0`
-        setVsl({ ...config, embed_src: src })
-      })
-      .catch(() => setVsl(FALLBACK_VSL))
   }, [])
 
   useEffect(() => {
@@ -126,14 +110,9 @@ function App() {
 
         <div className="vsl">
           <div className="vsl-glass">
-            <div className="vsl-frame">
-              <iframe
-                title="VSL equipo A-players"
-                src={vsl.embed_src}
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
+            <button type="button" className="vsl-shot" onClick={openModal}>
+              <img src={sistema} alt="Mapa del sistema de equipo A-players" />
+            </button>
           </div>
         </div>
 
