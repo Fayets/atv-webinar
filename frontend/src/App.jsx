@@ -384,12 +384,20 @@ function App() {
               <img src={founder} alt="" />
             </div>
             <div>
-              <span className="mono role">Fundador · Tu marca</span>
-              <h3>Nombre del host</h3>
-              <p>Bio breve: experiencia, el techo que encontró, cómo lo resolvió y el resultado.</p>
+              <span className="mono role">Founder · Aumenta tu valor</span>
+              <h3>Juan Cruz Carrizo</h3>
               <p>
-                Prueba social: cantidad de clientes, rubros en los que se aplicó y resultados
-                concretos.
+                Escaló su propio negocio de infoproductos a +$190K/mes con un equipo de solo 5
+                personas, sin depender de lanzamientos ni contenido diario.
+              </p>
+              <p>
+                Durante los últimos 2 años, construyó una infraestructura de marketing, ventas,
+                producto y sistemas que hoy aplica dentro de sus negocios y en los negocios de sus
+                clientes.
+              </p>
+              <p>
+                El 28 de septiembre te va a mostrar la forma en la cual vos podés copiar y pegar
+                este sistema.
               </p>
             </div>
           </div>
