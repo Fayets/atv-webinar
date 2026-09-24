@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import atvLogo from '../assets/atv-logo.png'
 import {
   clearPin,
   deleteLead,
@@ -55,18 +56,20 @@ function obstaclesOf(lead) {
 
 function Stat({ label, value, hint, accent }) {
   return (
-    <div className={`stat ${accent ? `stat-${accent}` : ''}`}>
-      <span className="stat-label">{label}</span>
-      <strong className="stat-value">{value}</strong>
-      {hint ? <span className="stat-hint">{hint}</span> : null}
+    <div className="metric-card">
+      <div className="metric-head">
+        <span className="metric-label">{label}</span>
+      </div>
+      <div className={`metric-num ${accent ? `metric-${accent}` : ''}`}>{value}</div>
+      {hint ? <div className="metric-sub">{hint}</div> : null}
     </div>
   )
 }
 
 function HBar({ label, value, max }) {
-  const width = max > 0 ? Math.max((value / max) * 100, 2) : 0
+  const width = max > 0 ? Math.max((value / max) * 100, 4) : 0
   return (
-    <div className="hbar">
+    <div className="hbar-row">
       <span className="hbar-label" title={label}>
         {label}
       </span>
@@ -84,7 +87,7 @@ function Chart({ title, items }) {
     <section className="chart-card">
       <h2 className="chart-title">{title}</h2>
       {items.length === 0 ? (
-        <p className="muted">Sin datos todavía</p>
+        <p className="cell-muted">Sin datos todavía</p>
       ) : (
         <div className="hbar-list">
           {items.map((item) => (
@@ -98,39 +101,37 @@ function Chart({ title, items }) {
 
 function DailyChart({ items }) {
   const max = items.reduce((acc, item) => Math.max(acc, item.total), 0)
+  const alGrupo = items.reduce((acc, item) => acc + item.whatsapp, 0)
+  const agendaron = items.reduce((acc, item) => acc + item.calendar, 0)
+
   return (
     <section className="chart-card chart-wide">
       <h2 className="chart-title">Registros últimos 14 días</h2>
-      <div className="daily">
-        {items.map((item) => {
-          const height = max > 0 ? (item.total / max) * 100 : 0
-          const waHeight = max > 0 ? (item.whatsapp / max) * 100 : 0
-          const calHeight = max > 0 ? (item.calendar / max) * 100 : 0
-          return (
-            <div className="daily-col" key={item.date}>
+      <div className="bar-chart">
+        {items.map((item) => (
+          <div
+            className="bar-col"
+            key={item.date}
+            title={`${item.total} registros · ${item.whatsapp} al grupo · ${item.calendar} agendaron`}
+          >
+            <span className="bar-count">{item.total > 0 ? item.total : ''}</span>
+            <div className="bar-track">
               <div
-                className="daily-bars"
-                title={`${item.total} registros · ${item.whatsapp} al grupo · ${item.calendar} agendaron`}
-              >
-                <span className="daily-bar" style={{ height: `${height}%` }} />
-                <span className="daily-bar daily-bar-wa" style={{ height: `${waHeight}%` }} />
-                <span className="daily-bar daily-bar-cal" style={{ height: `${calHeight}%` }} />
-              </div>
-              <span className="daily-label">{item.date.slice(8)}</span>
+                className="bar-fill"
+                style={{ height: `${max > 0 ? (item.total / max) * 100 : 0}%` }}
+              />
             </div>
-          )
-        })}
+            <span className="bar-label">{item.date.slice(8)}</span>
+          </div>
+        ))}
       </div>
-      <div className="legend">
-        <span className="legend-item">
-          <i className="dot dot-primary" /> Registros
-        </span>
-        <span className="legend-item">
-          <i className="dot dot-wa" /> Fueron al grupo
-        </span>
-        <span className="legend-item">
-          <i className="dot dot-cal" /> Agendaron
-        </span>
+      <div className="chart-split">
+        <span className="chart-split-label">En estos 14 días</span>
+        <div className="split-values">
+          <span className="split-wa">Al grupo: {alGrupo}</span>
+          <span className="split-sep">|</span>
+          <span className="split-cal">Agendaron: {agendaron}</span>
+        </div>
       </div>
     </section>
   )
@@ -155,6 +156,7 @@ function Dashboard() {
   const [fromFilter, setFromFilter] = useState('')
   const [toFilter, setToFilter] = useState('')
 
+  const [vista, setVista] = useState('registros')
   const [selectedId, setSelectedId] = useState(null)
   const [noteDraft, setNoteDraft] = useState('')
 
@@ -337,22 +339,32 @@ function Dashboard() {
 
   return (
     <div className="dash">
-      <header className="dash-header">
-        <div>
-          <h1>Dashboard · Landing webinar</h1>
-          <p className="muted">Registros del opt-in, paso al grupo y agenda del webinar.</p>
+      <nav className="dash-nav">
+        <div className="nav-left">
+          <img className="nav-logo" src={atvLogo} alt="Aumenta Tu Valor" />
+          <div className="nav-titles">
+            <h1>Landing webinar</h1>
+            <p>Registros del opt-in, paso al grupo y agenda</p>
+          </div>
         </div>
-        <div className="dash-actions">
-          <button type="button" className="ghost-btn" onClick={load}>
+        <div className="nav-actions">
+          <button
+            type="button"
+            className={`btn-secondary ${vista === 'analiticas' ? 'btn-active' : ''}`}
+            onClick={() => setVista(vista === 'analiticas' ? 'registros' : 'analiticas')}
+          >
+            {vista === 'analiticas' ? 'Ver registros' : 'Ver analíticas'}
+          </button>
+          <button type="button" className="btn-secondary" onClick={load}>
             Actualizar
           </button>
-          <button type="button" className="ghost-btn" onClick={exportCsv}>
+          <button type="button" className="btn-secondary" onClick={exportCsv}>
             Exportar CSV
           </button>
           {gate === 'pin' ? (
             <button
               type="button"
-              className="ghost-btn"
+              className="btn-secondary"
               onClick={() => {
                 clearPin()
                 setUnlocked(false)
@@ -362,52 +374,55 @@ function Dashboard() {
             </button>
           ) : null}
         </div>
-      </header>
+      </nav>
 
+      <main className="dash-content">
       {error ? <p className="form-error">{error}</p> : null}
-      {loading && !metrics ? <p className="muted">Cargando métricas…</p> : null}
+      {loading && !metrics ? <p className="cell-muted">Cargando métricas…</p> : null}
 
       {metrics ? (
-        <>
-          <div className="stats">
-            <Stat label="Total registrados" value={metrics.total} />
-            <Stat
-              label="Completaron el quiz"
-              value={metrics.completos}
-              hint={`${metrics.solo_datos} solo dejaron datos`}
-            />
-            <Stat
-              label="Calificados"
-              value={metrics.calificados}
-              hint={`${metrics.no_calificados} no califican`}
-              accent="ok"
-            />
-            <Stat
-              label="Fueron al grupo"
-              value={metrics.whatsapp_leads}
-              hint={`${metrics.whatsapp_rate}% de los registrados`}
-              accent="wa"
-            />
-            <Stat
-              label="Agendaron"
-              value={metrics.calendar_leads}
-              hint={`${metrics.calendar_rate}% de los registrados`}
-              accent="cal"
-            />
-            <Stat
-              label="Contactados"
-              value={metrics.contactados}
-              hint={`${metrics.pendientes} pendientes · ${metrics.contacto_rate}%`}
-            />
-          </div>
+        <div className="metrics-grid">
+          <Stat label="Total registrados" value={metrics.total} />
+          <Stat
+            label="Completaron el quiz"
+            value={metrics.completos}
+            hint={`${metrics.solo_datos} solo dejaron datos`}
+          />
+          <Stat
+            label="Calificados"
+            value={metrics.calificados}
+            hint={`${metrics.no_calificados} no califican`}
+            accent="ok"
+          />
+          <Stat
+            label="Fueron al grupo"
+            value={metrics.whatsapp_leads}
+            hint={`${metrics.whatsapp_rate}% de los registrados`}
+            accent="wa"
+          />
+          <Stat
+            label="Agendaron"
+            value={metrics.calendar_leads}
+            hint={`${metrics.calendar_rate}% de los registrados`}
+            accent="cal"
+          />
+          <Stat
+            label="Contactados"
+            value={metrics.contactados}
+            hint={`${metrics.pendientes} pendientes · ${metrics.contacto_rate}%`}
+          />
+        </div>
+      ) : null}
 
+      {vista === 'analiticas' && metrics ? (
+        <>
           <p className="disclaimer">
             «Fueron al grupo» y «Agendaron» cuentan quién tocó cada botón. Ni WhatsApp ni Google
             avisan si la persona entró al grupo o guardó el evento, así que son el techo, no la
             confirmación.
           </p>
 
-          <div className="charts">
+          <div className="charts-grid">
             <DailyChart items={metrics.por_dia} />
             <Chart title="Por situación" items={metrics.por_avatar} />
             <Chart title="Por facturación" items={metrics.por_revenue} />
@@ -417,6 +432,7 @@ function Dashboard() {
         </>
       ) : null}
 
+      {vista === 'registros' ? (
       <section className="table-card">
         <div className="filters">
           <input
@@ -561,6 +577,8 @@ function Dashboard() {
           </table>
         </div>
       </section>
+      ) : null}
+      </main>
 
       {selected ? (
         <div className="panel-overlay" onClick={() => setSelectedId(null)} role="presentation">

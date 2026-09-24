@@ -188,7 +188,11 @@ function OptInModal({ open, onClose }) {
                   value={contact.email}
                   onChange={onContactChange}
                   autoComplete="email"
+                  aria-describedby="email-hint"
                 />
+                <span className="field-hint" id="email-hint">
+                  {copy.emailHint}
+                </span>
               </label>
               <label>
                 WhatsApp
