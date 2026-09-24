@@ -197,7 +197,10 @@ function ThankYou() {
                   href={calendarUrl(lead.id, 'google')}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => setHechos((actual) => ({ ...actual, agenda: true }))}
+                  onClick={() => {
+                    setHechos((actual) => ({ ...actual, agenda: true }))
+                    trackOps('calendario')
+                  }}
                 >
                   {copy.calendarCta}
                   <span aria-hidden="true">→</span>
