@@ -18,6 +18,7 @@
   font-size: 18px;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
 
 .home a {
@@ -580,6 +581,7 @@
   position: relative;
   height: 280px;
   perspective: 1400px;
+  overflow: clip;
 }
 
 .home .case-card {
@@ -648,9 +650,9 @@
   line-height: 1.45;
 }
 
-.home .case-result {
+.home .case-role strong {
   color: var(--text);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 @keyframes case-in {

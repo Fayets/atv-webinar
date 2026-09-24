@@ -46,7 +46,11 @@ const CASOS = [
     src: igCris,
     name: 'Cris Gonzalez',
     alt: 'Instagram de Cris Gonzalez',
-    role: 'Experto en infoproducto de Sebas Nájera (@soysebasnajera)',
+    role: (
+      <>
+        Experto en infoproducto de <strong>Sebas Nájera</strong> (@soysebasnajera)
+      </>
+    ),
     result: 'De 20k/mes a 70k/mes en 60 días',
   },
   {
@@ -60,14 +64,23 @@ const CASOS = [
     src: igJorge,
     name: 'Jorge Quesada',
     alt: 'Instagram de Jorge Quesada',
-    role: 'Experto en infoproducto de Juano Baquero (@juano.yt)',
-    result: 'De 20k/mes a 70k/mes en 60 días',
+    role: (
+      <>
+        Experto en infoproducto de <strong>Juano Baquero</strong> (@juano.yt)
+      </>
+    ),
+    result:
+      'Escaló el negocio a +$200K/mes y hoy se lleva +$60K USD netos mensuales para su bolsillo.',
   },
   {
     src: igSanti,
     name: 'Santiago Molina',
     alt: 'Instagram de Santiago Molina',
-    role: 'Experto en infoproducto de Juano Baquero (@juano.yt)',
+    role: (
+      <>
+        Experto en infoproducto de <strong>Juano Baquero</strong> (@juano.yt)
+      </>
+    ),
     result:
       'Escaló el negocio a +$200K/mes y hoy se lleva +$17K USD netos mensuales para su bolsillo.',
   },
@@ -90,14 +103,14 @@ const CASOS = [
     name: 'Valentino Babino',
     alt: 'Instagram de Valentino Babino',
     role: 'Experto en infoproductos',
-    result: 'Pasó de estar estancado en 5k/mes a 30k/mes',
+    result: 'Pasó de estar estancado en 5k/mes y escaló a 30k/mes',
   },
   {
     src: igNico,
     name: 'Nicolas Martin',
     alt: 'Instagram de Nicolas Martin',
     role: 'Experto en infoproductos',
-    result: 'Pasó de estar en 18k/mes a 31k/mes en 60 días',
+    result: 'Pasó de estar en 18k/mes y escaló a 31k/mes en 60 días',
   },
   {
     src: igPatric,
