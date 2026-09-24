@@ -6,7 +6,7 @@ export const landing = {
     strong: 'sin ads, sin webinars ni lanzamientos.',
   },
   subheadline:
-    'Descubrí cómo instalamos el sistema de equipo A-players que factura $170k-$200k/mes sin volumen de contenido, sin webinars, sin ads y sin lanzamientos. Y cómo el mismo sistema llevó a Juano de $20k a $220k en 60 días, a Cris de $10k a $70k en 30 días, y a Seba de $100k a $450k en 90 días.',
+    'Descubrí el sistema de contenido que nos hace $200k/mes con 4 reels y 1 video de YouTube por mes, y cómo instalarlo en tu negocio sin subir contenido todos los días.',
   cta: 'Reservá tu lugar',
   modal: {
     title: '¿Listo para que tu equipo rinda como A-player?',
