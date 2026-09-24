@@ -47,7 +47,7 @@ export const areaField = {
 }
 
 export const steps = [
-  { id: 'contact', title: 'QUIERO MI LUGAR', question: null, type: 'form' },
+  { id: 'contact', title: '', question: null, type: 'form' },
   {
     id: 'avatar',
     title: 'SITUACIÓN ACTUAL',

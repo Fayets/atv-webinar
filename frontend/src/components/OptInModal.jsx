@@ -6,6 +6,7 @@ import { getUtmParams } from '../lib/utm.js'
 import { saveLead } from '../lib/leadSession.js'
 import { url } from '../lib/routes.js'
 import { browserIds, newEventId, track } from '../lib/pixel.js'
+import { trackOps } from '../lib/opsTracking.js'
 import CtaButton from './CtaButton.jsx'
 
 const EMPTY_CONTACT = { nombre: '', email: '', country: '+54', telefono: '', instagram: '' }
@@ -21,16 +22,17 @@ function toggle(list, value) {
   return list.includes(value) ? list.filter((item) => item !== value) : [...list, value]
 }
 
-function OptInModal({ open, onClose }) {
+function OptInModal({ open, onClose, embedded = false }) {
   const copy = landing.modal
   const [stepIndex, setStepIndex] = useState(0)
   const [contact, setContact] = useState(EMPTY_CONTACT)
   const [quiz, setQuiz] = useState(EMPTY_QUIZ)
   const [status, setStatus] = useState('idle')
   const [message, setMessage] = useState('')
+  const titleId = embedded ? 'optin-title-inline' : 'optin-title'
 
   useEffect(() => {
-    if (!open) return undefined
+    if (!open || embedded) return undefined
 
     function onKey(event) {
       if (event.key === 'Escape') onClose()
@@ -42,9 +44,9 @@ function OptInModal({ open, onClose }) {
       document.body.style.overflow = ''
       window.removeEventListener('keydown', onKey)
     }
-  }, [open, onClose])
+  }, [open, onClose, embedded])
 
-  if (!open) return null
+  if (!open && !embedded) return null
 
   const step = steps[stepIndex]
   const isLast = stepIndex === steps.length - 1
@@ -150,6 +152,11 @@ function OptInModal({ open, onClose }) {
         await reportarAMeta(created)
       }
 
+      // El optin de ATV Ops va para todos, calificados o no: la regla de calificación
+      // es de Meta, no del embudo. No hace falta esperarlo — el SDK usa sendBeacon,
+      // que sobrevive a la navegación de la línea de abajo.
+      trackOps('optin')
+
       // La confirmación vive en su propia URL, no en el modal.
       saveLead(created)
       window.location.assign(url('/ty-page'))
@@ -159,21 +166,22 @@ function OptInModal({ open, onClose }) {
     }
   }
 
-  return (
-    <div className="modal-overlay" onClick={onClose} role="presentation">
+  const panel = (
       <div
         className="modal"
         role="dialog"
-        aria-modal="true"
-        aria-labelledby="optin-title"
-        onClick={(event) => event.stopPropagation()}
+        aria-modal={embedded ? undefined : 'true'}
+        aria-labelledby={titleId}
+        onClick={embedded ? undefined : (event) => event.stopPropagation()}
       >
-        <button type="button" className="modal-close" onClick={onClose} aria-label="Cerrar">
-          ×
-        </button>
+        {embedded ? null : (
+          <button type="button" className="modal-close" onClick={onClose} aria-label="Cerrar">
+            ×
+          </button>
+        )}
 
-        <span className="step-label">{step.title}</span>
-        <h2 id="optin-title">{step.question ?? copy.title}</h2>
+        {step.title ? <span className="step-label">{step.title}</span> : null}
+        <h2 id={titleId}>{step.question ?? copy.title}</h2>
 
         <div className="progress-wrap" aria-hidden="true">
           <div className="progress-bar" style={{ width: `${progress}%` }} />
@@ -333,10 +341,23 @@ function OptInModal({ open, onClose }) {
             disabled={!canContinue}
             loading={status === 'loading'}
           >
-            {status === 'loading' ? copy.submitting : isLast ? copy.submit : 'Continuar →'}
+            {status === 'loading'
+              ? copy.submitting
+              : stepIndex === 0
+                ? 'Reservar lugar'
+                : isLast
+                  ? copy.submit
+                  : 'Continuar'}
           </CtaButton>
         </div>
       </div>
+  )
+
+  if (embedded) return <div className="hero-optin" id="optin">{panel}</div>
+
+  return (
+    <div className="modal-overlay" onClick={onClose} role="presentation">
+      {panel}
     </div>
   )
 }

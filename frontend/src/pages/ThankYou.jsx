@@ -4,6 +4,7 @@ import { calendarUrl, getWebinar, whatsappUrl } from '../data/api.js'
 import { readLead } from '../lib/leadSession.js'
 import { landing } from '../content/equipo.js'
 import { url } from '../lib/routes.js'
+import { cargarOps, trackOps } from '../lib/opsTracking.js'
 
 const AR = 'America/Argentina/Buenos_Aires'
 
@@ -127,6 +128,14 @@ function ThankYou() {
   }, [lead])
 
   useEffect(() => {
+    // Después del guard de arriba a propósito: al que entra sin lead lo rebotamos, y
+    // un thank_you suyo sería un paso del embudo que nadie dio. No se deduplica por
+    // sesión como la visita — recargar la página de gracias es raro, y si pasa el que
+    // la recarga sí llegó hasta acá.
+    if (lead) cargarOps('ty')
+  }, [lead])
+
+  useEffect(() => {
     getWebinar()
       .then(setWebinar)
       .catch(() => setWebinar(null))
@@ -196,6 +205,7 @@ function ThankYou() {
                 href={whatsappUrl(lead.id)}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackOps('whatsapp')}
               >
                 <WhatsappIcon />
                 {copy.whatsappCta}

@@ -8,8 +8,13 @@ export const landing = {
   subheadline:
     'Este 28/08 te voy a dar mis sistemas con los que hice +$200k con 4 reels + 1 video de youtube por mes, y cómo instalarlo en tu negocio.',
   cta: 'Reservá tu lugar',
+  banner: {
+    label: 'Webinar en vivo',
+    badge: 'CUPOS ABIERTOS',
+    cta: 'Reservá tu lugar',
+  },
   modal: {
-    title: '¿Listo para que tu equipo rinda como A-player?',
+    title: '¿A dónde te enviamos el acceso?',
     emailHint: 'A este mail te mandamos el recurso luego del evento en vivo.',
     emailHintStrong: 'Si no asistís, no te van a llegar los recursos.',
     submit: 'Reservá tu lugar',

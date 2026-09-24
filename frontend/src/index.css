@@ -9,7 +9,7 @@
   --line: #3a3a3a;
   --field: #1a1a1a;
   --danger: #ff6b6b;
-  --sans: Poppins, 'Helvetica Neue', Arial, sans-serif;
+  --sans: Satoshi, 'Helvetica Neue', Arial, sans-serif;
   --sans-ui: Inter, 'Helvetica Neue', Arial, sans-serif;
 
   /* Hero: canvas granate + vidrio, tomado del lenguaje visual de ATV. */
@@ -58,6 +58,56 @@ body {
   background: var(--bg);
 }
 
+.announce {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 11px 28px;
+  border: 0;
+  background: #140606;
+  color: #fff;
+  font: 500 13px/1.2 var(--sans);
+  cursor: pointer;
+}
+
+.announce-side {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.announce-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #ff5a52;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.announce-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff5a52;
+  box-shadow: 0 0 8px #ff5a52;
+}
+
+.announce-cta {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.announce:hover {
+  background: #1e0a09;
+}
+
 .topbar,
 .hero,
 .site-footer {
@@ -71,7 +121,7 @@ body {
   justify-content: flex-start;
   width: 100%;
   margin: 0;
-  padding: 26px 28px 0;
+  padding: 16px 28px 0;
 }
 
 .hero {
@@ -224,7 +274,7 @@ h1 strong {
   border-radius: 10px;
   background: var(--primary);
   color: var(--primary-ink);
-  font: 600 16px/1 var(--sans-ui);
+  font: 600 16px/1 var(--sans);
   letter-spacing: 0.005em;
   cursor: pointer;
   box-shadow: none;
@@ -588,7 +638,7 @@ h1 strong {
   width: min(1060px, calc(100% - 48px));
   margin: 0 auto;
   padding: 64px 0 80px;
-  font-family: var(--sans-ui);
+  font-family: var(--sans);
   text-align: center;
 }
 
@@ -602,7 +652,7 @@ h1 strong {
 
 .thanks-title {
   margin: 12px 0 0;
-  font-family: var(--sans-ui);
+  font-family: var(--sans);
   font-size: clamp(28px, 3.4vw, 40px);
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -913,8 +963,18 @@ h1 strong {
 }
 
 @media (max-width: 640px) {
+  .announce {
+    gap: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+
+  .announce-badge {
+    display: none;
+  }
+
   .topbar {
-    padding: 22px 16px 0;
+    padding: 16px 16px 0;
   }
 
   .hero {

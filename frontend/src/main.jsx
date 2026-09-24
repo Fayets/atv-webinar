@@ -6,13 +6,21 @@ import App from './App.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import ThankYou from './pages/ThankYou.jsx'
 import { currentPath } from './lib/routes.js'
+import { cargarOps } from './lib/opsTracking.js'
+import { visitaNueva } from './lib/visita.js'
 
 const ROUTES = {
   '/dashboard': { component: Dashboard, title: 'Dashboard · Aumenta Tu Valor' },
   '/ty-page': { component: ThankYou, title: 'Aumenta Tu Valor' },
 }
 
-const route = ROUTES[currentPath()]
+const path = currentPath()
+const route = ROUTES[path]
+
+// Tracking de ATV Ops solo en la landing. El dashboard es interno y la thank you
+// lo carga ella misma, recién cuando confirmó que hay lead: si lo cargáramos acá
+// mandaría un thank_you antes de que el guard rebote al que entró de prepo.
+if (path === '/') cargarOps('landing', { contar: visitaNueva() })
 const Page = route?.component ?? App
 if (route) document.title = route.title
 
