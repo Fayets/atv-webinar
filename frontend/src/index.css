@@ -68,10 +68,10 @@ body {
 .topbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: min(1360px, calc(100% - 48px));
-  margin: 0 auto;
-  padding-top: 26px;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 0;
+  padding: 26px 28px 0;
 }
 
 .hero {
@@ -100,7 +100,7 @@ h1 {
   font-size: clamp(32px, min(4.4vw, 6.8svh), 62px);
   font-weight: 300;
   letter-spacing: -0.035em;
-  line-height: 1.08;
+  line-height: 1.22;
   color: #fff;
 }
 
@@ -109,7 +109,7 @@ h1 strong {
 }
 
 .subheadline {
-  margin: 18px 0 0;
+  margin: 28px 0 0;
   max-width: 860px;
   font-size: clamp(14px, min(1.25vw, 2.2svh), 17px);
   font-weight: 300;
@@ -879,8 +879,7 @@ h1 strong {
 
 @media (max-width: 640px) {
   .topbar {
-    width: min(1080px, calc(100% - 32px));
-    padding-top: 22px;
+    padding: 22px 16px 0;
   }
 
   .hero {
