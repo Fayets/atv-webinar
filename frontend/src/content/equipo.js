@@ -10,7 +10,6 @@ export const landing = {
   cta: 'Quiero acceso ahora',
   modal: {
     title: '¿Listo para que tu equipo rinda como A-player?',
-    body: 'Completá el formulario y desbloqueá el entrenamiento. Vas a ver cómo se capacita un equipo con los mejores de la industria hasta que se vuelve inevitable que también lo sean.',
     emailHint: 'A este mail te mandamos el recurso luego del evento en vivo.',
     emailHintStrong: 'Si no asistís, no te van a llegar los recursos.',
     submit: 'Desbloquear recurso',

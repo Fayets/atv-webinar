@@ -176,7 +176,6 @@ function OptInModal({ open, onClose }) {
 
         <span className="step-label">{step.title}</span>
         <h2 id="optin-title">{step.question ?? copy.title}</h2>
-        {step.question ? null : <p>{copy.body}</p>}
 
         <div className="progress-wrap" aria-hidden="true">
           <div className="progress-bar" style={{ width: `${progress}%` }} />
