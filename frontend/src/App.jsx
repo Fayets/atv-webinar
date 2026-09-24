@@ -103,7 +103,11 @@ function App() {
         <h1>
           {landing.headline.light}
           <br />
-          <strong>{landing.headline.strong}</strong>
+          <strong>
+            {landing.headline.strong}
+            <br />
+            {landing.headline.tail}
+          </strong>
         </h1>
 
         <p className="subheadline">{landing.subheadline}</p>
