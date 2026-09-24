@@ -108,7 +108,7 @@ curl -s https://atvos.io/acceso/api/auth/mode
 El último tiene que devolver `{"mode":"session"}`. Si dice `pin`, falta el `SECRET`.
 
 Después, en el browser: `atvos.io/acceso` (landing), completar el opt-in hasta
-`atvos.io/acceso/gracias`, y `atvos.io/acceso/dashboard` (tiene que entrar con tu usuario
+`atvos.io/acceso/ty-page`, y `atvos.io/acceso/dashboard` (tiene que entrar con tu usuario
 del ecosistema, sin pedir PIN).
 
 ## Volver atrás

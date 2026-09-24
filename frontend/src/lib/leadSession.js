@@ -1,4 +1,4 @@
-// El lead recién creado viaja del modal a /gracias por sessionStorage: así la
+// El lead recién creado viaja del modal a /ty-page por sessionStorage: así la
 // vista de gracias es una URL propia y sobrevive a un refresh.
 const KEY = 'atv_lead'
 

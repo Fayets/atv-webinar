@@ -9,7 +9,7 @@ import { currentPath } from './lib/routes.js'
 
 const ROUTES = {
   '/dashboard': { component: Dashboard, title: 'Dashboard · Aumenta Tu Valor' },
-  '/gracias': { component: ThankYou, title: 'Ya estás dentro · Aumenta Tu Valor' },
+  '/ty-page': { component: ThankYou, title: 'Aumenta Tu Valor' },
 }
 
 const route = ROUTES[currentPath()]

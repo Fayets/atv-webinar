@@ -154,7 +154,7 @@ function OptInModal({ open, onClose }) {
 
       // La confirmación vive en su propia URL, no en el modal.
       saveLead(created)
-      window.location.assign(url('/gracias'))
+      window.location.assign(url('/ty-page'))
     } catch (error) {
       setStatus('error')
       setMessage(error.message)
