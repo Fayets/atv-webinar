@@ -439,7 +439,7 @@ function App() {
           <a href="#inicio" className="logo">
             <img src={atvMark} alt="Aumenta Tu Valor" />
           </a>
-          <span>© 2026 Tu marca. Todos los derechos reservados.</span>
+          <span>© 2026 Aumenta Tu Valor. Todos los derechos reservados.</span>
           <nav>
             <a href="#inicio">Términos</a>
             <a href="#inicio">Privacidad</a>
