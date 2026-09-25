@@ -1,4 +1,3 @@
-import atvLogo from '../assets/atv-logo.png'
 import { landing } from '../content/equipo.js'
 import { ACTUALIZADO } from '../content/legal.js'
 import { url } from '../lib/routes.js'
@@ -8,12 +7,6 @@ function Legal({ doc }) {
     <div className="shell">
       <div className="atmosphere" aria-hidden="true" />
       <div className="grain" aria-hidden="true" />
-
-      <header className="topbar">
-        <a href={url('/')}>
-          <img className="logo" src={atvLogo} alt="Aumenta Tu Valor" />
-        </a>
-      </header>
 
       <main className="legal">
         <h1>{doc.titulo}</h1>
