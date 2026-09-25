@@ -1,9 +1,9 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
-// La landing se sirve bajo atvos.io/acceso/
+// La landing se sirve en la raíz de join.atvos.io
 export default defineConfig({
-  base: '/acceso/',
+  base: '/',
   plugins: [react()],
   server: {
     host: true,
@@ -13,10 +13,9 @@ export default defineConfig({
       'Cache-Control': 'no-store',
     },
     proxy: {
-      '/acceso/api': {
+      '/api': {
         target: 'http://localhost:8000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/acceso\/api/, '/api'),
       },
     },
   },

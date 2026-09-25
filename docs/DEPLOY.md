@@ -1,8 +1,9 @@
-# Deploy en el VPS — atvos.io/acceso
+# Deploy en el VPS — join.atvos.io
 
-La landing reemplaza a `atv-landing` en `atvos.io/acceso`. Toma **los mismos puertos**
-(8005 backend, 8085 frontend), así que **el nginx del host no se toca**: solo se baja un
-contenedor y se levanta el otro.
+La landing vive en la raíz de **join.atvos.io** (registro A `join` → `72.60.244.220`,
+el VPS de Hostinger). Antes colgaba de `atvos.io/acceso`, que ahora redirige acá.
+Los contenedores siguen en **8005** (backend) y **8085** (frontend); el nginx del host
+pone el dominio y el certificado adelante.
 
 ## Antes de empezar
 
@@ -69,7 +70,7 @@ DB_SSLMODE=require
 
 SECRET=<el mismo de atv-ecosystem>
 
-FRONTEND_ORIGIN=https://atvos.io
+FRONTEND_ORIGIN=https://join.atvos.io
 
 VSL_URL=https://vimeo.com/1210850489
 VSL_VIMEO_ID=1210850489
@@ -80,7 +81,7 @@ WEBINAR_TITLE=Webinar · Sistema de equipo A-players
 WEBINAR_STARTS_AT=<fecha real, ISO con offset>
 WEBINAR_DURATION_MIN=90
 WEBINAR_DETAILS=Cómo instalar el sistema de equipo A-players detrás de $200k/mes.
-WEBINAR_URL=https://atvos.io/acceso
+WEBINAR_URL=https://join.atvos.io
 ```
 
 `DB_SCHEMA=webinar` es a propósito: la landing vieja usa otro esquema, así que sus
@@ -97,19 +98,68 @@ los puertos.
 cd /opt/atv-landing && docker compose down && cd /opt/atv-webinar && docker compose up -d --build
 ```
 
-## 5. Comprobar
+## 5. Dominio: nginx del host + certificado
+
+El registro DNS ya está (`join` → `72.60.244.220`). Crear el server block:
 
 ```bash
-curl -s -o /dev/null -w '%{http_code}\n' https://atvos.io/acceso/
-curl -s https://atvos.io/acceso/api/webinar/
-curl -s https://atvos.io/acceso/api/auth/mode
+nano /etc/nginx/sites-available/join.atvos.io
 ```
 
-El último tiene que devolver `{"mode":"session"}`. Si dice `pin`, falta el `SECRET`.
+```nginx
+server {
+    listen 80;
+    server_name join.atvos.io;
 
-Después, en el browser: `atvos.io/acceso` (landing), completar el opt-in hasta
-`atvos.io/acceso/ty-page`, y `atvos.io/acceso/dashboard` (tiene que entrar con tu usuario
+    location / {
+        proxy_pass http://127.0.0.1:8085;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+```bash
+ln -s /etc/nginx/sites-available/join.atvos.io /etc/nginx/sites-enabled/ && nginx -t && systemctl reload nginx && certbot --nginx -d join.atvos.io
+```
+
+## 6. Redirigir el link viejo
+
+Los anuncios y links que apuntan a `atvos.io/acceso` tienen que seguir llegando. En el
+server block de `atvos.io`, reemplazar el `location /acceso` que hoy hace proxy al 8085 por:
+
+```nginx
+location ~ ^/acceso/?(.*)$ {
+    return 301 https://join.atvos.io/$1$is_args$args;
+}
+```
+
+```bash
+nginx -t && systemctl reload nginx
+```
+
+El `$args` conserva los UTM y el `fbclid` de los anuncios.
+
+## 7. Comprobar
+
+```bash
+curl -s -o /dev/null -w '%{http_code}\n' https://join.atvos.io/
+curl -s https://join.atvos.io/api/webinar/
+curl -s https://join.atvos.io/api/auth/mode
+curl -s -o /dev/null -w '%{http_code} %{redirect_url}\n' 'https://atvos.io/acceso/?utm_source=test'
+```
+
+El tercero tiene que devolver `{"mode":"session"}`. Si dice `pin`, falta el `SECRET`.
+El último tiene que dar `301 https://join.atvos.io/?utm_source=test`.
+
+Después, en el browser: `join.atvos.io` (landing), completar el opt-in hasta
+`join.atvos.io/ty-page`, y `join.atvos.io/dashboard` (tiene que entrar con tu usuario
 del ecosistema, sin pedir PIN).
+
+Fuera de este repo: el tile **ATV LANDING** de atv-ecosystem apunta a
+`atvos.io/acceso/dashboard`; pasarlo a `https://join.atvos.io/dashboard`.
 
 ## Volver atrás
 

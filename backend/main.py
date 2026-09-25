@@ -21,7 +21,7 @@ async def lifespan(_app: FastAPI):
 
 app = FastAPI(title="Landing Webinar", lifespan=lifespan)
 
-# En producción el frontend se sirve desde el mismo origen (atvos.io) por nginx,
+# En producción el frontend se sirve desde el mismo origen (join.atvos.io) por nginx,
 # así que CORS solo hace falta para el dev server de Vite.
 frontend_origins = [
     origin.strip()

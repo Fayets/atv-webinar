@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/acceso/api'
+const API_BASE = import.meta.env.VITE_API_URL || '/api'
 
 const PIN_KEY = 'atv_dashboard_pin'
 

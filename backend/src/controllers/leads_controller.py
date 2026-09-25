@@ -66,7 +66,7 @@ async def send_capi_event(lead_id: int, payload: CapiEventRequest, request: Requ
         return await meta.send_event(
             event_name=payload.event_name,
             event_id=payload.event_id,
-            event_source_url=payload.source_url or "https://atvos.io/acceso",
+            event_source_url=payload.source_url or "https://join.atvos.io/",
             email=lead.email,
             phone=lead.telefono,
             first_name=lead.nombre.split(" ")[0] if lead.nombre else None,
