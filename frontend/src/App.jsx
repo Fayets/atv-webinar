@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { recordVisit } from './data/api.js'
 import { visitaNueva } from './lib/visita.js'
 import OptInModal from './components/OptInModal.jsx'
+import { url } from './lib/routes.js'
 import atvMark from './assets/atv-mark.jpg'
 import igSeba from './assets/ig-seba.png'
 import igJuano from './assets/ig-juano.jpg'
@@ -441,9 +442,16 @@ function App() {
           </a>
           <span>© 2026 Aumenta Tu Valor. Todos los derechos reservados.</span>
           <nav>
-            <a href="#inicio">Términos</a>
-            <a href="#inicio">Privacidad</a>
+            <a href={url('/terminos')}>Términos y condiciones</a>
+            <a href={url('/privacidad')}>Política de privacidad</a>
           </nav>
+          <p className="disclaimer">
+            Los casos que mostramos son resultados reales de personas concretas, no una promesa de
+            lo que vas a conseguir vos: tu resultado depende de tu negocio, tu punto de partida y lo
+            que hagas con la información. Este sitio no forma parte de Facebook ni de Meta
+            Platforms, Inc., y no está respaldado por Meta de ninguna manera. Facebook es una marca
+            registrada de Meta Platforms, Inc.
+          </p>
         </div>
       </footer>
     </div>

@@ -213,6 +213,10 @@ function ThankYou() {
 
       <footer className="site-footer">
         <p>{landing.copyright}</p>
+        <p className="footer-links">
+          <a href={url('/terminos')}>Términos y condiciones</a>
+          <a href={url('/privacidad')}>Política de privacidad</a>
+        </p>
       </footer>
     </div>
   )

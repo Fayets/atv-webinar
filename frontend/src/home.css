@@ -1207,6 +1207,16 @@
   color: var(--text);
 }
 
+/* Aviso de resultados y de no afiliación con Meta: lo revisan al aprobar anuncios. */
+.home footer .disclaimer {
+  flex-basis: 100%;
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--dim);
+  opacity: 0.8;
+}
+
 @media (max-width: 760px) {
   .home {
     font-size: 17px;

@@ -5,6 +5,8 @@ import './dashboard.css'
 import App from './App.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import ThankYou from './pages/ThankYou.jsx'
+import Legal from './pages/Legal.jsx'
+import { privacidad, terminos } from './content/legal.js'
 import { currentPath } from './lib/routes.js'
 import { cargarOps } from './lib/opsTracking.js'
 import { visitaNueva } from './lib/visita.js'
@@ -12,6 +14,14 @@ import { visitaNueva } from './lib/visita.js'
 const ROUTES = {
   '/dashboard': { component: Dashboard, title: 'Dashboard · Aumenta Tu Valor' },
   '/ty-page': { component: ThankYou, title: 'Aumenta Tu Valor' },
+  '/privacidad': {
+    component: () => <Legal doc={privacidad} />,
+    title: 'Política de privacidad · Aumenta Tu Valor',
+  },
+  '/terminos': {
+    component: () => <Legal doc={terminos} />,
+    title: 'Términos y condiciones · Aumenta Tu Valor',
+  },
 }
 
 const path = currentPath()
