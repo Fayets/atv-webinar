@@ -32,26 +32,21 @@ export const privacidad = {
     {
       titulo: 'Para qué usamos tus datos',
       lista: [
-        'Darte el acceso que pediste: sumarte al grupo de WhatsApp, enviarte la invitación al evento en vivo y hacerte llegar los materiales.',
+        'Darte el acceso que pediste: enviarte la invitación al evento en vivo y hacerte llegar los materiales.',
         'Contactarte por WhatsApp o por email en relación con ese evento y con nuestros programas.',
-        'Entender qué anuncios y qué mensajes funcionan, para no gastar en mostrarle publicidad a quien no le interesa.',
+        'Entender por qué enlace o anuncio llegaste, a partir de los parámetros del enlace, para saber qué mensajes funcionan.',
       ],
     },
     {
       titulo: 'Con quién los compartimos',
       parrafos: [
-        'No vendemos tus datos. Los compartimos únicamente con los servicios que necesitamos para que esto funcione:',
-      ],
-      lista: [
-        'Meta (Facebook e Instagram): usamos el píxel de Meta y su API de Conversiones para medir la efectividad de nuestros anuncios. Cuando completás el formulario le enviamos a Meta tu email y tu teléfono cifrados de forma irreversible (hash), junto con tu dirección IP y datos de tu navegador. Meta no recibe tus respuestas del cuestionario.',
-        'Google: si elegís agendar el evento, te llevamos a Google Calendar, que se rige por sus propias políticas.',
-        'WhatsApp: si entrás al grupo, tu número queda visible para el resto de los integrantes, como en cualquier grupo de WhatsApp.',
+        'No vendemos tus datos ni los compartimos con redes sociales ni plataformas de publicidad. Quedan guardados en nuestros propios sistemas y solo los usa el equipo de Aumenta Tu Valor.',
       ],
     },
     {
       titulo: 'Cookies',
       parrafos: [
-        'El píxel de Meta deja cookies en tu navegador (`_fbp` y `_fbc`) que sirven para no contarte dos veces y para atribuir tu registro al anuncio correcto. Podés bloquearlas o borrarlas desde la configuración de tu navegador; la página sigue funcionando igual.',
+        'No usamos cookies de publicidad ni de terceros. Solo guardamos en tu navegador, durante la visita, lo necesario para que el formulario y la página de confirmación funcionen.',
       ],
     },
     {

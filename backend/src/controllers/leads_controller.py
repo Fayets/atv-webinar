@@ -3,15 +3,13 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import RedirectResponse, Response
 
 from src.controllers.deps import require_access
-from src.schemas import CapiEventRequest, LeadCreate, LeadResponse, LeadUpdate
+from src.schemas import LeadCreate, LeadResponse, LeadUpdate
 from src.services.leads_services import LeadsServices
-from src.services.meta_services import MetaServices
 from src.services.webinar_services import WebinarServices
 
 router = APIRouter()
 service = LeadsServices()
 webinar = WebinarServices()
-meta = MetaServices()
 
 
 @router.post("/", response_model=LeadResponse, status_code=201)
@@ -51,34 +49,6 @@ def go_to_whatsapp(lead_id: int):
         raise e
     except Exception:
         raise HTTPException(status_code=500, detail="Error inesperado al abrir WhatsApp.")
-
-
-@router.post("/{lead_id}/capi")
-async def send_capi_event(lead_id: int, payload: CapiEventRequest, request: Request):
-    """Copia server-side del evento que ya mandó el pixel. Mismo `event_id`, así
-    que Meta los deduplica."""
-    try:
-        lead = service.get_lead(lead_id)
-        forwarded = request.headers.get("x-forwarded-for", "")
-        client_ip = forwarded.split(",")[0].strip() or (
-            request.client.host if request.client else None
-        )
-        return await meta.send_event(
-            event_name=payload.event_name,
-            event_id=payload.event_id,
-            event_source_url=payload.source_url or "https://join.atvos.io/",
-            email=lead.email,
-            phone=lead.telefono,
-            first_name=lead.nombre.split(" ")[0] if lead.nombre else None,
-            client_ip=client_ip,
-            user_agent=request.headers.get("user-agent"),
-            fbp=payload.fbp,
-            fbc=payload.fbc,
-        )
-    except HTTPException as e:
-        raise e
-    except Exception:
-        raise HTTPException(status_code=500, detail="Error inesperado al enviar el evento a Meta.")
 
 
 @router.get("/{lead_id}/calendar")

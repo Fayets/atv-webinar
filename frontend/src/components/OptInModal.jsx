@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
-import { createLead, sendCapiEvent } from '../data/api.js'
+import { createLead } from '../data/api.js'
 import { landing, countries } from '../content/equipo.js'
 import { steps, bottleneckAreas, bottleneckOptions, areaField } from '../content/quiz.js'
 import { getUtmParams } from '../lib/utm.js'
 import { saveLead } from '../lib/leadSession.js'
 import { url } from '../lib/routes.js'
-import { browserIds, newEventId, track } from '../lib/pixel.js'
 import { trackOps } from '../lib/opsTracking.js'
 import CtaButton from './CtaButton.jsx'
 
@@ -97,31 +96,6 @@ function OptInModal({ open, onClose, embedded = false }) {
     setQuiz((current) => ({ ...current, [field]: toggle(current[field], option) }))
   }
 
-  async function reportarAMeta(created) {
-    const { fbp, fbc } = browserIds()
-    const source_url = window.location.href
-
-    // El mismo evento va por el navegador y por el servidor con el mismo id.
-    await Promise.all(
-      ['Lead', 'registroCompletado'].map(async (eventName) => {
-        const eventId = newEventId(eventName, created.id)
-        track(eventName, { content_name: 'webinar_equipo' }, eventId)
-        try {
-          await sendCapiEvent(created.id, {
-            event_name: eventName,
-            event_id: eventId,
-            source_url,
-            fbp,
-            fbc,
-          })
-        } catch {
-          // Si el server no pudo avisarle a Meta, el registro ya está hecho:
-          // no se le corta el paso al lead por esto.
-        }
-      }),
-    )
-  }
-
   async function onContinue() {
     if (!canContinue) return
 
@@ -147,14 +121,8 @@ function OptInModal({ open, onClose, embedded = false }) {
         bottleneck_ventas: quiz.bottleneck_ventas,
         ...getUtmParams(),
       })
-      // `calificado` lo resuelve el backend: avatar objetivo Y facturación.
-      if (created.calificado) {
-        await reportarAMeta(created)
-      }
-
-      // El optin de ATV Ops va para todos, calificados o no: la regla de calificación
-      // es de Meta, no del embudo. No hace falta esperarlo — el SDK usa sendBeacon,
-      // que sobrevive a la navegación de la línea de abajo.
+      // No hace falta esperarlo: el SDK usa sendBeacon, que sobrevive a la navegación
+      // de la línea de abajo.
       trackOps('optin')
 
       // La confirmación vive en su propia URL, no en el modal.
