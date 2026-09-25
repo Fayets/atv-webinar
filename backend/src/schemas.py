@@ -105,14 +105,6 @@ class PinResponse(BaseModel):
     ok: bool
 
 
-class CapiEventRequest(BaseModel):
-    event_name: str = Field(..., max_length=60)
-    event_id: str = Field(..., max_length=120)
-    source_url: str | None = Field(default=None, max_length=300)
-    fbp: str | None = Field(default=None, max_length=200)
-    fbc: str | None = Field(default=None, max_length=300)
-
-
 class SessionResponse(BaseModel):
     username: str
 
