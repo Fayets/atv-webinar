@@ -41,7 +41,6 @@ const CASOS = [
     name: 'Sebas Nájera',
     alt: 'Instagram de Sebas Nájera',
     role: 'Infoproductor · Nicho Automatizaciones de YouTube',
-    result: 'Ingreso haciendo 20k/mes y en 60 días escaló a 70k/mes',
   },
   {
     src: igCris,
@@ -52,14 +51,12 @@ const CASOS = [
         Experto en infoproducto de <strong>Sebas Nájera</strong> (@soysebasnajera)
       </>
     ),
-    result: 'De 20k/mes a 70k/mes en 60 días',
   },
   {
     src: igJuano,
     name: 'Juano Baquero',
     alt: 'Instagram de Juano Baquero',
     role: 'Infoproductor · Nicho Automatizaciones de YouTube',
-    result: 'Ingreso haciendo 30k/mes y en 60 días escaló a 230k/mes',
   },
   {
     src: igJorge,
@@ -70,8 +67,6 @@ const CASOS = [
         Experto en infoproducto de <strong>Juano Baquero</strong> (@juano.yt)
       </>
     ),
-    result:
-      'Escaló el negocio a +$200K/mes y hoy se lleva +$60K USD netos mensuales para su bolsillo.',
   },
   {
     src: igSanti,
@@ -82,50 +77,42 @@ const CASOS = [
         Experto en infoproducto de <strong>Juano Baquero</strong> (@juano.yt)
       </>
     ),
-    result:
-      'Escaló el negocio a +$200K/mes y hoy se lleva +$17K USD netos mensuales para su bolsillo.',
   },
   {
     src: igFacu,
     name: 'Facundo Martínez',
     alt: 'Instagram de Facundo Martínez',
     role: 'Experto en infoproductos',
-    result: 'Ingreso haciendo 1k/mes y en 30 días escaló a 30k/mes',
   },
   {
     src: igVirola,
     name: 'Juan Antonio Virola',
     alt: 'Instagram de Juan Antonio Virola',
     role: 'Dueño de agencia',
-    result: 'Ingreso haciendo 10k/mes y logró escalar a 100k/mes',
   },
   {
     src: igValentino,
     name: 'Valentino Babino',
     alt: 'Instagram de Valentino Babino',
     role: 'Experto en infoproductos',
-    result: 'Pasó de estar estancado en 5k/mes y escaló a 30k/mes',
   },
   {
     src: igNico,
     name: 'Nicolas Martin',
     alt: 'Instagram de Nicolas Martin',
     role: 'Experto en infoproductos',
-    result: 'Pasó de estar en 18k/mes y escaló a 31k/mes en 60 días',
   },
   {
     src: igPatric,
     name: 'Patric Hlosta',
     alt: 'Instagram de Patric Hlosta',
     role: 'Experto en infoproductos',
-    result: 'Logró escalar su cliente a +500k/mes',
   },
   {
     src: igSebastian,
     name: 'Sebastián Betancourt',
     alt: 'Instagram de Sebastián Betancourt',
     role: 'Dueño de negocio',
-    result: 'En los últimos 60 días logró escalar su negocio a +$450K/mes USD.',
   },
 ]
 
@@ -185,18 +172,16 @@ function App() {
       <section className="hero" id="inicio">
         <div className="wide">
           <h1>
-            El sistema de apalancamiento que me permitió escalar mi negocio a <em>+$200K/mes</em> con
-            solo 4 reels y 1 video de YouTube al mes.
+            El sistema de apalancamiento que me permitió escalar mi negocio a <em>+200k/mes</em>.
           </h1>
           <p className="sub">
             Ya no basta con correr ads y subir contenido a diario. Eso lo puede hacer vos y tu
-            competencia. Lo que pocos logran es lograr que el contenido órganico funcione y que por
-            si mismo logré generarte +6 cifras todos los meses.
+            competencia. Lo que pocos logran es que el contenido orgánico funcione por sí mismo y
+            que, mes a mes, genere resultados consistentes sin que tu tiempo sea el límite.
           </p>
           <OptInModal embedded />
           <div className="cta-note">
             Lunes 28 de septiembre, 18h (ARG)
-            <span>(No se te pedirá tarjeta)</span>
           </div>
           <div className="details">
             <div>
@@ -222,8 +207,8 @@ function App() {
             Tu negocio crece, pero cada vez <span className="serif">depende más de vos.</span>
           </h2>
           <p>
-            Sabés vender. Sabés generar clientes. Incluso quizás ya lograste hacer $10K, $20K, $50K o
-            más al mes.
+            Sabés vender. Sabés generar clientes. Incluso quizás ya tenés un negocio que genera
+            ingresos de forma consistente.
           </p>
           <p>
             Marketing trabaja por un lado. Ventas por otro. Producto por otro. Y nadie conecta toda
@@ -297,10 +282,10 @@ function App() {
             <div className="ex">
               <div className="n">01</div>
               <div>
-                <h3>Marketing deja de accionar sin claridad.</h3>
+                <h3>Marketing deja de accionar sin claridad</h3>
                 <p>Hoy estás generando contenido y esperando a que funcione.</p>
                 <p>
-                  Después del cambio, vas a tener una conexión en marketing y ventas. Ventas
+                  Después del cambio, vas a tener una conexión entre marketing y ventas. Ventas
                   devuelve información a Marketing sobre qué leads compran, qué objeciones tienen y
                   qué los hace confiar.
                 </p>
@@ -367,7 +352,6 @@ function App() {
             <div key={caso} className="case-copy">
               <p className="case-name">{CASOS[caso].name}</p>
               {CASOS[caso].role && <p className="case-role">{CASOS[caso].role}</p>}
-              {CASOS[caso].result && <p className="case-result">{CASOS[caso].result}</p>}
             </div>
             <div className="case-dots">
               {CASOS.map((item, index) => (
@@ -395,8 +379,7 @@ function App() {
               <span className="mono role">Founder · Aumenta tu valor</span>
               <h3>Juan Carrizo</h3>
               <p>
-                Escaló su propio negocio de infoproductos a +$200K/mes con un equipo de solo 5
-                personas, sin depender de lanzamientos ni contenido diario.
+                Escaló su propio negocio de infoproductos con un equipo de solo 5 personas, sin depender de lanzamientos ni contenido diario.
               </p>
               <p>
                 Durante los últimos 2 años, construyó una infraestructura de marketing, ventas,

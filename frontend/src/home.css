@@ -646,8 +646,7 @@
   font-weight: 700;
 }
 
-.home .case-role,
-.home .case-result {
+.home .case-role {
   margin: 6px auto 0;
   max-width: 460px;
   color: var(--muted);
