@@ -13,13 +13,6 @@ export const landing = {
     subtitleAntes: 'En',
     subtitleDespues:
       'te muestro cómo conectar marketing, ventas, producto y sistemas para que cada acción de tu negocio genere más resultados.',
-    aviso:
-      'Para recibir el recurso tenés que hacer los dos pasos: entrar al grupo de WhatsApp y agendar el evento.',
-    whatsappTitle: 'Entrá al grupo de WhatsApp',
-    whatsappCta: 'Entrar al grupo',
-    calendarTitle: 'Agendá el evento',
-    calendarFallback: 'En breve te confirmamos la fecha por el grupo de WhatsApp.',
-    calendarCta: 'Agregar a Google Calendar',
   },
   copyright: '© 2026 Aumenta Tu Valor · Todos los derechos reservados',
 }

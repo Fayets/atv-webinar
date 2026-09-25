@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { calendarUrl, getWebinar, whatsappUrl } from '../data/api.js'
+import { getWebinar } from '../data/api.js'
 import { readLead } from '../lib/leadSession.js'
 import { landing } from '../content/equipo.js'
 import { url } from '../lib/routes.js'
-import { cargarOps, trackOps } from '../lib/opsTracking.js'
+import { cargarOps } from '../lib/opsTracking.js'
 
 const AR = 'America/Argentina/Buenos_Aires'
 
@@ -65,7 +65,6 @@ const PREVIEW =
 function ThankYou() {
   const [lead] = useState(() => readLead() || (PREVIEW ? { id: 0, nombre: 'Preview' } : null))
   const [webinar, setWebinar] = useState(null)
-  const [hechos, setHechos] = useState({ grupo: false, agenda: false })
   const [ahora, setAhora] = useState(() => Date.now())
   const copy = landing.gracias
 
@@ -99,19 +98,12 @@ function ThankYou() {
   const [headline, ...restoTitulo] = copy.title.split('. ')
   const bajadaTitulo = restoTitulo.join('. ')
 
-  const cuandoFalta =
-    hechos.grupo && !hechos.agenda
-      ? 'Te falta agendar el evento'
-      : !hechos.grupo && hechos.agenda
-        ? 'Te falta entrar al grupo de WhatsApp'
-        : null
-
   return (
     <div className="shell ty-page">
-      <header className={cuandoFalta ? 'ty-bar pending' : 'ty-bar'}>
+      <header className="ty-bar">
         <span>
           <i className="ty-dot" aria-hidden="true" />
-          {cuandoFalta || copy.badge}
+          {copy.badge}
         </span>
         <span>
           {restante
@@ -156,64 +148,6 @@ function ThankYou() {
           </div>
         </dl>
 
-        <section className="ty-next">
-          <p className="ty-kicker">Dos pasos. Un minuto</p>
-          <h2>
-            Hacé esto <em>antes de cerrar</em> la pestaña.
-          </h2>
-          <p className="ty-next-sub">{copy.aviso}</p>
-
-          <ol className="ty-cards">
-            <li className={hechos.grupo ? 'ty-card done' : 'ty-card'}>
-              <div className="ty-card-row">
-                <span className="ty-num">01</span>
-                <div>
-                  <h3>{copy.whatsappTitle}</h3>
-                </div>
-                <a
-                  className="ty-btn"
-                  href={whatsappUrl(lead.id)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => {
-                    setHechos((actual) => ({ ...actual, grupo: true }))
-                    trackOps('whatsapp')
-                  }}
-                >
-                  {copy.whatsappCta}
-                  <span aria-hidden="true">→</span>
-                </a>
-              </div>
-            </li>
-
-            <li className={hechos.agenda ? 'ty-card done' : 'ty-card'}>
-              <div className="ty-card-row">
-                <span className="ty-num">02</span>
-                <div>
-                  <h3>{copy.calendarTitle}</h3>
-                  <p>
-                    {when
-                      ? `${when.day} · ${when.time}`
-                      : copy.calendarFallback}
-                  </p>
-                </div>
-                <a
-                  className="ty-btn ty-btn-ghost"
-                  href={calendarUrl(lead.id, 'google')}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => {
-                    setHechos((actual) => ({ ...actual, agenda: true }))
-                    trackOps('calendario')
-                  }}
-                >
-                  {copy.calendarCta}
-                  <span aria-hidden="true">→</span>
-                </a>
-              </div>
-            </li>
-          </ol>
-        </section>
       </main>
 
       <footer className="site-footer">

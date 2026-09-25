@@ -67,14 +67,6 @@ export async function createLead(payload) {
   })
 }
 
-export function whatsappUrl(leadId) {
-  return `${API_BASE}/leads/${leadId}/whatsapp`
-}
-
-export function calendarUrl(leadId, provider = 'google') {
-  return `${API_BASE}/leads/${leadId}/calendar?provider=${provider}`
-}
-
 export async function getWebinar() {
   return request('/webinar/')
 }

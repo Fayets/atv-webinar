@@ -484,3 +484,44 @@
 
   
 }
+
+/* --- Landing solo formulario: todo negro, sin brillos, el formulario centrado. --- */
+
+.home.solo-form {
+  --bg: #000;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+}
+
+.home.solo-form .hero {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px 24px;
+  background: none;
+}
+
+.home.solo-form .hero-optin {
+  width: 100%;
+  margin: 0;
+}
+
+.home.solo-form .legal-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  padding: 0 16px 24px;
+  font-size: 12px;
+}
+
+.home.solo-form .legal-links a {
+  color: var(--dim);
+  text-decoration: none;
+}
+
+.home.solo-form .legal-links a:hover {
+  color: var(--text);
+}
