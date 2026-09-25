@@ -4,17 +4,6 @@ import { visitaNueva } from './lib/visita.js'
 import OptInModal from './components/OptInModal.jsx'
 import { url } from './lib/routes.js'
 import atvMark from './assets/atv-mark.jpg'
-import igSeba from './assets/ig-seba.png'
-import igJuano from './assets/ig-juano.jpg'
-import igFacu from './assets/ig-facu.png'
-import igVirola from './assets/ig-virola.png'
-import igJorge from './assets/ig-jorge.png'
-import igValentino from './assets/ig-valentino.jpg'
-import igCris from './assets/ig-cris.jpg'
-import igSanti from './assets/ig-santi.jpg'
-import igNico from './assets/ig-nico.jpg'
-import igPatric from './assets/ig-patric.png'
-import igSebastian from './assets/ig-sebastian.jpg'
 import founder from './assets/founder.jpg'
 import CompoundDiagram from './components/CompoundDiagram.jsx'
 import './home.css'
@@ -36,97 +25,8 @@ function formatCountdown(now) {
   }
 }
 
-const CASOS = [
-  {
-    src: igSeba,
-    name: 'Sebas Nájera',
-    alt: 'Instagram de Sebas Nájera',
-    role: 'Infoproductor · Nicho Automatizaciones de YouTube',
-  },
-  {
-    src: igCris,
-    name: 'Cris Gonzalez',
-    alt: 'Instagram de Cris Gonzalez',
-    role: (
-      <>
-        Experto en infoproducto de <strong>Sebas Nájera</strong> (@soysebasnajera)
-      </>
-    ),
-  },
-  {
-    src: igJuano,
-    name: 'Juano Baquero',
-    alt: 'Instagram de Juano Baquero',
-    role: 'Infoproductor · Nicho Automatizaciones de YouTube',
-  },
-  {
-    src: igJorge,
-    name: 'Jorge Quesada',
-    alt: 'Instagram de Jorge Quesada',
-    role: (
-      <>
-        Experto en infoproducto de <strong>Juano Baquero</strong> (@juano.yt)
-      </>
-    ),
-  },
-  {
-    src: igSanti,
-    name: 'Santiago Molina',
-    alt: 'Instagram de Santiago Molina',
-    role: (
-      <>
-        Experto en infoproducto de <strong>Juano Baquero</strong> (@juano.yt)
-      </>
-    ),
-  },
-  {
-    src: igFacu,
-    name: 'Facundo Martínez',
-    alt: 'Instagram de Facundo Martínez',
-    role: 'Experto en infoproductos',
-  },
-  {
-    src: igVirola,
-    name: 'Juan Antonio Virola',
-    alt: 'Instagram de Juan Antonio Virola',
-    role: 'Dueño de agencia',
-  },
-  {
-    src: igValentino,
-    name: 'Valentino Babino',
-    alt: 'Instagram de Valentino Babino',
-    role: 'Experto en infoproductos',
-  },
-  {
-    src: igNico,
-    name: 'Nicolas Martin',
-    alt: 'Instagram de Nicolas Martin',
-    role: 'Experto en infoproductos',
-  },
-  {
-    src: igPatric,
-    name: 'Patric Hlosta',
-    alt: 'Instagram de Patric Hlosta',
-    role: 'Experto en infoproductos',
-  },
-  {
-    src: igSebastian,
-    name: 'Sebastián Betancourt',
-    alt: 'Instagram de Sebastián Betancourt',
-    role: 'Dueño de negocio',
-  },
-]
-
-function desplazamiento(index, activo, total) {
-  let diff = index - activo
-  if (diff > total / 2) diff -= total
-  if (diff < -total / 2) diff += total
-  return diff
-}
-
 function App() {
   const [countdown, setCountdown] = useState(() => formatCountdown(Date.now()))
-  const [caso, setCaso] = useState(0)
 
   useEffect(() => {
     if (!visitaNueva()) return
@@ -135,11 +35,6 @@ function App() {
 
   useEffect(() => {
     const timer = setInterval(() => setCountdown(formatCountdown(Date.now())), 1000)
-    return () => clearInterval(timer)
-  }, [])
-
-  useEffect(() => {
-    const timer = setInterval(() => setCaso((actual) => (actual + 1) % CASOS.length), 4000)
     return () => clearInterval(timer)
   }, [])
 
@@ -327,49 +222,6 @@ function App() {
       </section>
 
       <section className="part">
-        <div className="wide body">
-          <div className="part-label mono">Parte IV · A quiénes ayudamos</div>
-          <h2>
-            Casos de éxito <span className="serif">(últimos 30 días)</span>
-          </h2>
-          <div className="cases">
-            <div className="case-arc">
-              {CASOS.map((item, index) => {
-                const offset = desplazamiento(index, caso, CASOS.length)
-                return (
-                  <button
-                    key={item.name}
-                    type="button"
-                    className={offset === 0 ? 'case-card on' : 'case-card'}
-                    style={{ '--offset': offset }}
-                    aria-label={item.name}
-                    onClick={() => setCaso(index)}
-                  >
-                    <img src={item.src} alt="" />
-                  </button>
-                )
-              })}
-            </div>
-            <div key={caso} className="case-copy">
-              <p className="case-name">{CASOS[caso].name}</p>
-              {CASOS[caso].role && <p className="case-role">{CASOS[caso].role}</p>}
-            </div>
-            <div className="case-dots">
-              {CASOS.map((item, index) => (
-                <button
-                  key={item.name}
-                  type="button"
-                  className={index === caso ? 'on' : ''}
-                  aria-label={item.name}
-                  onClick={() => setCaso(index)}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="part">
         <div className="wide">
           <div className="part-label mono host-label">Tu anfitrión</div>
           <div className="host">
@@ -446,9 +298,8 @@ function App() {
             <a href={url('/privacidad')}>Política de privacidad</a>
           </nav>
           <p className="disclaimer">
-            Los casos que mostramos son resultados reales de personas concretas, no una promesa de
-            lo que vas a conseguir vos: tu resultado depende de tu negocio, tu punto de partida y lo
-            que hagas con la información. Este sitio no forma parte de Facebook ni de Meta
+            Los resultados mencionados no son una promesa de lo que vas a conseguir vos: tu
+            resultado depende de tu negocio, tu punto de partida y lo que hagas con la información. Este sitio no forma parte de Facebook ni de Meta
             Platforms, Inc., y no está respaldado por Meta de ninguna manera. Facebook es una marca
             registrada de Meta Platforms, Inc.
           </p>
