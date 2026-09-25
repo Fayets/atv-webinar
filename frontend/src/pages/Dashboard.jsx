@@ -26,7 +26,7 @@ const STATUS_FILTERS = [
   ['no-calificado', 'No calificados'],
   ['wa', 'Entraron al grupo'],
   ['no-wa', 'No entraron'],
-  ['cal', 'Agendaron el webinar'],
+  ['cal', 'Agendaron el evento'],
   ['no-cal', 'No agendaron'],
 ]
 
@@ -675,7 +675,7 @@ function Dashboard() {
             </section>
 
             <section className="panel-card">
-              <h3>Agenda del webinar</h3>
+              <h3>Agenda del evento</h3>
               <ul className="panel-list">
                 <li>
                   <span>Clicks</span>

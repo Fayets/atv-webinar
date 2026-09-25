@@ -36,7 +36,7 @@ class WebinarServices:
         starts_at = self._starts_at()
         duration = config("WEBINAR_DURATION_MIN", default=90, cast=int)
         return WebinarConfigResponse(
-            title=config("WEBINAR_TITLE", default="Webinar · Equipo A-players"),
+            title=config("WEBINAR_TITLE", default="Evento en vivo · Aumenta Tu Valor"),
             details=config("WEBINAR_DETAILS", default=""),
             location=config("WEBINAR_URL", default=""),
             starts_at=starts_at.isoformat(),

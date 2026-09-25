@@ -3,6 +3,7 @@ import { recordVisit } from './data/api.js'
 import { visitaNueva } from './lib/visita.js'
 import OptInModal from './components/OptInModal.jsx'
 import { url } from './lib/routes.js'
+import { landing } from './content/equipo.js'
 import atvMark from './assets/atv-mark.jpg'
 import './home.css'
 
@@ -62,7 +63,7 @@ function App() {
       <section className="hero" id="inicio">
         <div className="wide">
           <h1>
-            El sistema de apalancamiento que me permitió escalar mi negocio a <em>+200k/mes</em>.
+            El sistema de apalancamiento que me permitió escalar mi negocio a <em>200k/m</em>
           </h1>
           <p className="sub">
             Ya no basta con correr ads y subir contenido a diario. Eso lo puede hacer vos y tu
@@ -78,17 +79,11 @@ function App() {
           <a href="#inicio" className="logo">
             <img src={atvMark} alt="Aumenta Tu Valor" />
           </a>
-          <span>© 2026 Aumenta Tu Valor. Todos los derechos reservados.</span>
+          <span>{landing.copyright}</span>
           <nav>
             <a href={url('/terminos')}>Términos y condiciones</a>
             <a href={url('/privacidad')}>Política de privacidad</a>
           </nav>
-          <p className="disclaimer">
-            Los resultados mencionados no son una promesa de lo que vas a conseguir vos: tu
-            resultado depende de tu negocio, tu punto de partida y lo que hagas con la información. Este sitio no forma parte de Facebook ni de Meta
-            Platforms, Inc., y no está respaldado por Meta de ninguna manera. Facebook es una marca
-            registrada de Meta Platforms, Inc.
-          </p>
         </div>
       </footer>
     </div>

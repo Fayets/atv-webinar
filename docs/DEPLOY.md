@@ -72,15 +72,12 @@ SECRET=<el mismo de atv-ecosystem>
 
 FRONTEND_ORIGIN=https://join.atvos.io
 
-VSL_URL=https://vimeo.com/1210850489
-VSL_VIMEO_ID=1210850489
-
 WHATSAPP_GROUP_URL=<link real del grupo>
 
-WEBINAR_TITLE=Webinar · Sistema de equipo A-players
+WEBINAR_TITLE=Evento en vivo · Aumenta Tu Valor
 WEBINAR_STARTS_AT=<fecha real, ISO con offset>
 WEBINAR_DURATION_MIN=90
-WEBINAR_DETAILS=Cómo instalar el sistema de equipo A-players detrás de $200k/mes.
+WEBINAR_DETAILS=<datos del Zoom>
 WEBINAR_URL=https://join.atvos.io
 ```
 

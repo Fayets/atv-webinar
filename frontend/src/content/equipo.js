@@ -17,7 +17,7 @@ export const landing = {
       'Para recibir el recurso tenés que hacer los dos pasos: entrar al grupo de WhatsApp y agendar el evento.',
     whatsappTitle: 'Entrá al grupo de WhatsApp',
     whatsappCta: 'Entrar al grupo',
-    calendarTitle: 'Agendá el webinar',
+    calendarTitle: 'Agendá el evento',
     calendarFallback: 'En breve te confirmamos la fecha por el grupo de WhatsApp.',
     calendarCta: 'Agregar a Google Calendar',
   },

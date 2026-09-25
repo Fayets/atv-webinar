@@ -128,9 +128,3 @@ class WebinarConfigResponse(BaseModel):
     starts_at: str
     ends_at: str
     duration_min: int
-
-
-class VslConfigResponse(BaseModel):
-    url: str
-    vimeo_id: str
-    embed_src: str

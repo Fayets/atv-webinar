@@ -57,8 +57,13 @@ function faltan(startsAt, ahora) {
   }
 }
 
+// Solo en local (npm run dev): /ty-page?preview muestra la página sin haber pasado
+// por el formulario, para poder mirarla. En el build de producción no existe.
+const PREVIEW =
+  import.meta.env.DEV && new URLSearchParams(window.location.search).has('preview')
+
 function ThankYou() {
-  const [lead] = useState(readLead)
+  const [lead] = useState(() => readLead() || (PREVIEW ? { id: 0, nombre: 'Preview' } : null))
   const [webinar, setWebinar] = useState(null)
   const [hechos, setHechos] = useState({ grupo: false, agenda: false })
   const [ahora, setAhora] = useState(() => Date.now())
@@ -73,7 +78,7 @@ function ThankYou() {
     // un thank_you suyo sería un paso del embudo que nadie dio. No se deduplica por
     // sesión como la visita — recargar la página de gracias es raro, y si pasa el que
     // la recarga sí llegó hasta acá.
-    if (lead) cargarOps('ty')
+    if (lead && !PREVIEW) cargarOps('ty')
   }, [lead])
 
   useEffect(() => {
@@ -96,7 +101,7 @@ function ThankYou() {
 
   const cuandoFalta =
     hechos.grupo && !hechos.agenda
-      ? 'Te falta agendar el webinar'
+      ? 'Te falta agendar el evento'
       : !hechos.grupo && hechos.agenda
         ? 'Te falta entrar al grupo de WhatsApp'
         : null
@@ -147,7 +152,7 @@ function ThankYou() {
           </div>
           <div>
             <dt>Duración</dt>
-            <dd>90 minutos</dd>
+            <dd>{webinar ? `${webinar.duration_min} minutos` : '—'}</dd>
           </div>
         </dl>
 
