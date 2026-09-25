@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import atvLogo from '../assets/atv-logo.png'
+import '../dashboard.css'
 import {
   clearPin,
   deleteLead,

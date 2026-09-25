@@ -60,10 +60,6 @@ function withSession(options = {}) {
   }
 }
 
-export async function getVsl() {
-  return request('/vsl/')
-}
-
 export async function createLead(payload) {
   return request('/leads/', {
     method: 'POST',

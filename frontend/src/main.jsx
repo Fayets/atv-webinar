@@ -1,15 +1,17 @@
-import { StrictMode } from 'react'
+import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import './dashboard.css'
 import App from './App.jsx'
-import Dashboard from './pages/Dashboard.jsx'
 import ThankYou from './pages/ThankYou.jsx'
 import Legal from './pages/Legal.jsx'
 import { privacidad, terminos } from './content/legal.js'
 import { currentPath } from './lib/routes.js'
 import { cargarOps } from './lib/opsTracking.js'
 import { visitaNueva } from './lib/visita.js'
+
+// El dashboard es interno y vive solo en join.atvos.io: va en su propio chunk para
+// que el código y los textos del panel no viajen con la landing pública.
+const Dashboard = lazy(() => import('./pages/Dashboard.jsx'))
 
 const ROUTES = {
   '/dashboard': { component: Dashboard, title: 'Dashboard · Aumenta Tu Valor' },
@@ -36,6 +38,8 @@ if (route) document.title = route.title
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Page />
+    <Suspense fallback={null}>
+      <Page />
+    </Suspense>
   </StrictMode>,
 )
