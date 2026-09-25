@@ -1,4 +1,4 @@
-// Catálogo del quiz, replicado de atvos.io/acceso.
+// Catálogo del quiz, replicado de la landing anterior (atv-landing).
 // La regla de calificación vive en el backend (src/quiz.py); acá solo se renderiza.
 
 export const avatarOptions = [

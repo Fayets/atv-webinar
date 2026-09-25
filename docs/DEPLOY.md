@@ -1,7 +1,7 @@
 # Deploy en el VPS — join.atvos.io
 
 La landing vive en la raíz de **join.atvos.io** (registro A `join` → `72.60.244.220`,
-el VPS de Hostinger). Antes colgaba de `atvos.io/acceso`, que ahora redirige acá.
+el VPS de Hostinger).
 Los contenedores siguen en **8005** (backend) y **8085** (frontend); el nginx del host
 pone el dominio y el certificado adelante.
 
@@ -17,7 +17,7 @@ Dos datos tienen que estar cargados o la landing sale rota:
 ## 0. Verificar quién tiene los puertos
 
 En el repo, `atv-landing` y `atv-landing2` declaran los mismos 8005/8085. Antes de tocar
-nada hay que confirmar cuál está realmente en `/acceso`:
+nada hay que confirmar cuál tiene hoy el 8085:
 
 ```bash
 docker ps --format 'table {{.Names}}\t{{.Ports}}'
@@ -125,22 +125,19 @@ server {
 ln -s /etc/nginx/sites-available/join.atvos.io /etc/nginx/sites-enabled/ && nginx -t && systemctl reload nginx && certbot --nginx -d join.atvos.io
 ```
 
-## 6. Redirigir el link viejo
+## 6. Sacar /acceso de atvos.io
 
-Los anuncios y links que apuntan a `atvos.io/acceso` tienen que seguir llegando. En el
-server block de `atvos.io`, reemplazar el `location /acceso` que hoy hace proxy al 8085 por:
+La landing ya no vive en `atvos.io/acceso` y no queda redirección: todo pasa a
+`join.atvos.io`. En el server block de `atvos.io`, borrar el `location /acceso` (y
+cualquier `location /acceso/...`) que hace proxy al 8085:
 
-```nginx
-location ~ ^/acceso/?(.*)$ {
-    return 301 https://join.atvos.io/$1$is_args$args;
-}
+```bash
+grep -rn "acceso" /etc/nginx/sites-enabled/
 ```
 
 ```bash
 nginx -t && systemctl reload nginx
 ```
-
-El `$args` conserva los UTM y el `fbclid` de los anuncios.
 
 ## 7. Comprobar
 
@@ -148,18 +145,18 @@ El `$args` conserva los UTM y el `fbclid` de los anuncios.
 curl -s -o /dev/null -w '%{http_code}\n' https://join.atvos.io/
 curl -s https://join.atvos.io/api/webinar/
 curl -s https://join.atvos.io/api/auth/mode
-curl -s -o /dev/null -w '%{http_code} %{redirect_url}\n' 'https://atvos.io/acceso/?utm_source=test'
+curl -s -o /dev/null -w '%{http_code}\n' https://atvos.io/acceso/
 ```
 
 El tercero tiene que devolver `{"mode":"session"}`. Si dice `pin`, falta el `SECRET`.
-El último tiene que dar `301 https://join.atvos.io/?utm_source=test`.
+El último ya no tiene que llegar a la landing (lo que responda `atvos.io` para una ruta que no existe).
 
 Después, en el browser: `join.atvos.io` (landing), completar el opt-in hasta
 `join.atvos.io/ty-page`, y `join.atvos.io/dashboard` (tiene que entrar con tu usuario
 del ecosistema, sin pedir PIN).
 
-Fuera de este repo: el tile **ATV LANDING** de atv-ecosystem apunta a
-`atvos.io/acceso/dashboard`; pasarlo a `https://join.atvos.io/dashboard`.
+Fuera de este repo: el tile **ATV LANDING** de atv-ecosystem tiene que apuntar a
+`https://join.atvos.io/dashboard`, igual que los anuncios a `https://join.atvos.io/`.
 
 ## Volver atrás
 
