@@ -17,6 +17,7 @@ from decouple import config
 from fastapi import HTTPException
 
 SESSION_COOKIE_NAME = "ecosystem_session"
+SESSION_MAX_AGE_SECONDS = 7 * 24 * 3600
 
 
 class AuthServices:
@@ -28,9 +29,14 @@ class AuthServices:
 
     # --- Sesión del ecosistema ---
 
-    def verify_session_token(self, token: str | None) -> str | None:
-        secret = self._secret()
-        if not token or not secret:
+    def _sign(self, payload: str) -> str:
+        return hmac.new(
+            self._secret().encode("utf-8"), payload.encode("utf-8"), hashlib.sha256
+        ).hexdigest()
+
+    def _decode(self, token: str | None) -> dict | None:
+        """Payload de un token firmado con SECRET y no vencido, o None."""
+        if not token or not self._secret():
             return None
 
         try:
@@ -39,10 +45,7 @@ class AuthServices:
         except (ValueError, UnicodeDecodeError):
             return None
 
-        expected = hmac.new(
-            secret.encode("utf-8"), payload.encode("utf-8"), hashlib.sha256
-        ).hexdigest()
-        if not hmac.compare_digest(expected, sig):
+        if not hmac.compare_digest(self._sign(payload), sig):
             return None
 
         try:
@@ -51,12 +54,34 @@ class AuthServices:
             return None
 
         exp = data.get("exp")
-        username = data.get("u")
-        if not isinstance(exp, int) or not isinstance(username, str):
+        if not isinstance(exp, int) or not isinstance(data.get("u"), str):
             return None
         if exp < int(time.time()):
             return None
-        return username
+        return data
+
+    def verify_session_token(self, token: str | None) -> str | None:
+        data = self._decode(token)
+        return data["u"] if data else None
+
+    # --- Pase desde el ecosistema ---
+    #
+    # La cookie del ecosistema vive en .atvos.io y el navegador no la manda a otro
+    # dominio. El tile pasa por ecosystem.atvos.io/api/auth/handoff, que emite un pase
+    # de 60 s (mismo formato y SECRET, con "p": "handoff"); acá se canjea por una
+    # sesión propia de este dominio con el mismo formato que la del ecosistema.
+
+    def exchange_handoff(self, token: str | None) -> str | None:
+        data = self._decode(token)
+        if not data or data.get("p") != "handoff":
+            return None
+        return data["u"]
+
+    def create_session_token(self, username: str) -> str:
+        exp = int(time.time()) + SESSION_MAX_AGE_SECONDS
+        payload = json.dumps({"u": username, "exp": exp}, separators=(",", ":"))
+        raw = f"{payload}.{self._sign(payload)}".encode("utf-8")
+        return base64.urlsafe_b64encode(raw).decode("ascii")
 
     # --- PIN (solo cuando no hay SECRET) ---
 

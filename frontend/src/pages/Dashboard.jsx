@@ -141,6 +141,14 @@ function DailyChart({ items }) {
 }
 
 const ECOSYSTEM_URL = 'https://ecosystem.atvos.io'
+// Sin sesión en este dominio se pide un pase al ecosistema: si estás logueado allá
+// vuelve solo con la sesión puesta; si no, te deja en su login. Si ya venimos de ese
+// pase y aun así no hay sesión, se corta acá para no quedar rebotando.
+const HANDOFF_URL = `${ECOSYSTEM_URL}/api/auth/handoff?app=landing`
+const VIENE_DEL_PASE = new URLSearchParams(window.location.search).has('desde')
+function pedirPase() {
+  window.location.replace(VIENE_DEL_PASE ? ECOSYSTEM_URL : HANDOFF_URL)
+}
 
 function Dashboard() {
   // 'checking' hasta saber si manda la sesión del ecosistema o el PIN local.
@@ -176,7 +184,7 @@ function Dashboard() {
         setGate('session')
         getSession()
           .then(() => vivo && setUnlocked(true))
-          .catch(() => window.location.replace(ECOSYSTEM_URL))
+          .catch(pedirPase)
       })
       .catch(() => {
         if (!vivo) return
@@ -199,7 +207,7 @@ function Dashboard() {
       if (err.status === 401) {
         clearPin()
         setUnlocked(false)
-        if (gate === 'session') window.location.replace(ECOSYSTEM_URL)
+        if (gate === 'session') pedirPase()
       } else {
         setError(err.message)
       }
