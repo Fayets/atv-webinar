@@ -63,7 +63,7 @@ function App() {
       <section className="hero" id="inicio">
         <div className="wide">
           <h1>
-            El sistema de apalancamiento que me permitió escalar mi negocio con poco contenido y <em>sin ads</em>
+            El sistema de apalancamiento que me permitió escalar mi negocio con <em>poco contenido</em> y <em>sin ads</em>
           </h1>
           <p className="sub">
             Ya no basta con correr ads y subir contenido a diario. Eso lo puede hacer vos y tu
