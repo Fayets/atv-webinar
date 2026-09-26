@@ -15,6 +15,8 @@ import {
 import { bottleneckAreas, areaField, avatarOptions, revenueOptions } from '../content/quiz.js'
 import PinGate from './PinGate.jsx'
 
+const PAGE_SIZE = 12
+
 const RESPONSABLES = ['Lucas', 'Jero']
 
 const STATUS_FILTERS = [
@@ -160,6 +162,7 @@ function Dashboard() {
   const [toFilter, setToFilter] = useState('')
 
   const [vista, setVista] = useState('registros')
+  const [page, setPage] = useState(1)
   const [selectedId, setSelectedId] = useState(null)
   const [noteDraft, setNoteDraft] = useState('')
 
@@ -272,6 +275,15 @@ function Dashboard() {
       }
     })
   }, [leads, search, statusFilter, areaFilter, avatarFilter, revenueFilter, fromFilter, toFilter])
+
+  // Cada cambio de filtro vuelve a la primera página.
+  useEffect(() => {
+    setPage(1)
+  }, [search, statusFilter, areaFilter, avatarFilter, revenueFilter, fromFilter, toFilter])
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const currentPage = Math.min(page, totalPages)
+  const pageLeads = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
 
   async function wipeVisits() {
     if (!window.confirm('¿Borrar todos los ingresos a la web? No se puede deshacer.')) return
@@ -552,7 +564,7 @@ function Dashboard() {
                   </td>
                 </tr>
               ) : (
-                filtered.map((lead) => (
+                pageLeads.map((lead) => (
                   <tr key={lead.id} onClick={() => openLead(lead)} className="row">
                     <td>
                       <strong>{lead.nombre}</strong>
@@ -614,6 +626,31 @@ function Dashboard() {
             </tbody>
           </table>
         </div>
+
+        {totalPages > 1 ? (
+          <div className="pager">
+            <button
+              type="button"
+              className="btn-secondary"
+              disabled={currentPage === 1}
+              onClick={() => setPage(currentPage - 1)}
+            >
+              ← Anterior
+            </button>
+            <span className="muted">
+              Página {currentPage} de {totalPages} · {(currentPage - 1) * PAGE_SIZE + 1}–
+              {Math.min(currentPage * PAGE_SIZE, filtered.length)} de {filtered.length}
+            </span>
+            <button
+              type="button"
+              className="btn-secondary"
+              disabled={currentPage === totalPages}
+              onClick={() => setPage(currentPage + 1)}
+            >
+              Siguiente →
+            </button>
+          </div>
+        ) : null}
       </section>
       ) : null}
       </main>
