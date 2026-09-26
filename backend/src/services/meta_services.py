@@ -3,6 +3,9 @@
 El navegador manda el evento por el pixel y el backend manda el mismo evento
 por acá, los dos con el mismo `event_id`: así Meta los deduplica y cuenta uno
 solo, pero si el navegador tiene bloqueador el server igual llega.
+
+Puede haber un segundo pixel (META_PIXEL_ID_2 + META_CAPI_TOKEN_2): cada evento
+se manda a todos los configurados, con el mismo `event_id` en cada uno.
 """
 
 import hashlib
@@ -35,7 +38,16 @@ class MetaServices:
         return str(config("META_CAPI_TOKEN", default="")).strip()
 
     def configured(self) -> bool:
-        return bool(self.pixel_id() and self._token())
+        return bool(self.pixels())
+
+    def pixels(self) -> list[tuple[str, str]]:
+        """Pares (pixel, token) completos: el principal y, si está, el segundo."""
+        pares = [(self.pixel_id(), self._token())]
+        pares.append((
+            str(config("META_PIXEL_ID_2", default="")).strip(),
+            str(config("META_CAPI_TOKEN_2", default="")).strip(),
+        ))
+        return [(pixel, token) for pixel, token in pares if pixel and token]
 
     async def send_event(
         self,
@@ -54,7 +66,7 @@ class MetaServices:
     ) -> dict:
         if not self.configured():
             # Sin credenciales no es un error del visitante: se ignora en silencio.
-            return {"ok": False, "skipped": "META_PIXEL_ID o META_CAPI_TOKEN sin configurar"}
+            return {"ok": False, "skipped": "ningún pixel con token configurado"}
 
         user_data: dict = {}
         if (em := _hash(email)):
@@ -87,15 +99,19 @@ class MetaServices:
         if (test_code := str(config("META_TEST_EVENT_CODE", default="")).strip()):
             payload["test_event_code"] = test_code
 
-        url = f"https://graph.facebook.com/{GRAPH_VERSION}/{self.pixel_id()}/events"
-        try:
-            async with httpx.AsyncClient(timeout=10) as client:
-                response = await client.post(
-                    url, params={"access_token": self._token()}, json=payload
-                )
-        except httpx.HTTPError as error:
-            raise HTTPException(status_code=502, detail=f"No se pudo hablar con Meta: {error}")
+        resultados = {}
+        async with httpx.AsyncClient(timeout=10) as client:
+            for pixel, token in self.pixels():
+                url = f"https://graph.facebook.com/{GRAPH_VERSION}/{pixel}/events"
+                try:
+                    response = await client.post(url, params={"access_token": token}, json=payload)
+                    body = response.json()
+                except (httpx.HTTPError, ValueError) as error:
+                    # Si un pixel falla, el otro igual recibe el evento.
+                    body = {"error": str(error)}
+                print(f"[CAPI] {pixel} · {event_name} · {body}", flush=True)
+                resultados[pixel] = body
 
-        body = response.json()
-        print(f"[CAPI] {event_name} · {response.status_code} · {body}", flush=True)
-        return body
+        if all("error" in body for body in resultados.values()):
+            raise HTTPException(status_code=502, detail=f"No se pudo hablar con Meta: {resultados}")
+        return resultados
