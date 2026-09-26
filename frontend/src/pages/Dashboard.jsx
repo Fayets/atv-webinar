@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import atvLogo from '../assets/atv-logo.png'
+import atvLogo from '../assets/atv-logo.webp'
+import '../dashboard.css'
 import {
   clearPin,
   deleteLead,
@@ -364,7 +365,7 @@ function Dashboard() {
     <div className="dash">
       <nav className="dash-nav">
         <div className="nav-left">
-          <img className="nav-logo" src={atvLogo} alt="Aumenta Tu Valor" />
+          <img className="nav-logo" src={atvLogo} alt="Aumenta Tu Valor" width="400" height="128" />
           <div className="nav-titles">
             <h1>Landing webinar</h1>
             <p>Registros del opt-in, paso al grupo y agenda</p>

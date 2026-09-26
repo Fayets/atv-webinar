@@ -3,8 +3,8 @@ import { recordVisit } from './data/api.js'
 import { visitaNueva } from './lib/visita.js'
 import OptInModal from './components/OptInModal.jsx'
 import { url } from './lib/routes.js'
-import atvMark from './assets/atv-mark.jpg'
-import founder from './assets/founder.jpg'
+import atvMark from './assets/atv-mark.webp'
+import founder from './assets/founder.webp'
 import CompoundDiagram from './components/CompoundDiagram.jsx'
 import './home.css'
 
@@ -30,7 +30,11 @@ function App() {
 
   useEffect(() => {
     if (!visitaNueva()) return
-    recordVisit().catch(() => {})
+    // La visita no hace falta para pintar: se manda cuando el navegador queda
+    // libre, fuera del camino crítico de la carga.
+    const enviar = () => recordVisit().catch(() => {})
+    if ('requestIdleCallback' in window) window.requestIdleCallback(enviar, { timeout: 3000 })
+    else setTimeout(enviar, 1500)
   }, [])
 
   useEffect(() => {
@@ -47,7 +51,7 @@ function App() {
       <header className="topbar">
         <div className="wide">
           <a href="#inicio" className="logo">
-            <img src={atvMark} alt="Aumenta Tu Valor" />
+            <img src={atvMark} alt="Aumenta Tu Valor" width="120" height="140" />
           </a>
           <div className="live">
             <span className="dot" />
@@ -226,7 +230,7 @@ function App() {
           <div className="part-label mono host-label">Tu anfitrión</div>
           <div className="host">
             <div className="avatar">
-              <img src={founder} alt="" />
+              <img src={founder} alt="" width="600" height="797" loading="lazy" decoding="async" />
             </div>
             <div>
               <span className="mono role">Founder · Aumenta tu valor</span>
@@ -290,7 +294,7 @@ function App() {
       <footer>
         <div className="wide">
           <a href="#inicio" className="logo">
-            <img src={atvMark} alt="Aumenta Tu Valor" />
+            <img src={atvMark} alt="Aumenta Tu Valor" width="120" height="140" />
           </a>
           <span>© 2026 Aumenta Tu Valor. Todos los derechos reservados.</span>
           <nav>
