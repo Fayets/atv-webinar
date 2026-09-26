@@ -9,8 +9,10 @@ import hero900 from './assets/v10/hero-900.webp'
 import hero640 from './assets/v10/hero-640.webp'
 import sistemaMarketing from './assets/v10/sistema-marketing.webp'
 import sistemaMarketing640 from './assets/v10/sistema-marketing-640.webp'
+import sistemaMarketing800 from './assets/v10/sistema-marketing-800.webp'
 import sistemaVentas from './assets/v10/sistema-ventas.webp'
 import sistemaVentas640 from './assets/v10/sistema-ventas-640.webp'
+import sistemaVentas800 from './assets/v10/sistema-ventas-800.webp'
 import escaleraUpsells from './assets/v10/escalera-upsells.webp'
 import ecosistemaContenido from './assets/v10/ecosistema-contenido-300.webp'
 import laboratorioContenido from './assets/v10/laboratorio-contenido-300.webp'
@@ -36,6 +38,7 @@ const SISTEMAS = [
   {
     img: sistemaMarketing,
     img640: sistemaMarketing640,
+    img800: sistemaMarketing800,
     alt: 'Sistema de marketing orgánico',
     titulo: 'Marketing orgánico que genera +$200k/mes',
     texto: (
@@ -48,6 +51,7 @@ const SISTEMAS = [
   {
     img: sistemaVentas,
     img640: sistemaVentas640,
+    img800: sistemaVentas800,
     alt: 'Procesos de venta',
     titulo: 'Procesos de venta $200k/mes',
     texto: (
@@ -309,7 +313,7 @@ function App() {
                 <button type="button" className="take-img" data-goform aria-label="Desbloquear recurso">
                   <img
                     src={s.img640 ?? s.img}
-                    srcSet={s.img640 ? `${s.img640} 640w, ${s.img} 1280w` : undefined}
+                    srcSet={s.img640 ? `${s.img640} 640w, ${s.img800} 800w, ${s.img} 1280w` : undefined}
                     sizes="(max-width: 900px) calc(100vw - 40px), 560px"
                     alt={s.alt}
                     loading="lazy"

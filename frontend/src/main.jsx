@@ -1,5 +1,6 @@
 import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
+import './fonts/fonts.css'
 import './index.css'
 import App from './App.jsx'
 import { currentPath } from './lib/routes.js'
