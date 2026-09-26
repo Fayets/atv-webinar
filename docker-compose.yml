@@ -4,6 +4,11 @@ services:
     container_name: atv-webinar-backend
     environment:
       PYTHONUNBUFFERED: "1"
+      # Fijo a propósito: sin esto, si al .env le falta DB_PROVIDER el backend cae a
+      # SQLite dentro del contenedor y cada `up --build` borra los registros. Con
+      # postgres forzado, si faltan las credenciales de Neon el backend no arranca
+      # y se ve enseguida.
+      DB_PROVIDER: postgres
     env_file:
       - ./backend/.env
     ports:
