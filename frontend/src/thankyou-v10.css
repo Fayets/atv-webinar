@@ -1,0 +1,53 @@
+/* Página de gracias con el estilo blanco del home v10. Las reglas base viven en
+   index.css con colores oscuros; acá se pisan solo para .ty-page. */
+body:has(.ty-page){background:#fff}
+
+.shell.ty-page{
+  --ink:#0e0e0f; --ink-2:#3d3d42; --muted:#6f6f76; --line:#e9e7e3; --soft:#f7f6f4;
+  --red:#d9121a; --red-dark:#b00d14; --red-soft:#fdeceb; --green:#1a9e4b;
+  background:#fff; color:var(--ink); font-family:Satoshi,"Helvetica Neue",Arial,sans-serif;
+}
+.ty-page .atmosphere,.ty-page .grain{display:none}
+
+.ty-page .ty-bar{
+  background:rgba(255,255,255,.94); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line); color:var(--red); font-size:11.5px;
+}
+.ty-page .ty-bar.pending{background:var(--red-soft);border-bottom-color:var(--red)}
+.ty-page .ty-dot{background:var(--red);box-shadow:0 0 0 3px rgba(217,18,26,.15)}
+
+.ty-page .ty-hero::before{background:radial-gradient(ellipse at center,#fff2f1,transparent 70%)}
+.ty-page .ty-check{background:var(--red);box-shadow:0 0 0 10px rgba(217,18,26,.1),0 12px 34px rgba(217,18,26,.3)}
+.ty-page .ty h1{color:var(--ink);font-weight:700;letter-spacing:-.03em}
+.ty-page .ty-lead{color:var(--ink-2);font-family:Newsreader,Georgia,serif;font-style:italic;font-size:18px}
+.ty-page .ty-sub{color:var(--muted)}
+
+.ty-page .ty-facts{border-color:var(--line);border-radius:16px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 16px 44px rgba(20,10,10,.07)}
+.ty-page .ty-facts div{background:#fff}
+.ty-page .ty-facts div + div{border-left-color:var(--line)}
+.ty-page .ty-facts dt{color:var(--muted)}
+.ty-page .ty-facts dd{color:var(--ink);font-weight:700}
+
+.ty-page .ty-kicker{color:var(--red);font-weight:600}
+.ty-page .ty-next h2{color:var(--ink);font-weight:700}
+.ty-page .ty-next h2 em{color:var(--red)}
+.ty-page .ty-next-sub{color:var(--muted)}
+
+.ty-page .ty-card{
+  background:#fff; border:1.5px solid var(--red); border-radius:18px;
+  box-shadow:0 1px 2px rgba(0,0,0,.04),0 16px 44px rgba(20,10,10,.08);
+}
+.ty-page .ty-card.done{border-color:var(--green);box-shadow:0 0 0 4px rgba(26,158,75,.08),0 16px 44px rgba(20,10,10,.08)}
+.ty-page .ty-num{color:var(--red);font-weight:600}
+.ty-page .ty-card h3{color:var(--ink);font-weight:700}
+.ty-page .ty-card p{color:var(--muted)}
+.ty-page .ty-btn{background:var(--red);color:#fff;border-radius:12px;padding:13px 18px;font-weight:800;box-shadow:0 8px 22px rgba(217,18,26,.25)}
+.ty-page .ty-btn:hover{background:var(--red-dark)}
+.ty-page .ty-btn-ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
+.ty-page .ty-btn-ghost:hover{background:var(--soft);border-color:var(--ink)}
+.ty-page .ty-card.done .ty-btn,
+.ty-page .ty-card.done .ty-btn-ghost{background:var(--green);border-color:var(--green);color:#fff}
+
+.ty-page .site-footer{color:var(--muted);border-top:1px solid var(--line);padding-top:22px}
+.ty-page .footer-links a{color:var(--muted)}
+.ty-page .footer-links a:hover{color:var(--ink)}

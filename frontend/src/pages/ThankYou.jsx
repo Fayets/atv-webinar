@@ -4,6 +4,7 @@ import { readLead } from '../lib/leadSession.js'
 import { landing } from '../content/equipo.js'
 import { url } from '../lib/routes.js'
 import { cargarOps, trackOps } from '../lib/opsTracking.js'
+import '../thankyou-v10.css'
 
 const AR = 'America/Argentina/Buenos_Aires'
 
@@ -96,7 +97,7 @@ function ThankYou() {
 
   const cuandoFalta =
     hechos.grupo && !hechos.agenda
-      ? 'Te falta agendar el webinar'
+      ? 'Te falta agendar el evento'
       : !hechos.grupo && hechos.agenda
         ? 'Te falta entrar al grupo de WhatsApp'
         : null
@@ -147,7 +148,7 @@ function ThankYou() {
           </div>
           <div>
             <dt>Duración</dt>
-            <dd>90 minutos</dd>
+            <dd>{webinar ? `${webinar.duration_min} minutos` : '—'}</dd>
           </div>
         </dl>
 
