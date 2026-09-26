@@ -2,7 +2,8 @@
 // embudo: visita a la landing, optin, thank you, click de WhatsApp.
 //
 // El token es por webinar, no por cliente: si corremos otra edición hay que pedir el
-// suyo en ATV Ops → Integraciones. Va hardcodeado y commiteado a propósito: `frontend/.env` está en el .gitignore, así que una
+// suyo en ATV Ops → Integraciones. Va hardcodeado y commiteado a propósito, igual que
+// el pixel de Meta en index.html: `frontend/.env` está en el .gitignore, así que una
 // variable VITE_ existiría en la Mac y no en el VPS, y el tracking quedaría apagado en
 // producción sin que nadie se entere. Es un token de escritura de contadores, no una
 // credencial: viaja igual en el bundle.

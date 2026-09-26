@@ -10,6 +10,35 @@
       name="description"
       content="Evento en vivo el lunes 28 de septiembre: cómo conectar marketing, ventas, producto y sistemas para que cada acción de tu negocio genere más resultados."
     />
+    <!-- Meta Pixel 3946721055469868. Tiene que coincidir con META_PIXEL_ID del backend:
+         si no, el navegador y el servidor le hablan a píxeles distintos y se rompe la
+         deduplicación.
+         fbq se define y encola enseguida (PageView y cualquier evento quedan en cola),
+         pero el script de Meta se baja recién cuando la página terminó de cargar: es de
+         terceros y competía con la imagen principal. No se pierde ningún evento. -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[]}(window,document,'script');
+      fbq('init', '3946721055469868');
+      fbq('track', 'PageView');
+      (function () {
+        function cargar() {
+          var t = document.createElement('script');
+          t.async = true;
+          t.src = 'https://connect.facebook.net/en_US/fbevents.js';
+          document.head.appendChild(t);
+        }
+        if (document.readyState === 'complete') setTimeout(cargar, 0);
+        else window.addEventListener('load', function () { setTimeout(cargar, 0); }, { once: true });
+      })();
+    </script>
+    <noscript>
+      <img height="1" width="1" style="display:none" alt=""
+        src="https://www.facebook.com/tr?id=3946721055469868&ev=PageView&noscript=1" />
+    </noscript>
   </head>
   <body>
     <div id="root"></div>
