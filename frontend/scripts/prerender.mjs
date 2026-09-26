@@ -54,7 +54,19 @@ function armar(markup, { titulo, conBundle }) {
   return html
 }
 
-const landing = armar(renderLanding(), { conBundle: true })
+let landing = armar(renderLanding(), { conBundle: true })
+
+// La imagen principal (la de fetchpriority="high") se anuncia en el <head>: sin
+// esto el navegador la descubre recién al parsear el cuerpo y el LCP espera.
+const hero = landing.match(/<img[^>]*fetchpriority="high"[^>]*>/i)
+if (hero) {
+  const attr = (n) => (hero[0].match(new RegExp(`${n}="([^"]*)"`, 'i')) || [])[1]
+  const srcset = attr('srcset')
+  const sizes = attr('sizes')
+  const link = `<link rel="preload" as="image" fetchpriority="high"${srcset ? ` imagesrcset="${srcset}"` : ` href="${attr('src')}"`}${sizes ? ` imagesizes="${sizes}"` : ''} />`
+  landing = landing.replace('</title>', `</title>\n    ${link}`)
+  console.log('[prerender] preload de la imagen principal')
+}
 writeFileSync(indexPath, landing)
 console.log(`[prerender] index.html: ${(landing.length / 1024).toFixed(1)} KB`)
 

@@ -6,19 +6,22 @@ import { url } from './lib/routes.js'
 import logo from './assets/v10/logo.webp'
 import hero from './assets/v10/hero.webp'
 import hero900 from './assets/v10/hero-900.webp'
+import hero640 from './assets/v10/hero-640.webp'
 import sistemaMarketing from './assets/v10/sistema-marketing.webp'
+import sistemaMarketing640 from './assets/v10/sistema-marketing-640.webp'
 import sistemaVentas from './assets/v10/sistema-ventas.webp'
+import sistemaVentas640 from './assets/v10/sistema-ventas-640.webp'
 import escaleraUpsells from './assets/v10/escalera-upsells.webp'
-import ecosistemaContenido from './assets/v10/ecosistema-contenido.webp'
-import laboratorioContenido from './assets/v10/laboratorio-contenido.webp'
-import funnelSetter from './assets/v10/funnel-setter.webp'
-import mapaNegocio from './assets/v10/mapa-negocio.webp'
+import ecosistemaContenido from './assets/v10/ecosistema-contenido-300.webp'
+import laboratorioContenido from './assets/v10/laboratorio-contenido-300.webp'
+import funnelSetter from './assets/v10/funnel-setter-300.webp'
+import mapaNegocio from './assets/v10/mapa-negocio-300.webp'
 import sopsObjeciones from './assets/v10/sops-objeciones.webp'
 import metricasEmbudo from './assets/v10/metricas-embudo.webp'
-import ciclosCompra from './assets/v10/ciclos-compra.webp'
-import segmentacion from './assets/v10/segmentacion.webp'
-import ecosystemContent from './assets/v10/ecosystem-content.webp'
-import procesosMiro from './assets/v10/procesos-miro.webp'
+import ciclosCompra from './assets/v10/ciclos-compra-300.webp'
+import segmentacion from './assets/v10/segmentacion-300.webp'
+import ecosystemContent from './assets/v10/ecosystem-content-300.webp'
+import procesosMiro from './assets/v10/procesos-miro-300.webp'
 import trackingChats from './assets/v10/tracking-chats.webp'
 import founder from './assets/v10/founder.webp'
 import './landing-v10.css'
@@ -32,6 +35,7 @@ const CIERRE = new Date('2026-09-28T16:47:00-03:00')
 const SISTEMAS = [
   {
     img: sistemaMarketing,
+    img640: sistemaMarketing640,
     alt: 'Sistema de marketing orgánico',
     titulo: 'Marketing orgánico que genera +$200k/mes',
     texto: (
@@ -43,6 +47,7 @@ const SISTEMAS = [
   },
   {
     img: sistemaVentas,
+    img640: sistemaVentas640,
     alt: 'Procesos de venta',
     titulo: 'Procesos de venta $200k/mes',
     texto: (
@@ -150,9 +155,11 @@ function App() {
   useEffect(() => {
     if (!visitaNueva()) return
     // La visita no hace falta para pintar: se manda cuando el navegador queda libre.
+    // Recién cuando la página terminó de cargar, así no compite con la imagen principal.
     const enviar = () => recordVisit().catch(() => {})
-    if ('requestIdleCallback' in window) window.requestIdleCallback(enviar, { timeout: 3000 })
-    else setTimeout(enviar, 1500)
+    const despues = () => setTimeout(enviar, 1500)
+    if (document.readyState === 'complete') despues()
+    else window.addEventListener('load', despues, { once: true })
   }, [])
 
   useEffect(() => {
@@ -245,8 +252,8 @@ function App() {
           <button type="button" className="vault" data-goform aria-label="Asegurá tu lugar en el vivo">
             <img
               src={hero}
-              srcSet={`${hero900} 900w, ${hero} 1600w`}
-              sizes="(max-width: 1000px) 100vw, 980px"
+              srcSet={`${hero640} 640w, ${hero900} 900w, ${hero} 1600w`}
+              sizes="(max-width: 760px) calc(100vw - 40px), 980px"
               alt="Juan Carrizo con los sistemas de ATV alrededor"
               width="1600"
               height="900"
@@ -300,7 +307,14 @@ function App() {
             {SISTEMAS.map((s, i) => (
               <div key={s.titulo} className="take rv">
                 <button type="button" className="take-img" data-goform aria-label="Desbloquear recurso">
-                  <img src={s.img} alt={s.alt} loading="lazy" decoding="async" />
+                  <img
+                    src={s.img640 ?? s.img}
+                    srcSet={s.img640 ? `${s.img640} 640w, ${s.img} 1280w` : undefined}
+                    sizes="(max-width: 900px) calc(100vw - 40px), 560px"
+                    alt={s.alt}
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <span className="veil" />
                   <span className="unlock">
                     <Candado />
