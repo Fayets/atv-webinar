@@ -14,16 +14,17 @@ import sistemaVentas from './assets/v10/sistema-ventas.webp'
 import sistemaVentas640 from './assets/v10/sistema-ventas-640.webp'
 import sistemaVentas800 from './assets/v10/sistema-ventas-800.webp'
 import escaleraUpsells from './assets/v10/escalera-upsells.webp'
-import ecosistemaContenido from './assets/v10/ecosistema-contenido-300.webp'
-import laboratorioContenido from './assets/v10/laboratorio-contenido-300.webp'
-import funnelSetter from './assets/v10/funnel-setter-300.webp'
-import mapaNegocio from './assets/v10/mapa-negocio-300.webp'
+import escaleraUpsellsMuro from './assets/v10/escalera-upsells-260.webp'
+import ecosistemaContenido from './assets/v10/ecosistema-contenido-260.webp'
+import laboratorioContenido from './assets/v10/laboratorio-contenido-260.webp'
+import funnelSetter from './assets/v10/funnel-setter-260.webp'
+import mapaNegocio from './assets/v10/mapa-negocio-260.webp'
 import sopsObjeciones from './assets/v10/sops-objeciones.webp'
 import metricasEmbudo from './assets/v10/metricas-embudo.webp'
-import ciclosCompra from './assets/v10/ciclos-compra-300.webp'
-import segmentacion from './assets/v10/segmentacion-300.webp'
-import ecosystemContent from './assets/v10/ecosystem-content-300.webp'
-import procesosMiro from './assets/v10/procesos-miro-300.webp'
+import ciclosCompra from './assets/v10/ciclos-compra-260.webp'
+import segmentacion from './assets/v10/segmentacion-260.webp'
+import ecosystemContent from './assets/v10/ecosystem-content-260.webp'
+import procesosMiro from './assets/v10/procesos-miro-260.webp'
 import trackingChats from './assets/v10/tracking-chats.webp'
 import founder from './assets/v10/founder.webp'
 import './landing-v10.css'
@@ -74,22 +75,23 @@ const SISTEMAS = [
   },
 ]
 
+// [imagen, nombre, ancho, alto] — las medidas evitan saltos mientras cargan.
 const FILA_1 = [
-  [ecosistemaContenido, 'Ecosistema de contenido'],
-  [laboratorioContenido, 'Laboratorio de Contenido 3.0'],
-  [funnelSetter, 'Funnel del setter'],
-  [mapaNegocio, 'Mapa del negocio'],
-  [sopsObjeciones, 'SOPs de objeciones y calendario'],
-  [metricasEmbudo, 'Métricas del embudo'],
+  [ecosistemaContenido, 'Ecosistema de contenido', 463, 260],
+  [laboratorioContenido, 'Laboratorio de Contenido 3.0', 539, 260],
+  [funnelSetter, 'Funnel del setter', 246, 260],
+  [mapaNegocio, 'Mapa del negocio', 272, 260],
+  [sopsObjeciones, 'SOPs de objeciones y calendario', 760, 260],
+  [metricasEmbudo, 'Métricas del embudo', 760, 228],
 ]
 
 const FILA_2 = [
-  [ciclosCompra, 'Ciclos de compra y flywheel'],
-  [segmentacion, 'Segmentación y nutrición'],
-  [ecosystemContent, 'Ecosystem Content'],
-  [escaleraUpsells, 'Escalera de upsells'],
-  [procesosMiro, 'Procesos en Miro'],
-  [trackingChats, 'Tracking de chats'],
+  [ciclosCompra, 'Ciclos de compra y flywheel', 463, 260],
+  [segmentacion, 'Segmentación y nutrición', 463, 260],
+  [ecosystemContent, 'Ecosystem Content', 537, 260],
+  [escaleraUpsellsMuro, 'Escalera de upsells', 632, 260],
+  [procesosMiro, 'Procesos en Miro', 393, 260],
+  [trackingChats, 'Tracking de chats', 760, 169],
 ]
 
 const pad = (n) => String(n).padStart(2, '0')
@@ -137,9 +139,9 @@ function Fila({ items, reversa }) {
   const todos = [...items, ...items]
   return (
     <div className={reversa ? 'row rev' : 'row'}>
-      {todos.map(([img, nombre], i) => (
+      {todos.map(([img, nombre, ancho, alto], i) => (
         <button key={i} type="button" className="tile" data-goform tabIndex={-1}>
-          <img src={img} alt="" loading="lazy" decoding="async" />
+          <img src={img} alt="" width={ancho} height={alto} loading="lazy" decoding="async" />
           <span className="tl">
             <Candado size={12} stroke={2.6} />
             {nombre}
