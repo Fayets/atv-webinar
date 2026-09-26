@@ -14,8 +14,10 @@ QUALIFIED_AVATARS = frozenset(
     }
 )
 
+# Piso: desde $3k/mes (antes era $5k).
 QUALIFIED_REVENUES = frozenset(
     {
+        "$3k a 5k",
         "$5k a 10k",
         "$10k a 30k",
         "$30k a 50k",
