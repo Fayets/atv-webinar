@@ -10,8 +10,8 @@
       name="description"
       content="Evento en vivo el lunes 28 de septiembre: cómo conectar marketing, ventas, producto y sistemas para que cada acción de tu negocio genere más resultados."
     />
-    <!-- Meta Pixel 3946721055469868. Tiene que coincidir con META_PIXEL_ID del backend:
-         si no, el navegador y el servidor le hablan a píxeles distintos y se rompe la
+    <!-- Meta Pixels 3946721055469868 y 1502839491117808. Tienen que coincidir con
+         META_PIXEL_ID y META_PIXEL_ID_2 del backend: si no, el navegador y el servidor le hablan a píxeles distintos y se rompe la
          deduplicación.
          fbq se define y encola enseguida (PageView y cualquier evento quedan en cola),
          pero el script de Meta se baja recién cuando la página terminó de cargar: es de
@@ -23,6 +23,7 @@
       if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
       n.queue=[]}(window,document,'script');
       fbq('init', '3946721055469868');
+      fbq('init', '1502839491117808');
       fbq('track', 'PageView');
       (function () {
         function cargar() {
@@ -38,6 +39,8 @@
     <noscript>
       <img height="1" width="1" style="display:none" alt=""
         src="https://www.facebook.com/tr?id=3946721055469868&ev=PageView&noscript=1" />
+      <img height="1" width="1" style="display:none" alt=""
+        src="https://www.facebook.com/tr?id=1502839491117808&ev=PageView&noscript=1" />
     </noscript>
   </head>
   <body>
