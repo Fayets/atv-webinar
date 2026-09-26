@@ -96,9 +96,6 @@ html{scroll-behavior:smooth}
 .v10 .trust{display:flex;justify-content:center;align-items:center;gap:8px;color:var(--muted);font-size:13px;margin-top:14px}
 .v10 .done{text-align:center;padding:10px 0}
 .v10 .done .ok{width:60px;height:60px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;margin:0 auto 16px}
-.v10 .closed-note{display:none;text-align:center;padding:10px 0}
-.v10.is-closed .closed-note{display:block}
-.v10.is-closed form.optin{display:none}
 
 /* ---------- Secciones ---------- */
 .v10 section.block{padding:88px 0;border-top:1px solid var(--line)}
@@ -222,24 +219,76 @@ html{scroll-behavior:smooth}
   .v10 .wall .btn{font-size:14px;padding:0 22px;white-space:nowrap}
 }
 
-/* ---------- Opt-in actual (el de siempre), dentro del diseño nuevo ----------
-   Franco pidió dejar el formulario como estaba. Usa las variables oscuras del
-   home anterior, así que acá se restauran solo para su bloque. */
+/* ---------- Opt-in: el de siempre (mismas preguntas y pasos), con el estilo
+   blanco del diseño. Las reglas base viven en index.css con colores oscuros; acá
+   se cambian las variables y se pisan los blancos que venían fijos. */
 .v10 .hero-optin{
-  --bg:#070707; --card:#141414; --line:#262626; --red:#e3141b; --muted:#a3a3a3; --text:#f4f4f4;
-  max-width:480px; margin:0 auto; color:var(--text); scroll-margin-top:100px; border-radius:14px;
+  --line:#e9e7e3; --field:#fff; --fg:var(--ink); --sub:var(--ink-2); --card:#fff;
+  --primary:var(--red); --primary-ink:#fff; --accent-bright:var(--red); --danger:var(--red);
+  max-width:510px; margin:0 auto; scroll-margin-top:100px; border-radius:20px; color:var(--ink);
 }
 .v10 .hero-optin.flash{animation:v10-flash 1s ease-out}
-.v10 .hero-optin .modal{width:100%;max-height:none;padding:18px 18px 16px;text-align:left;box-shadow:var(--shadow, 0 16px 44px rgba(20,10,10,.09))}
-.v10 .hero-optin .step-label{margin-bottom:6px}
+.v10 .hero-optin .modal{
+  position:relative; width:100%; max-height:none; padding:26px; text-align:left;
+  background:#fff; border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow);
+}
+.v10 .hero-optin .modal:before{
+  content:""; position:absolute; inset:-1px; border-radius:21px; padding:1px; pointer-events:none;
+  background:linear-gradient(160deg,rgba(217,18,26,.6),rgba(217,18,26,0) 45%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+}
+.v10 .hero-optin .step-label{font-family:var(--mono);font-size:12px;letter-spacing:.08em;font-weight:600;color:var(--red);margin-bottom:8px}
+.v10 .hero-optin .modal h2{font-family:var(--sans);font-size:23px;font-weight:700;line-height:1.2;letter-spacing:-.02em;margin:0 0 14px;text-align:left;color:var(--ink)}
+.v10 .hero-optin .progress-wrap{height:4px;background:var(--bg-soft);margin:0 0 20px}
+.v10 .hero-optin .progress-bar{background:var(--red);transition:width .35s cubic-bezier(.2,.8,.2,1)}
 .v10 .hero-optin .step-body{overflow:visible;margin-right:0;padding-right:0}
-.v10 .hero-optin .optin-form{gap:10px}
-.v10 .hero-optin .optin-form label{gap:5px}
-.v10 .hero-optin .modal h2{font-size:22px;font-weight:700;line-height:1.15;letter-spacing:-.4px;margin:0 0 10px;text-align:center}
-.v10 .hero-optin .step-footer{margin-top:14px;align-items:center}
-.v10 .hero-optin .cta{display:inline-flex;align-items:center;gap:10px;background:var(--red);color:#fff;font-family:inherit;font-weight:700;font-size:18px;padding:18px 36px;border:0;border-radius:10px;margin-top:0;cursor:pointer;transition:transform .15s,background .15s;box-shadow:0 8px 30px rgb(227 20 27 / .35)}
-.v10 .hero-optin .cta:hover{background:#ff1f27;transform:translateY(-2px);filter:none}
-@media (max-width:760px){.v10 .hero-optin .modal h2{font-size:20px}}
+
+.v10 .hero-optin .optin-form{gap:14px}
+.v10 .hero-optin .optin-form label{gap:6px;color:var(--ink);font-size:14px;font-weight:700}
+.v10 .hero-optin .optin-form input,
+.v10 .hero-optin .optin-form select{
+  height:52px; padding:0 14px; border:1.5px solid var(--line); border-radius:12px;
+  background:#fff; color:var(--ink); font:500 16px var(--sans);
+  transition:border-color .15s,box-shadow .15s;
+}
+.v10 .hero-optin .optin-form input::placeholder{color:#a5a5ab}
+.v10 .hero-optin .optin-form input:focus,
+.v10 .hero-optin .optin-form select:focus{outline:0;border-color:var(--ink);box-shadow:0 0 0 4px rgba(14,14,15,.07)}
+.v10 .hero-optin .phone-row{grid-template-columns:112px 1fr}
+.v10 .hero-optin .field-note{border:0;border-radius:12px;background:var(--bg-soft);color:var(--ink-2);font-size:13.5px;line-height:1.5;padding:12px 14px}
+.v10 .hero-optin .field-note svg{color:var(--red)}
+.v10 .hero-optin .field-note strong{color:var(--ink)}
+
+.v10 .hero-optin .opt,
+.v10 .hero-optin .check-opt{
+  padding:14px 16px; border:1.5px solid var(--line); border-radius:12px; background:#fff;
+  color:var(--ink-2); font:500 15.5px/1.35 var(--sans);
+}
+.v10 .hero-optin .opt:hover,
+.v10 .hero-optin .check-opt:hover{border-color:var(--ink);color:var(--ink)}
+.v10 .hero-optin .opt-selected,
+.v10 .hero-optin .check-selected{border-color:var(--red);background:var(--red-soft);color:var(--ink)}
+.v10 .hero-optin .check-opt::before{border:1.5px solid #cfcdca;border-radius:5px}
+.v10 .hero-optin .check-selected::before{border-color:var(--red);background:var(--red);box-shadow:inset 0 0 0 2px #fff}
+.v10 .hero-optin .sub-block-title{font-family:var(--mono);color:var(--muted);letter-spacing:.08em}
+.v10 .hero-optin .form-error{color:var(--red)}
+
+.v10 .hero-optin .step-footer{margin-top:18px;align-items:center}
+.v10 .hero-optin .back-btn{color:var(--muted);font:500 14px var(--sans)}
+.v10 .hero-optin .back-btn:hover{color:var(--ink)}
+.v10 .hero-optin .cta{
+  min-height:58px; margin-top:0; border-radius:14px; background:var(--red); color:#fff;
+  font:800 16px var(--sans); letter-spacing:.03em; text-transform:uppercase;
+  box-shadow:0 10px 26px rgba(217,18,26,.3); transition:transform .15s,background .15s;
+}
+.v10 .hero-optin .cta:hover:not(:disabled){background:var(--red-dark);transform:translateY(-1px);filter:none}
+.v10 .hero-optin .cta:disabled{opacity:.45;box-shadow:none}
+@media (max-width:760px){
+  .v10 .hero-optin .modal{padding:20px}
+  .v10 .hero-optin .modal h2{font-size:21px}
+}
+
 .v10 .closed-note{max-width:480px;margin:0 auto;text-align:center;padding:26px;border:1px solid var(--line);border-radius:20px;background:#fff}
 .v10 .closed-note h2{margin:0 0 6px;font-size:23px}
 .v10 .closed-note p{margin:0;color:var(--muted);font-size:15px}
