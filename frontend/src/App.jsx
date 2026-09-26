@@ -3,312 +3,440 @@ import { recordVisit } from './data/api.js'
 import { visitaNueva } from './lib/visita.js'
 import OptInModal from './components/OptInModal.jsx'
 import { url } from './lib/routes.js'
-import atvMark from './assets/atv-mark.webp'
-import founder from './assets/founder.webp'
-import CompoundDiagram from './components/CompoundDiagram.jsx'
-import './home.css'
+import logo from './assets/v10/logo.webp'
+import hero from './assets/v10/hero.webp'
+import hero900 from './assets/v10/hero-900.webp'
+import sistemaMarketing from './assets/v10/sistema-marketing.webp'
+import sistemaVentas from './assets/v10/sistema-ventas.webp'
+import escaleraUpsells from './assets/v10/escalera-upsells.webp'
+import ecosistemaContenido from './assets/v10/ecosistema-contenido.webp'
+import laboratorioContenido from './assets/v10/laboratorio-contenido.webp'
+import funnelSetter from './assets/v10/funnel-setter.webp'
+import mapaNegocio from './assets/v10/mapa-negocio.webp'
+import sopsObjeciones from './assets/v10/sops-objeciones.webp'
+import metricasEmbudo from './assets/v10/metricas-embudo.webp'
+import ciclosCompra from './assets/v10/ciclos-compra.webp'
+import segmentacion from './assets/v10/segmentacion.webp'
+import ecosystemContent from './assets/v10/ecosystem-content.webp'
+import procesosMiro from './assets/v10/procesos-miro.webp'
+import trackingChats from './assets/v10/tracking-chats.webp'
+import founder from './assets/v10/founder.webp'
+import './landing-v10.css'
 
-const CUENTA_HASTA = new Date('2026-09-28T18:00:00-03:00').getTime()
+// Fechas en hora de Argentina.
+const EVENTO = new Date('2026-09-28T18:00:00-03:00')
+// A esta hora "se borra" la landing: el contador de arriba llega a cero y el
+// formulario deja de aceptar registros.
+const CIERRE = new Date('2026-09-28T16:47:00-03:00')
 
-function pad(value) {
-  return String(value).padStart(2, '0')
+const SISTEMAS = [
+  {
+    img: sistemaMarketing,
+    alt: 'Sistema de marketing orgánico',
+    titulo: 'Marketing orgánico que genera +$200k/mes',
+    texto: (
+      <>
+        El sistema que te dice <b>qué, cómo y cuándo subir contenido</b> para atraer, nutrir y
+        convertir leads que pagan tickets altos en llamada.
+      </>
+    ),
+  },
+  {
+    img: sistemaVentas,
+    alt: 'Procesos de venta',
+    titulo: 'Procesos de venta $200k/mes',
+    texto: (
+      <>
+        Cómo conecté marketing y ventas para que los leads lleguen <b>9 de 10 convencidos</b> antes
+        de hablar con nadie.
+      </>
+    ),
+  },
+  {
+    img: escaleraUpsells,
+    alt: 'Sistemas back-end',
+    titulo: 'Procesos back-end y entrega $200k/mes',
+    texto: (
+      <>
+        Todos los SOPs y sistemas de entrega para generar upsells y recompras. Aumentando un{' '}
+        <b>30% extra el cash collected</b> sin ventas nuevas.
+      </>
+    ),
+  },
+]
+
+const FILA_1 = [
+  [ecosistemaContenido, 'Ecosistema de contenido'],
+  [laboratorioContenido, 'Laboratorio de Contenido 3.0'],
+  [funnelSetter, 'Funnel del setter'],
+  [mapaNegocio, 'Mapa del negocio'],
+  [sopsObjeciones, 'SOPs de objeciones y calendario'],
+  [metricasEmbudo, 'Métricas del embudo'],
+]
+
+const FILA_2 = [
+  [ciclosCompra, 'Ciclos de compra y flywheel'],
+  [segmentacion, 'Segmentación y nutrición'],
+  [ecosystemContent, 'Ecosystem Content'],
+  [escaleraUpsells, 'Escalera de upsells'],
+  [procesosMiro, 'Procesos en Miro'],
+  [trackingChats, 'Tracking de chats'],
+]
+
+const pad = (n) => String(n).padStart(2, '0')
+
+function textoCierre(ahora) {
+  let ms = Math.max(0, CIERRE - ahora)
+  if (!ms) return '0'
+  const d = Math.floor(ms / 864e5)
+  ms -= d * 864e5
+  const h = Math.floor(ms / 36e5)
+  ms -= h * 36e5
+  const m = Math.floor(ms / 6e4)
+  ms -= m * 6e4
+  const s = Math.floor(ms / 1e3)
+  return `${d ? `${d}d ` : ''}${pad(h)}:${pad(m)}:${pad(s)}`
 }
 
-function formatCountdown(now) {
-  const remaining = Math.max(0, CUENTA_HASTA - now)
-  const seconds = Math.floor(remaining / 1000)
-  return {
-    d: pad(Math.floor(seconds / 86400)),
-    h: pad(Math.floor((seconds % 86400) / 3600)),
-    m: pad(Math.floor((seconds % 3600) / 60)),
-    s: pad(seconds % 60),
+/** Hora del evento en la zona de quien mira. */
+function horaLocal() {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''
+    const hora = new Intl.DateTimeFormat('es', { hour: '2-digit', minute: '2-digit', hour12: false }).format(EVENTO)
+    const esArg = tz.includes('Argentina') || tz === 'America/Buenos_Aires'
+    const ciudad = (tz.split('/').pop() || '').replace(/_/g, ' ')
+    return {
+      larga: esArg ? `${hora} (ARG)` : `${hora} en ${ciudad}`,
+      corta: `${hora}${esArg ? ' ARG' : ' (tu hora)'}`,
+    }
+  } catch {
+    return { larga: '18:00 (ARG)', corta: '18:00' }
   }
 }
 
+function Candado({ size = 14, stroke = 2.5 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke}>
+      <rect x="4.5" y="10.5" width="15" height="10" rx="2" />
+      <path d="M8 10.5V7a4 4 0 018 0v3.5" />
+    </svg>
+  )
+}
+
+function Fila({ items, reversa }) {
+  // Se duplica para que la cinta se desplace sin cortes.
+  const todos = [...items, ...items]
+  return (
+    <div className={reversa ? 'row rev' : 'row'}>
+      {todos.map(([img, nombre], i) => (
+        <button key={i} type="button" className="tile" data-goform tabIndex={-1}>
+          <img src={img} alt="" loading="lazy" decoding="async" />
+          <span className="tl">
+            <Candado size={12} stroke={2.6} />
+            {nombre}
+          </span>
+        </button>
+      ))}
+    </div>
+  )
+}
+
 function App() {
-  const [countdown, setCountdown] = useState(() => formatCountdown(Date.now()))
+  const [ahora, setAhora] = useState(null)
+  const [hora, setHora] = useState({ larga: '18:00 (ARG)', corta: '18:00' })
+  const [sticky, setSticky] = useState(false)
+  const cerrado = ahora !== null && ahora >= CIERRE
 
   useEffect(() => {
     if (!visitaNueva()) return
-    // La visita no hace falta para pintar: se manda cuando el navegador queda
-    // libre, fuera del camino crítico de la carga.
+    // La visita no hace falta para pintar: se manda cuando el navegador queda libre.
     const enviar = () => recordVisit().catch(() => {})
     if ('requestIdleCallback' in window) window.requestIdleCallback(enviar, { timeout: 3000 })
     else setTimeout(enviar, 1500)
   }, [])
 
   useEffect(() => {
-    const timer = setInterval(() => setCountdown(formatCountdown(Date.now())), 1000)
-    return () => clearInterval(timer)
+    setHora(horaLocal())
+    setAhora(Date.now())
+    const reloj = setInterval(() => setAhora(Date.now()), 1000)
+    return () => clearInterval(reloj)
   }, [])
 
-  function irAlOptin() {
-    document.getElementById('optin')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-  }
+  // Aparición de las secciones al scrollear y barra fija: solo se ve cuando ni el
+  // formulario de arriba ni el cierre están en pantalla.
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (es) =>
+        es.forEach((en) => {
+          if (en.isIntersecting) {
+            en.target.classList.add('in')
+            io.unobserve(en.target)
+          }
+        }),
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' },
+    )
+    document.querySelectorAll('.v10 .rv').forEach((el) => io.observe(el))
+
+    const visibles = new Map()
+    const so = new IntersectionObserver(
+      (es) => {
+        es.forEach((en) => visibles.set(en.target, en.isIntersecting))
+        setSticky(![...visibles.values()].some(Boolean))
+      },
+      { threshold: 0.15 },
+    )
+    const inicio = document.getElementById('inicio')
+    const cierre = document.getElementById('cierre')
+    if (inicio) so.observe(inicio)
+    if (cierre) so.observe(cierre)
+    return () => {
+      io.disconnect()
+      so.disconnect()
+    }
+  }, [])
+
+  // Cualquier imagen o botón con data-goform lleva al formulario de arriba.
+  useEffect(() => {
+    function irAlFormulario(e) {
+      const destino = e.target.closest('[data-goform]')
+      if (!destino) return
+      e.preventDefault()
+      const form = document.getElementById('optin')
+      if (!form) return
+      form.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      form.classList.remove('flash')
+      void form.offsetWidth
+      form.classList.add('flash')
+      setTimeout(() => form.querySelector('input')?.focus({ preventScroll: true }), 550)
+    }
+    document.addEventListener('click', irAlFormulario)
+    return () => document.removeEventListener('click', irAlFormulario)
+  }, [])
 
   return (
-    <div className="home">
-      <header className="topbar">
+    <div className="v10">
+      <header className="vtop">
         <div className="wide">
-          <a href="#inicio" className="logo">
-            <img src={atvMark} alt="Aumenta Tu Valor" width="120" height="140" />
+          <a href="#inicio" className="vlogo" aria-label="Aumenta Tu Valor">
+            <img src={logo} alt="" width="120" height="140" />
           </a>
-          <div className="live">
+          <div className="timer">
             <span className="dot" />
-            <span className="mono label">En vivo · Lun 28 Sep · 18H ARG</span>
-            <span className="countdown">
-              <span>{countdown.d}d</span>
-              <span className="countdown-sep">:</span>
-              <span>{countdown.h}h</span>
-              <span className="countdown-sep">:</span>
-              <span>{countdown.m}m</span>
-              <span className="countdown-sep">:</span>
-              <span>{countdown.s}s</span>
+            <span>
+              Esta landing se borra en <b>{ahora === null ? '--' : textoCierre(ahora)}</b>
             </span>
           </div>
+          <span />
         </div>
       </header>
 
-      <section className="hero" id="inicio">
-        <div className="wide">
+      <section id="inicio" className="vhero">
+        <div className="col">
+          <div className="kicker mono">Vivo gratis · Lunes 28 · 18h ARG</div>
           <h1>
-            El sistema de apalancamiento que me permitió escalar mi negocio a <em>+200k/mes</em>.
+            Todo lo que me hizo generar <em>+$2.5M</em> sin ads y con poco contenido
           </h1>
           <p className="sub">
-            Ya no basta con correr ads y subir contenido a diario. Eso lo puede hacer vos y tu
-            competencia. Lo que pocos logran es que el contenido orgánico funcione por sí mismo y
-            que, mes a mes, genere resultados consistentes sin que tu tiempo sea el límite.
-          </p>
-          <OptInModal embedded />
-          <div className="cta-note">
-            Lunes 28 de septiembre, 18h (ARG)
-          </div>
-          <div className="details">
-            <div>
-              <span className="mono">Hora</span>
-              <b>18h ARG</b>
-            </div>
-            <div>
-              <span className="mono">Formato</span>
-              <b>En vivo por Zoom</b>
-            </div>
-            <div>
-              <span className="mono">Duración</span>
-              <b>90 minutos</b>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="part">
-        <div className="wrap body">
-          <div className="part-label mono">Parte I · El problema</div>
-          <h2>
-            Tu negocio crece, pero cada vez <span className="serif">depende más de vos.</span>
-          </h2>
-          <p>
-            Sabés vender. Sabés generar clientes. Incluso quizás ya tenés un negocio que genera
-            ingresos de forma consistente.
-          </p>
-          <p>
-            Marketing trabaja por un lado. Ventas por otro. Producto por otro. Y nadie conecta toda
-            esa información para que el negocio produzca más con el mismo esfuerzo.
-          </p>
-          <div className="pull">
-            No necesitás hacer más. Necesitás que lo que ya hacés genere mucho más.
-          </div>
-          <p>
-            Y mientras cada resultado dependa de que vos estés detrás, tu tiempo va a seguir siendo
-            el límite de cuánto puede crecer tu negocio.
+            (Voy a revelar todo lo que vendí durante 2 años, ahora gratis en un vivo de 60 minutos.)
           </p>
         </div>
-      </section>
 
-      <section className="part">
-        <div className="wrap body">
-          <div className="part-label mono">Parte II · Lo que está en juego</div>
-          <h2>
-            Hay dos formas de intentar escalar.{' '}
-            <span className="serif">Una te exige cada vez más. La otra genera apalancamiento.</span>
-          </h2>
-          <div className="paths">
-            <div className="path">
-              <span className="mono">Camino 01</span>
-              <h3>Hacer más</h3>
-              <ul>
-                <li>Más contenido.</li>
-                <li>Más lanzamientos.</li>
-                <li>Más anuncios.</li>
-                <li>Más personas.</li>
-                <li>Más horas tuyas.</li>
-              </ul>
-              <p>
-                El negocio puede crecer, pero cada nuevo resultado exige más esfuerzo y más
-                dependencia de vos.
-              </p>
-            </div>
-            <div className="path">
-              <span className="mono">Camino 02</span>
-              <h3>Construir apalancamiento</h3>
-              <ul>
-                <li>Marketing alimenta a Ventas.</li>
-                <li>Ventas genera información para Marketing.</li>
-                <li>Producto mejora la experiencia y genera nuevas oportunidades.</li>
-                <li>Sistemas conecta y mide todo.</li>
-              </ul>
-              <p>
-                El negocio empieza a producir más resultados sin que todo dependa de hacer más.
-              </p>
-            </div>
-          </div>
-          <div className="pull">
-            La diferencia no está en cuánto hacés. Está en cuánto resultado puede generar cada acción
-            que hacés.
-          </div>
-        </div>
-      </section>
-
-      <section className="part">
-        <div className="wrap body">
-          <div className="part-label mono">Parte III · El cambio</div>
-          <h2>
-            ¿Cómo se ve el apalancamiento <span className="serif">dentro de tu negocio?</span>
-          </h2>
-          <p>
-            Dejar de hacer que cada área trabaje por separado y construir un sistema donde cada
-            acción alimente a todo tu sistema.
-          </p>
-          <div className="examples">
-            <div className="ex">
-              <div className="n">01</div>
-              <div>
-                <h3>Marketing deja de accionar sin claridad</h3>
-                <p>Hoy estás generando contenido y esperando a que funcione.</p>
-                <p>
-                  Después del cambio, vas a tener una conexión entre marketing y ventas. Ventas
-                  devuelve información a Marketing sobre qué leads compran, qué objeciones tienen y
-                  qué los hace confiar.
-                </p>
-                <div className="out">Cada lead ayuda a mejorar tu próximo contenido.</div>
-              </div>
-            </div>
-            <div className="ex">
-              <div className="n">02</div>
-              <div>
-                <h3>Tu equipo deja de depender de vos</h3>
-                <p>Hoy muchas decisiones y procesos siguen pasando por vos.</p>
-                <p>
-                  Después del cambio, los roles, procesos y sistemas permiten que tu equipo ejecute
-                  sin necesitarte para cada decisión.
-                </p>
-                <div className="out">Tu tiempo deja de ser el límite de tu crecimiento.</div>
-              </div>
-            </div>
-            <div className="ex">
-              <div className="n">03</div>
-              <div>
-                <h3>Cada resultado se vuelve más fácil de repetir</h3>
-                <p>Hoy cuando algo funciona, muchas veces no sabés exactamente por qué.</p>
-                <p>
-                  Después del cambio, tenés sistemas para medir qué genera resultados, identificar
-                  qué funciona y replicarlo.
-                </p>
-                <div className="out">Dejás de depender de la intuición para escalar.</div>
-              </div>
-            </div>
-          </div>
-          <div className="pull">
-            Eso es apalancamiento: hacer que una acción no termine en un solo resultado, sino que
-            genere información, mejore otras áreas y produzca más resultados en cadena para tu
-            negocio.
-          </div>
-        </div>
-      </section>
-
-      <section className="part">
         <div className="wide">
-          <div className="part-label mono host-label">Tu anfitrión</div>
-          <div className="host">
+          <button type="button" className="vault" data-goform aria-label="Asegurá tu lugar en el vivo">
+            <img
+              src={hero}
+              srcSet={`${hero900} 900w, ${hero} 1600w`}
+              sizes="(max-width: 1000px) 100vw, 980px"
+              alt="Juan Carrizo con los sistemas de ATV alrededor"
+              width="1600"
+              height="900"
+              fetchPriority="high"
+            />
+            <span className="shade" />
+            <span className="scan" />
+            <span className="center">
+              <span className="padlock">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="4.5" y="10.5" width="15" height="10" rx="2.2" />
+                  <path d="M8 10.5V7a4 4 0 018 0v3.5" />
+                  <circle cx="12" cy="15.5" r="1.2" fill="#fff" />
+                </svg>
+              </span>
+              <span className="v-pill">
+                ASEGURÁ TU LUGAR EN EL VIVO <i>→</i>
+              </span>
+            </span>
+          </button>
+        </div>
+
+        <div className="arrow" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+        </div>
+
+        <div className="form-wrap">
+          {cerrado ? (
+            <div className="closed-note">
+              <h2>El registro se cerró</h2>
+              <p>Esta landing se cerró antes del vivo, como avisamos.</p>
+            </div>
+          ) : (
+            <OptInModal embedded />
+          )}
+          <p className="when">
+            Lunes 28 de septiembre · <b>{hora.larga}</b> · Zoom
+          </p>
+        </div>
+      </section>
+
+      <section className="block soft">
+        <div className="wide">
+          <h2 className="big rv">
+            Todos mis <em>sistemas.</em>
+          </h2>
+          <p className="lead rv">Los mismos que vendí durante 2 años.</p>
+          <div className="takes">
+            {SISTEMAS.map((s, i) => (
+              <div key={s.titulo} className="take rv">
+                <button type="button" className="take-img" data-goform aria-label="Desbloquear recurso">
+                  <img src={s.img} alt={s.alt} loading="lazy" decoding="async" />
+                  <span className="veil" />
+                  <span className="unlock">
+                    <Candado />
+                    Desbloquear recurso
+                  </span>
+                </button>
+                <div className="take-txt">
+                  <div className="take-n">{pad(i + 1)}</div>
+                  <h3>{s.titulo}</h3>
+                  <p>{s.texto}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="wall">
+        <div className="wide">
+          <h2 className="big rv">
+            Esto es lo que te llevás <em>después de registrarte.</em>
+          </h2>
+          <p className="lead rv">Cada panel, cada SOP, cada Miro.</p>
+        </div>
+        <div className="marquee" aria-hidden="true">
+          <Fila items={FILA_1} />
+          <Fila items={FILA_2} reversa />
+        </div>
+        <div className="wide vcta rv">
+          <button type="button" className="btn white inline" data-goform>
+            Desbloquear todo <span style={{ color: 'var(--red)' }}>→</span>
+          </button>
+          <small>Gratis. Te lleva 20 segundos.</small>
+        </div>
+      </section>
+
+      <section className="block">
+        <div className="col">
+          <h2 className="big rv">
+            Lo que no voy a hacer <em>(y lo que sí).</em>
+          </h2>
+          <div className="promise">
+            <div className="pcol no rv">
+              <ul>
+                <li>
+                  <span className="ic">✕</span>
+                  <span>No te voy a contar mi historia personal durante 40 minutos.</span>
+                </li>
+                <li>
+                  <span className="ic">✕</span>
+                  <span>No te voy a vender teoría que no podés aplicar mañana.</span>
+                </li>
+                <li>
+                  <span className="ic">✕</span>
+                  <span>No te voy a pedir que subas contenido todos los días.</span>
+                </li>
+              </ul>
+            </div>
+            <div className="pcol yes rv">
+              <ul>
+                <li>
+                  <span className="ic">✓</span>
+                  <span>Sí te voy a mostrar el sistema completo, paso por paso.</span>
+                </li>
+                <li>
+                  <span className="ic">✓</span>
+                  <span>Sí te voy a entregar el recurso después del vivo.</span>
+                </li>
+                <li>
+                  <span className="ic">✓</span>
+                  <span>Sí voy a revelar la oferta que reemplaza todo, al final.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="block soft">
+        <div className="col">
+          <div className="host rv">
             <div className="avatar">
-              <img src={founder} alt="" width="600" height="797" loading="lazy" decoding="async" />
+              <img src={founder} alt="Juan Carrizo" width="720" height="960" loading="lazy" decoding="async" />
             </div>
             <div>
-              <span className="mono role">Founder · Aumenta tu valor</span>
+              <span className="mono role">Founder · Aumenta Tu Valor</span>
               <h3>Juan Carrizo</h3>
               <p>
-                Escaló su propio negocio de infoproductos con un equipo de solo 5 personas, sin depender de lanzamientos ni contenido diario.
-              </p>
-              <p>
-                Durante los últimos 2 años, construyó una infraestructura de marketing, ventas,
-                producto y sistemas que hoy aplica dentro de sus negocios y en los negocios de sus
-                clientes.
-              </p>
-              <p>
-                El 28 de septiembre te va a mostrar la forma en la cual vos podés copiar y pegar
-                este sistema.
+                Escalé mi negocio de infoproductos con un equipo de 5 personas, sin ads, sin
+                lanzamientos y sin contenido diario. El lunes lo abro completo.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="part">
-        <div className="wrap body">
-          <div className="part-label mono">El efecto compuesto</div>
-          <h2>
-            Cuando las áreas de tu negocio se conectan,{' '}
-            <span className="serif">cada acción genera más resultados.</span>
+      <section className="close" id="cierre">
+        <div className="bgimg" style={{ backgroundImage: `url('${hero900}')` }} />
+        <div className="shade2" />
+        <div className="col">
+          <h2 className="big">
+            Desbloqueá <em>todo esto.</em>
           </h2>
-          <CompoundDiagram />
-          <p>
-            Marketing atrae oportunidades. Ventas convierte y devuelve información. Producto entrega
-            resultados que fortalecen tu marketing. Y Sistemas mide todo para que cada área pueda
-            mejorar.
-          </p>
-          <p>Cuanto mejor funciona una parte del negocio, más ayuda a crecer a las demás.</p>
-        </div>
-      </section>
-
-      <section className="close">
-        <div className="wide">
-          <div className="part-label mono">El cierre</div>
-          <h2>
-            Tu negocio no necesita más de vos.{' '}
-            <span className="serif">Necesita más apalancamiento.</span>
-          </h2>
-          <p>
-            Ya sabés lo que pasa cuando marketing, ventas, producto y sistemas funcionan por
-            separado.
-          </p>
-          <p>
-            Ahora descubrí cómo construir una infraestructura donde cada área alimente a las demás
-            y pocas acciones generen muchos más resultados.
-          </p>
-          <button type="button" className="cta" onClick={irAlOptin}>
-            Reservar mi lugar <span>→</span>
-          </button>
-          <div className="cta-note">Lunes 28 de septiembre · 18h ARG</div>
+          <p className="lead">Registrate ahora. El lunes a las 4:47 PM esta landing se borra.</p>
+          <div className="form-wrap">
+            <button type="button" className="btn" data-goform>
+              RESERVAR MI LUGAR AHORA <span>→</span>
+            </button>
+          </div>
         </div>
       </section>
 
       <footer>
         <div className="wide">
-          <a href="#inicio" className="logo">
-            <img src={atvMark} alt="Aumenta Tu Valor" width="120" height="140" />
-          </a>
           <span>© 2026 Aumenta Tu Valor. Todos los derechos reservados.</span>
           <nav>
             <a href={url('/terminos')}>Términos y condiciones</a>
             <a href={url('/privacidad')}>Política de privacidad</a>
           </nav>
-          <p className="disclaimer">
-            Los resultados mencionados no son una promesa de lo que vas a conseguir vos: tu
-            resultado depende de tu negocio, tu punto de partida y lo que hagas con la información. Este sitio no forma parte de Facebook ni de Meta
-            Platforms, Inc., y no está respaldado por Meta de ninguna manera. Facebook es una marca
-            registrada de Meta Platforms, Inc.
+          <p className="disc">
+            Los resultados mencionados no son una promesa de lo que vas a conseguir vos: tu resultado
+            depende de tu negocio, tu punto de partida y lo que hagas con la información. Este sitio no
+            forma parte de Facebook ni de Meta Platforms, Inc., y no está respaldado por Meta de ninguna
+            manera. Facebook es una marca registrada de Meta Platforms, Inc.
           </p>
         </div>
       </footer>
+
+      <div className={sticky ? 'sticky show' : 'sticky'} aria-hidden={!sticky}>
+        <div className="in">
+          <div className="txt">Vivo gratis · Lun 28 · {hora.corta}</div>
+          <button type="button" className="btn" data-goform>
+            Quiero mi acceso →
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
