@@ -325,7 +325,7 @@ function Dashboard() {
     const headers = [
       'id', 'nombre', 'email', 'whatsapp', 'instagram', 'situacion', 'facturacion',
       'areas', 'obstaculos', 'calificado', 'contactado', 'responsable',
-      'clicks_grupo', 'primer_click_grupo', 'clicks_agenda', 'primer_click_agenda',
+      'fue_al_grupo', 'primer_click_grupo', 'agendo', 'primer_click_agenda',
       'fecha', 'notas',
     ]
     const rows = filtered.map((lead) => [
@@ -341,9 +341,9 @@ function Dashboard() {
       lead.calificado === true ? 'Si' : lead.calificado === false ? 'No' : '',
       lead.contacted ? 'Si' : 'No',
       lead.responsable ?? '',
-      lead.wa_clicks,
+      lead.wa_clicks > 0 ? 'Si' : 'No',
       lead.wa_first_click_at ? formatDate(lead.wa_first_click_at) : '',
-      lead.calendar_clicks,
+      lead.calendar_clicks > 0 ? 'Si' : 'No',
       lead.calendar_first_click_at ? formatDate(lead.calendar_first_click_at) : '',
       formatDate(lead.created_at),
       (lead.notes ?? '').replace(/\s+/g, ' '),
@@ -585,14 +585,14 @@ function Dashboard() {
                     <td className="muted">{lead.revenue ?? '—'}</td>
                     <td>
                       {lead.wa_clicks > 0 ? (
-                        <span className="pill pill-wa">✓ {lead.wa_clicks}</span>
+                        <span className="pill pill-wa">✓</span>
                       ) : (
                         <span className="pill pill-idle">—</span>
                       )}
                     </td>
                     <td>
                       {lead.calendar_clicks > 0 ? (
-                        <span className="pill pill-cal">✓ {lead.calendar_clicks}</span>
+                        <span className="pill pill-cal">✓</span>
                       ) : (
                         <span className="pill pill-idle">—</span>
                       )}
@@ -698,8 +698,8 @@ function Dashboard() {
               <h3>Grupo de WhatsApp</h3>
               <ul className="panel-list">
                 <li>
-                  <span>Clicks</span>
-                  <strong>{selected.wa_clicks}</strong>
+                  <span>Fue</span>
+                  <strong>{selected.wa_clicks > 0 ? 'Sí' : 'No'}</strong>
                 </li>
                 <li>
                   <span>Primero</span>
@@ -716,8 +716,8 @@ function Dashboard() {
               <h3>Agenda del webinar</h3>
               <ul className="panel-list">
                 <li>
-                  <span>Clicks</span>
-                  <strong>{selected.calendar_clicks}</strong>
+                  <span>Agendó</span>
+                  <strong>{selected.calendar_clicks > 0 ? 'Sí' : 'No'}</strong>
                 </li>
                 <li>
                   <span>Primero</span>
